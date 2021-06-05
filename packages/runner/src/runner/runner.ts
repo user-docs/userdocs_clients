@@ -10,7 +10,8 @@ export interface Runner {
   userDataDirPath?: string,
   imagePath?: string,
   environment: string,
-  callbacks: RunnerCallbacks
+  callbacks: RunnerCallbacks,
+  strategy?: string
 }
 
 export interface RunnerCallbacks {
