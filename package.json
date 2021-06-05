@@ -5,7 +5,6 @@
   "repository": "https://github.com/johns10/userdocs_clients",
   "author": "johns10 <johns10davenport@gmail.com>",
   "license": "MIT",
-  "private": true,
   "workspaces": [ "packages/*" ],
   "devDependencies": {
     "lerna": "^4.0.0"
