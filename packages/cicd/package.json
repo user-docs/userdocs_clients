@@ -6,6 +6,9 @@
   "repository": "https://github.com/johns10/userdocs_clients",
   "author": "John Davenport",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./dist",
@@ -33,5 +36,5 @@
     "ts-node": "^9.1.1",
     "typescript": "^4.2.4"
   },
-  "gitHead": "5a71c061434f81a48ca4c18fb6ebabb9c9e03caa"
+  "gitHead": "d3a55b72a1fceed9bd1d3c62a6f448e30a4adc43"
 }
