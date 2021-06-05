@@ -1,12 +1,19 @@
 {
   "name": "userdocs_clients",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/johns10/userdocs_clients",
-  "author": "johns10 <johns10davenport@gmail.com>",
-  "license": "MIT",
-  "workspaces": [ "packages/*" ],
+  "private": true,
+  "workspaces": [ 
+    "packages/*" 
+  ],
+  "scripts": {
+    "docs": "doctoc --title '**Table of content**' README.md",
+    "clean": "lerna run clean",
+    "build": "lerna run build",
+    "publish": "lerna publish",
+    "test": "lerna run test",
+    "lint": "eslint --ext js,ts ."
+  },
   "devDependencies": {
-    "lerna": "^4.0.0"
+    "lerna": "^4.0.0",
+    "typescript": "~4.3.0"
   }
 }
