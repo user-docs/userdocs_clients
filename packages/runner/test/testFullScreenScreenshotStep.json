@@ -1,0 +1,39 @@
+{
+  "errors": [],
+  "id": "9",
+  "name": "Full Screen Screenshot",
+  "order": 9,
+  "status": "not_started",
+  "step": {
+      "annotation": null,
+      "element": null,
+      "height": null,
+      "id": "17",
+      "name": "Full Screen Screenshot",
+      "order": 50,
+      "page": {
+          "id": "3",
+          "name": "Login Page",
+          "order": 1,
+          "url": "https://the-internet.herokuapp.com/login"
+      },
+      "page_reference": "page",
+      "process": {
+          "id": "3",
+          "name": "Test Everything"
+      },
+      "screenshot": {
+          "id": "1",
+          "name": null
+      },
+      "stepType": {
+          "id": "7",
+          "name": "Full Screen Screenshot"
+      },
+      "text": null,
+      "url": null,
+      "width": null
+  },
+  "type": "StepInstance",
+  "warnings": []
+}

@@ -1,0 +1,34 @@
+{
+  "name": "@userdocs/runner",
+  "version": "0.0.0",
+  "description": "Runs steps authored in the userdocs screenshot collection tool",
+  "main": "dist/runner.js",
+  "repository": "https://github.com/johns10/userdocs_clients",
+  "author": "John Davenport",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "puppeteer": "^9.1.1",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-typescript": "^7.13.0",
+    "@types/jest": "^26.0.23",
+    "@types/jest-environment-puppeteer": "^4.4.1",
+    "@types/puppeteer": "^5.4.3",
+    "babel-loader": "^8.0.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "dotenv": "^8.2.0",
+    "jest-puppeteer": "^5.0.3",
+    "ts-jest": "^27.0.1",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4",
+    "webpack": "4.41.5",
+    "webpack-cli": "^3.3.12"
+  }
+}

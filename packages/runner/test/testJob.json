@@ -1,0 +1,752 @@
+{
+    "job": {
+        "errors": [],
+        "id": "1",
+        "name": "Test Job",
+        "processInstances": [
+            {
+                "errors": [],
+                "id": "2",
+                "name": "Test Everything",
+                "order": 1,
+                "status": "not_started",
+                "stepInstances": [
+                    {
+                        "errors": [],
+                        "id": "13",
+                        "name": "10. Navigate  to Login Page",
+                        "order": 1,
+                        "status": "not_started",
+                        "step": {
+                            "annotation": null,
+                            "element": null,
+                            "height": null,
+                            "id": "9",
+                            "name": "10. Navigate  to Login Page",
+                            "order": 10,
+                            "page": {
+                                "id": "3",
+                                "name": "Login Page",
+                                "order": 1,
+                                "url": "https://the-internet.herokuapp.com/login"
+                            },
+                            "page_reference": "page",
+                            "process": {
+                                "id": "3",
+                                "name": "Test Everything"
+                            },
+                            "screenshot": null,
+                            "stepType": {
+                                "id": "1",
+                                "name": "Navigate"
+                            },
+                            "text": null,
+                            "url": null,
+                            "width": null
+                        },
+                        "stepId": "9",
+                        "type": "step_instance",
+                        "warnings": []
+                    },
+                    {
+                        "errors": [],
+                        "id": "14",
+                        "name": "15. Set Size Explicit 1280X768",
+                        "order": 2,
+                        "status": "not_started",
+                        "step": {
+                            "annotation": null,
+                            "element": {
+                                "id": "3",
+                                "name": "Delete Button",
+                                "selector": "//button[@type='submit']",
+                                "strategy": {
+                                    "id": "1",
+                                    "name": "xpath"
+                                }
+                            },
+                            "height": 768,
+                            "id": "10",
+                            "name": "15. Set Size Explicit 1280X768",
+                            "order": 15,
+                            "page": {
+                                "id": "3",
+                                "name": "Login Page",
+                                "order": 1,
+                                "url": "https://the-internet.herokuapp.com/login"
+                            },
+                            "page_reference": "page",
+                            "process": {
+                                "id": "3",
+                                "name": "Test Everything"
+                            },
+                            "screenshot": null,
+                            "stepType": {
+                                "id": "6",
+                                "name": "Set Size Explicit"
+                            },
+                            "text": null,
+                            "url": null,
+                            "width": 1280
+                        },
+                        "stepId": "10",
+                        "type": "step_instance",
+                        "warnings": []
+                    },
+                    {
+                        "errors": [],
+                        "id": "15",
+                        "name": "20. Apply Annotation Label",
+                        "order": 3,
+                        "status": "not_started",
+                        "step": {
+                            "annotation": {
+                                "annotationType": {
+                                    "id": "3",
+                                    "name": "Badge"
+                                },
+                                "color": "green",
+                                "font_color": null,
+                                "fontSize": 24,
+                                "id": "3",
+                                "label": "1",
+                                "name": "Label",
+                                "size": 16,
+                                "thickness": null,
+                                "xOffset": 0,
+                                "xOrientation": "R",
+                                "yOffset": 0,
+                                "yOrientation": "T"
+                            },
+                            "element": {
+                                "id": "4",
+                                "name": "username input",
+                                "selector": "//input[@id='username']",
+                                "strategy": {
+                                    "id": "1",
+                                    "name": "xpath"
+                                }
+                            },
+                            "height": null,
+                            "id": "11",
+                            "name": "20. Apply Annotation Label",
+                            "order": 20,
+                            "page": {
+                                "id": "3",
+                                "name": "Login Page",
+                                "order": 1,
+                                "url": "https://the-internet.herokuapp.com/login"
+                            },
+                            "page_reference": "page",
+                            "process": {
+                                "id": "3",
+                                "name": "Test Everything"
+                            },
+                            "screenshot": null,
+                            "stepType": {
+                                "id": "5",
+                                "name": "Apply Annotation"
+                            },
+                            "text": null,
+                            "url": null,
+                            "width": null
+                        },
+                        "stepId": "11",
+                        "type": "step_instance",
+                        "warnings": []
+                    },
+                    {
+                        "errors": [],
+                        "id": "16",
+                        "name": "25. Apply Annotation Label",
+                        "order": 4,
+                        "status": "not_started",
+                        "step": {
+                            "annotation": {
+                                "annotationType": {
+                                    "id": "3",
+                                    "name": "Badge"
+                                },
+                                "color": "green",
+                                "font_color": null,
+                                "fontSize": 24,
+                                "id": "4",
+                                "label": "2",
+                                "name": "Label",
+                                "size": 16,
+                                "thickness": null,
+                                "xOffset": 0,
+                                "xOrientation": "R",
+                                "yOffset": 0,
+                                "yOrientation": "T"
+                            },
+                            "element": {
+                                "id": "5",
+                                "name": "password input",
+                                "selector": "//input[@id='password']",
+                                "strategy": {
+                                    "id": "1",
+                                    "name": "xpath"
+                                }
+                            },
+                            "height": null,
+                            "id": "12",
+                            "name": "25. Apply Annotation Label",
+                            "order": 25,
+                            "page": {
+                                "id": "3",
+                                "name": "Login Page",
+                                "order": 1,
+                                "url": "https://the-internet.herokuapp.com/login"
+                            },
+                            "page_reference": "page",
+                            "process": {
+                                "id": "3",
+                                "name": "Test Everything"
+                            },
+                            "screenshot": null,
+                            "stepType": {
+                                "id": "5",
+                                "name": "Apply Annotation"
+                            },
+                            "text": null,
+                            "url": null,
+                            "width": null
+                        },
+                        "stepId": "12",
+                        "type": "step_instance",
+                        "warnings": []
+                    },
+                    {
+                        "errors": [],
+                        "id": "17",
+                        "name": "30. Apply Annotation Outline Login Button",
+                        "order": 5,
+                        "status": "not_started",
+                        "step": {
+                            "annotation": {
+                                "annotationType": {
+                                    "id": "1",
+                                    "name": "Outline"
+                                },
+                                "color": "green",
+                                "font_color": null,
+                                "fontSize": null,
+                                "id": "5",
+                                "label": null,
+                                "name": "Outline Login Button",
+                                "size": null,
+                                "thickness": 4,
+                                "xOffset": null,
+                                "xOrientation": null,
+                                "yOffset": null,
+                                "yOrientation": null
+                            },
+                            "element": {
+                                "id": "3",
+                                "name": "Delete Button",
+                                "selector": "//button[@type='submit']",
+                                "strategy": {
+                                    "id": "1",
+                                    "name": "xpath"
+                                }
+                            },
+                            "height": null,
+                            "id": "13",
+                            "name": "30. Apply Annotation Outline Login Button",
+                            "order": 30,
+                            "page": {
+                                "id": "3",
+                                "name": "Login Page",
+                                "order": 1,
+                                "url": "https://the-internet.herokuapp.com/login"
+                            },
+                            "page_reference": "page",
+                            "process": {
+                                "id": "3",
+                                "name": "Test Everything"
+                            },
+                            "screenshot": null,
+                            "stepType": {
+                                "id": "5",
+                                "name": "Apply Annotation"
+                            },
+                            "text": null,
+                            "url": null,
+                            "width": null
+                        },
+                        "stepId": "13",
+                        "type": "step_instance",
+                        "warnings": []
+                    },
+                    {
+                        "errors": [],
+                        "id": "18",
+                        "name": "35. Fill Field username input with tomsmith",
+                        "order": 6,
+                        "status": "not_started",
+                        "step": {
+                            "annotation": null,
+                            "element": {
+                                "id": "4",
+                                "name": "username input",
+                                "selector": "//input[@id='username']",
+                                "strategy": {
+                                    "id": "1",
+                                    "name": "xpath"
+                                }
+                            },
+                            "height": null,
+                            "id": "14",
+                            "name": "35. Fill Field username input with tomsmith",
+                            "order": 35,
+                            "page": {
+                                "id": "3",
+                                "name": "Login Page",
+                                "order": 1,
+                                "url": "https://the-internet.herokuapp.com/login"
+                            },
+                            "page_reference": "page",
+                            "process": {
+                                "id": "3",
+                                "name": "Test Everything"
+                            },
+                            "screenshot": null,
+                            "stepType": {
+                                "id": "4",
+                                "name": "Fill Field"
+                            },
+                            "text": "tomsmith",
+                            "url": null,
+                            "width": null
+                        },
+                        "stepId": "14",
+                        "type": "step_instance",
+                        "warnings": []
+                    },
+                    {
+                        "errors": [],
+                        "id": "19",
+                        "name": "40. Fill Field password input with SuperSecretPassword!",
+                        "order": 7,
+                        "status": "not_started",
+                        "step": {
+                            "annotation": null,
+                            "element": {
+                                "id": "5",
+                                "name": "password input",
+                                "selector": "//input[@id='password']",
+                                "strategy": {
+                                    "id": "1",
+                                    "name": "xpath"
+                                }
+                            },
+                            "height": null,
+                            "id": "15",
+                            "name": "40. Fill Field password input with SuperSecretPassword!",
+                            "order": 40,
+                            "page": {
+                                "id": "3",
+                                "name": "Login Page",
+                                "order": 1,
+                                "url": "https://the-internet.herokuapp.com/login"
+                            },
+                            "page_reference": "page",
+                            "process": {
+                                "id": "3",
+                                "name": "Test Everything"
+                            },
+                            "screenshot": null,
+                            "stepType": {
+                                "id": "4",
+                                "name": "Fill Field"
+                            },
+                            "text": "SuperSecretPassword!",
+                            "url": null,
+                            "width": null
+                        },
+                        "stepId": "15",
+                        "type": "step_instance",
+                        "warnings": []
+                    },
+                    {
+                        "errors": [],
+                        "id": "20",
+                        "name": "45. Clear Annotations ",
+                        "order": 8,
+                        "status": "not_started",
+                        "step": {
+                            "annotation": null,
+                            "element": null,
+                            "height": null,
+                            "id": "16",
+                            "name": "45. Clear Annotations ",
+                            "order": 45,
+                            "page": {
+                                "id": "3",
+                                "name": "Login Page",
+                                "order": 1,
+                                "url": "https://the-internet.herokuapp.com/login"
+                            },
+                            "page_reference": "page",
+                            "process": {
+                                "id": "3",
+                                "name": "Test Everything"
+                            },
+                            "screenshot": null,
+                            "stepType": {
+                                "id": "8",
+                                "name": "Clear Annotations"
+                            },
+                            "text": null,
+                            "url": null,
+                            "width": null
+                        },
+                        "stepId": "16",
+                        "type": "step_instance",
+                        "warnings": []
+                    },
+                    {
+                        "errors": [],
+                        "id": "21",
+                        "name": "50. Full Screen Screenshot ",
+                        "order": 9,
+                        "status": "not_started",
+                        "step": {
+                            "annotation": null,
+                            "element": null,
+                            "height": null,
+                            "id": "17",
+                            "name": "50. Full Screen Screenshot ",
+                            "order": 50,
+                            "page": {
+                                "id": "3",
+                                "name": "Login Page",
+                                "order": 1,
+                                "url": "https://the-internet.herokuapp.com/login"
+                            },
+                            "page_reference": "page",
+                            "process": {
+                                "id": "3",
+                                "name": "Test Everything"
+                            },
+                            "screenshot": null,
+                            "stepType": {
+                                "id": "7",
+                                "name": "Full Screen Screenshot"
+                            },
+                            "text": null,
+                            "url": null,
+                            "width": null
+                        },
+                        "stepId": "17",
+                        "type": "step_instance",
+                        "warnings": []
+                    },
+                    {
+                        "errors": [],
+                        "id": "22",
+                        "name": "55. Element Screenshot Login Form",
+                        "order": 10,
+                        "status": "not_started",
+                        "step": {
+                            "annotation": null,
+                            "element": {
+                                "id": "7",
+                                "name": "Login Form",
+                                "selector": "//div[@id='content']",
+                                "strategy": {
+                                    "id": "1",
+                                    "name": "xpath"
+                                }
+                            },
+                            "height": null,
+                            "id": "18",
+                            "name": "55. Element Screenshot Login Form",
+                            "order": 55,
+                            "page": {
+                                "id": "3",
+                                "name": "Login Page",
+                                "order": 1,
+                                "url": "https://the-internet.herokuapp.com/login"
+                            },
+                            "page_reference": "page",
+                            "process": {
+                                "id": "3",
+                                "name": "Test Everything"
+                            },
+                            "screenshot": null,
+                            "stepType": {
+                                "id": "9",
+                                "name": "Element Screenshot"
+                            },
+                            "text": null,
+                            "url": null,
+                            "width": null
+                        },
+                        "stepId": "18",
+                        "type": "step_instance",
+                        "warnings": []
+                    },
+                    {
+                        "errors": [],
+                        "id": "23",
+                        "name": "60. Click  on Delete Button",
+                        "order": 11,
+                        "status": "not_started",
+                        "step": {
+                            "annotation": null,
+                            "element": {
+                                "id": "3",
+                                "name": "Delete Button",
+                                "selector": "//button[@type='submit']",
+                                "strategy": {
+                                    "id": "1",
+                                    "name": "xpath"
+                                }
+                            },
+                            "height": null,
+                            "id": "19",
+                            "name": "60. Click  on Delete Button",
+                            "order": 60,
+                            "page": {
+                                "id": "3",
+                                "name": "Login Page",
+                                "order": 1,
+                                "url": "https://the-internet.herokuapp.com/login"
+                            },
+                            "page_reference": "page",
+                            "process": {
+                                "id": "3",
+                                "name": "Test Everything"
+                            },
+                            "screenshot": null,
+                            "stepType": {
+                                "id": "3",
+                                "name": "Click"
+                            },
+                            "text": null,
+                            "url": null,
+                            "width": null
+                        },
+                        "stepId": "19",
+                        "type": "step_instance",
+                        "warnings": []
+                    },
+                    {
+                        "errors": [],
+                        "id": "24",
+                        "name": "65. Apply Annotation Badge Outline Login",
+                        "order": 12,
+                        "status": "not_started",
+                        "step": {
+                            "annotation": {
+                                "annotationType": {
+                                    "id": "5",
+                                    "name": "Badge Outline"
+                                },
+                                "color": "green",
+                                "font_color": null,
+                                "fontSize": 24,
+                                "id": "6",
+                                "label": "1",
+                                "name": "Badge Outline Login",
+                                "size": 16,
+                                "thickness": 4,
+                                "xOffset": 0,
+                                "xOrientation": "R",
+                                "yOffset": 0,
+                                "yOrientation": "T"
+                            },
+                            "element": {
+                                "id": "6",
+                                "name": "Logout Button",
+                                "selector": "//a[@href='/logout']",
+                                "strategy": {
+                                    "id": "1",
+                                    "name": "xpath"
+                                }
+                            },
+                            "height": null,
+                            "id": "20",
+                            "name": "65. Apply Annotation Badge Outline Login",
+                            "order": 65,
+                            "page": {
+                                "id": "4",
+                                "name": "Secure",
+                                "order": 3,
+                                "url": "https://the-internet.herokuapp.com/secure"
+                            },
+                            "page_reference": "page",
+                            "process": {
+                                "id": "3",
+                                "name": "Test Everything"
+                            },
+                            "screenshot": null,
+                            "stepType": {
+                                "id": "5",
+                                "name": "Apply Annotation"
+                            },
+                            "text": null,
+                            "url": null,
+                            "width": null
+                        },
+                        "stepId": "20",
+                        "type": "step_instance",
+                        "warnings": []
+                    }
+                ],
+                "type": "process_instance",
+                "warnings": []
+            }
+        ],
+        "status": "not_started",
+        "stepInstances": [
+            {
+                "errors": [],
+                "id": "27",
+                "name": "20. Apply Annotation Label",
+                "order": 4,
+                "status": "not_started",
+                "step": {
+                    "annotation": {
+                        "annotationType": {
+                            "id": "3",
+                            "name": "Badge"
+                        },
+                        "color": "green",
+                        "font_color": null,
+                        "fontSize": 24,
+                        "id": "3",
+                        "label": "1",
+                        "name": "Label",
+                        "size": 16,
+                        "thickness": null,
+                        "xOffset": 0,
+                        "xOrientation": "R",
+                        "yOffset": 0,
+                        "yOrientation": "T"
+                    },
+                    "element": {
+                        "id": "4",
+                        "name": "username input",
+                        "selector": "//input[@id='username']",
+                        "strategy": {
+                            "id": "1",
+                            "name": "xpath"
+                        }
+                    },
+                    "height": null,
+                    "id": "11",
+                    "name": "20. Apply Annotation Label",
+                    "order": 20,
+                    "page": {
+                        "id": "3",
+                        "name": "Login Page",
+                        "order": 1,
+                        "url": "https://the-internet.herokuapp.com/login"
+                    },
+                    "page_reference": "page",
+                    "process": {
+                        "id": "3",
+                        "name": "Test Everything"
+                    },
+                    "screenshot": null,
+                    "stepType": {
+                        "id": "5",
+                        "name": "Apply Annotation"
+                    },
+                    "text": null,
+                    "url": null,
+                    "width": null
+                },
+                "stepId": "11",
+                "type": "step_instance",
+                "warnings": []
+            },
+            {
+                "errors": [],
+                "id": "25",
+                "name": "10. Navigate  to Login Page",
+                "order": 2,
+                "status": "not_started",
+                "step": {
+                    "annotation": null,
+                    "element": null,
+                    "height": null,
+                    "id": "9",
+                    "name": "10. Navigate  to Login Page",
+                    "order": 10,
+                    "page": {
+                        "id": "3",
+                        "name": "Login Page",
+                        "order": 1,
+                        "url": "https://the-internet.herokuapp.com/login"
+                    },
+                    "page_reference": "page",
+                    "process": {
+                        "id": "3",
+                        "name": "Test Everything"
+                    },
+                    "screenshot": null,
+                    "stepType": {
+                        "id": "1",
+                        "name": "Navigate"
+                    },
+                    "text": null,
+                    "url": null,
+                    "width": null
+                },
+                "stepId": "9",
+                "type": "step_instance",
+                "warnings": []
+            },
+            {
+                "errors": [],
+                "id": "26",
+                "name": "15. Set Size Explicit 1280X768",
+                "order": 3,
+                "status": "not_started",
+                "step": {
+                    "annotation": null,
+                    "element": {
+                        "id": "3",
+                        "name": "Delete Button",
+                        "selector": "//button[@type='submit']",
+                        "strategy": {
+                            "id": "1",
+                            "name": "xpath"
+                        }
+                    },
+                    "height": 768,
+                    "id": "10",
+                    "name": "15. Set Size Explicit 1280X768",
+                    "order": 15,
+                    "page": {
+                        "id": "3",
+                        "name": "Login Page",
+                        "order": 1,
+                        "url": "https://the-internet.herokuapp.com/login"
+                    },
+                    "page_reference": "page",
+                    "process": {
+                        "id": "3",
+                        "name": "Test Everything"
+                    },
+                    "screenshot": null,
+                    "stepType": {
+                        "id": "6",
+                        "name": "Set Size Explicit"
+                    },
+                    "text": null,
+                    "url": null,
+                    "width": 1280
+                },
+                "stepId": "10",
+                "type": "step_instance",
+                "warnings": []
+            }
+        ],
+        "warnings": []
+    }
+}
