@@ -2,11 +2,16 @@
   "name": "@userdocs/runner",
   "version": "1.0.0",
   "description": "Runs steps authored in the userdocs screenshot collection tool",
-  "main": "dist/runner.js",
+  "main": "dist/index",
+  "types": "dist/index",
   "repository": "https://github.com/johns10/userdocs_clients",
   "author": "John Davenport",
   "license": "MIT",
   "scripts": {
+    "build": "yarn run clean && yarn run compile",
+    "clean": "rimraf -rf ./dist",
+    "compile": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "yarn run build",
     "test": "jest"
   },
   "dependencies": {
@@ -27,7 +32,6 @@
     "jest-puppeteer": "^5.0.3",
     "ts-jest": "^27.0.1",
     "ts-node": "^9.1.1",
-    "typescript": "^4.2.4",
     "webpack": "4.41.5",
     "webpack-cli": "^3.3.12"
   },
