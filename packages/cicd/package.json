@@ -1,13 +1,13 @@
 {
   "name": "@userdocs/cicd",
-  "version": "0.0.1",
+  "version": "0.0.2-alpha.0",
   "description": "CICD Runner for the UserDocs Screenshot collection app",
   "main": "index.js",
   "repository": "https://github.com/johns10/userdocs_clients",
   "author": "John Davenport",
   "license": "MIT",
   "dependencies": {
-    "@userdocs/runner": "^0.0.0",
+    "@userdocs/runner": "^1.0.0",
     "axios": "^0.21.1",
     "electron-is-dev": "^2.0.0",
     "graphql": "^15.5.0",

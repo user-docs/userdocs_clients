@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/runner",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Runs steps authored in the userdocs screenshot collection tool",
   "main": "dist/runner.js",
   "repository": "https://github.com/johns10/userdocs_clients",
