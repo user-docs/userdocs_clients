@@ -1,4 +1,4 @@
-module.exports = {
+export let configSchema = {
 	automationFrameworkName: {
 		type: 'string',
     default: 'puppeteer'
