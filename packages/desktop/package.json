@@ -37,7 +37,6 @@
     "build": "yarn run clean && yarn run compile",
     "publish": "yarn run build && electron-builder --mac --windows --linux --publish always",
     "start": "electron build/index.js",
-    "postinstall": "electron-builder install-app-deps",
     "pack": "electron-builder --dir",
     "dist": "yarn run build && electron-builder",
     "dist-mac": "electron-builder -m",
