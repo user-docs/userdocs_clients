@@ -3,11 +3,11 @@
   "version": "0.0.12",
   "description": "Authors steps and processes for collection of screenshots",
   "repository": "https://github.com/johns10/userdocs_clients",
+  "main": "build/index.js",
   "author": "John Davenport",
   "license": "MIT",
   "homepage": "https://user-docs.com",
   "build": {
-    "name": "UserDocs",
     "appId": "johns10@gmail.com",
     "productName": "UserDocs Desktop",
     "mac": {
@@ -25,6 +25,9 @@
           "./config.json"
         ]
       }
+    ],
+    "files": [
+      "build/**/*"
     ]
   },
   "scripts": {
@@ -36,7 +39,7 @@
     "start": "electron dist/index.js",
     "postinstall": "electron-builder install-app-deps",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder",
+    "dist": "yarn run build && electron-builder",
     "dist-mac": "electron-builder -m",
     "dist-all": "electron-builder -wm"
   },
