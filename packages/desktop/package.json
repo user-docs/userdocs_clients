@@ -28,10 +28,14 @@
     ]
   },
   "scripts": {
-    "start": "electron src/main.js",
+    "prepublishOnly": "yarn run build",
+    "clean": "rimraf -rf ./dist",
+    "compile": "tsc -p tsconfig.build.json",
+    "build": "yarn run clean && yarn run compile",
+    "publish": "yarn run build && electron-builder -p always",
+    "start": "electron dist/main.js",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "release": "electron-builder -p always",
     "dist-mac": "electron-builder -m",
     "dist-all": "electron-builder -wm"
   },
