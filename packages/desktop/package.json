@@ -19,13 +19,6 @@
       "target": "AppImage",
       "category": "Office"
     },
-    "extraResources": [
-      {
-        "filter": [
-          "./config.json"
-        ]
-      }
-    ],
     "files": [
       "build/**/*"
     ]
@@ -34,13 +27,10 @@
     "prepublishOnly": "yarn run build",
     "clean": "rimraf -rf ./dist",
     "compile": "tsc -p tsconfig.build.json",
-    "build": "yarn run clean && yarn run compile",
+    "build": "yarn run clean && yarn run compile && electron-builder",
     "publish": "yarn run build && electron-builder --mac --windows --linux --publish always",
-    "start": "electron build/index.js",
-    "pack": "electron-builder --dir",
-    "dist": "yarn run build && electron-builder",
-    "dist-mac": "electron-builder -m",
-    "dist-all": "electron-builder -wm"
+    "start": "yarn run compile && electron build/index.js",
+    "pack": "electron-builder --dir"
   },
   "dependencies": {
     "@userdocs/runner": "^1.0.7",
@@ -53,5 +43,5 @@
     "electron-builder": "^22.10.5",
     "electron-reload": "^1.5.0"
   },
-  "gitHead": "2c28d6daf9ff0bd98cc1372c038f234ff78ad62c"
+  "gitHead": "9f118c5fb936492141eb10b2b72f0157501c9368"
 }

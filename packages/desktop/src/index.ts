@@ -18,7 +18,7 @@ if (isDev) {
   });
 }
 
-const store = new Store({configSchema})
+const store = new Store(configSchema)
 
 const stepUpdated = function(step) { 
   mainWindow().webContents.send('stepStatusUpdated', step); 
@@ -37,11 +37,11 @@ const userdocs = {
   runState: 'stopped',
   runner: null,
   configuration: {
-    automationFrameworkName: store.get('automationFrameworkName'),
-    maxRetries: store.get('maxRetries'),
-    environment: store.get('environment'),
-    imagePath: store.get('imagePath'),
-    userDataDirPath: store.get('userDataDirPath'),
+    automationFrameworkName: store.get('automationFrameworkName', 'puppeteer'),
+    maxRetries: store.get('maxRetries', 10),
+    environment: store.get('environment', 'desktop'),
+    imagePath: store.get('imagePath', ''),
+    userDataDirPath: store.get('userDataDirPath', ''),
     strategy: "xpath",
     callbacks: {
       step: {
@@ -82,6 +82,7 @@ function main() {
 }
 
 ipcMain.on('openBrowser', async (event) => { 
+  console.log(userdocs.configuration)
   if(!userdocs.runner.automationFramework.browser) userdocs.runner = await openBrowser()
   return true
  })
@@ -130,8 +131,8 @@ ipcMain.on('start', (event) => {
 
 
 ipcMain.on('configure', async (event, message) => {
-  if (message.image_path) userdocs.configuration.imagePath = message.image_path
-  if (message.user_data_dir_path) userdocs.configuration.userDataDirPath = message.user_data_dir_path
+  if (message.image_path) store.set('imagePath', message.image_path)
+  if (message.user_data_dir_path) store.set('userDataDirPath', message.user_data_dir_path)
   if (message.strategy) userdocs.configuration.strategy = message.strategy
   try {
     userdocs.runner = Runner.reconfigure(userdocs.runner, userdocs.configuration)
