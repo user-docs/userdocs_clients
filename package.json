@@ -1,6 +1,7 @@
 {
   "name": "userdocs_clients",
-  "version": "0.0.12",
+  "version": "0.0.13",
+  "main": "build/index.js",
   "private": true,
   "workspaces": [ 
     "packages/*" 
