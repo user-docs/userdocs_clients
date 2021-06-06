@@ -6,6 +6,7 @@ import {
   createMainWindow } from './main_window/navigation'
 import * as Runner from '@userdocs/runner'
 import { configSchema } from './configSchema'
+import { autoUpdater } from 'electron-updater'
 
 const path = require('path')
 const isDev = require('electron-is-dev');
@@ -146,3 +147,7 @@ ipcMain.on('testSelector', async (event, message) => {
 })
 */
 app.whenReady().then(main)
+
+app.on("ready", () => {
+	autoUpdater.checkForUpdatesAndNotify()
+});
