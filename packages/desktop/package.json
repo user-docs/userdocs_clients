@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/desktop",
-  "version": "0.0.15",
+  "version": "0.0.22",
   "description": "Authors steps and processes for collection of screenshots",
   "repository": "https://github.com/johns10/userdocs_clients",
   "main": "build/index.js",
@@ -52,5 +52,6 @@
     "electron": "12.0.9",
     "electron-builder": "^22.10.5",
     "electron-reload": "^1.5.0"
-  }
+  },
+  "gitHead": "c553b9de3865331c500db627d7b28f9bf9b9f934"
 }
