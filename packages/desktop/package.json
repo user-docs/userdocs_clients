@@ -1,8 +1,7 @@
 {
   "name": "@userdocs/desktop",
-  "version": "0.0.10",
+  "version": "0.0.12",
   "description": "Authors steps and processes for collection of screenshots",
-  "main": "dist/index",
   "repository": "https://github.com/johns10/userdocs_clients",
   "author": "John Davenport",
   "license": "MIT",
