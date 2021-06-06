@@ -32,7 +32,7 @@
     "prepublishOnly": "yarn run build",
     "clean": "rimraf -rf ./dist",
     "compile": "tsc -p tsconfig.build.json",
-    "build": "yarn run clean && yarn run compile",
+    "build": "yarn install && yarn run clean && yarn run compile",
     "publish": "yarn run build && electron-builder --mac --windows --linux --publish always",
     "start": "electron dist/main.js",
     "postinstall": "electron-builder install-app-deps",
