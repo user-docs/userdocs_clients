@@ -86,9 +86,10 @@ export function initialize(configuration: Configuration) {
 }
 
 export function reconfigure(runner: Runner, configuration: Configuration) {
-  runner.maxRetries = configuration.maxRetries,
-  runner.environment = configuration.environment,
-  runner.imagePath = configuration.imagePath,
+  runner.maxRetries = configuration.maxRetries
+  runner.environment = configuration.environment
+  runner.imagePath = configuration.imagePath
+  runner.userDataDirPath = configuration.userDataDirPath
   runner = configureCallbacks(runner, configuration)
   return runner
 }
