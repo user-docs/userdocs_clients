@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/desktop",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Authors steps and processes for collection of screenshots",
   "main": "src/main",
   "repository": "https://github.com/johns10/userdocs_clients",
