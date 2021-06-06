@@ -1,6 +1,5 @@
 {
   "name": "@userdocs/desktop",
-  "productName": "UserDocs",
   "version": "0.0.2",
   "description": "Authors steps and processes for collection of screenshots",
   "main": "src/main",
@@ -9,15 +8,17 @@
   "license": "MIT",
   "homepage": "https://user-docs.com",
   "build": {
+    "name": "UserDocs",
     "appId": "johns10@gmail.com",
+    "productName": "UserDocs Desktop",
     "mac": {
       "target": "dmg",
-      "icon": "build/icon.icns",
       "category": "public.app-category.developer-tools"
     },
     "linux": {
       "executableName": "user_docs",
-      "target": "AppImage"
+      "target": "AppImage",
+      "category": "Office"
     },
     "extraResources": [
       {
@@ -32,8 +33,9 @@
     "clean": "rimraf -rf ./dist",
     "compile": "tsc -p tsconfig.build.json",
     "build": "yarn run clean && yarn run compile",
-    "publish": "yarn run build && electron-builder -p always",
+    "publish": "yarn run build && electron-builder --mac --windows --linux --publish always",
     "start": "electron dist/main.js",
+    "postinstall": "electron-builder install-app-deps",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "dist-mac": "electron-builder -m",
@@ -42,7 +44,8 @@
   "dependencies": {
     "@userdocs/runner": "@userdocs/runner",
     "electron-is-dev": "^2.0.0",
-    "electron-store": "^8.0.0"
+    "electron-store": "^8.0.0",
+    "electron-updater": "^4.3.9"
   },
   "devDependencies": {
     "electron": "12.0.9",
