@@ -3,9 +3,8 @@ name: Build/release
 on: push
 
 jobs:
-  if: ${{ startsWith(github.ref, '@userdocs/desktop@') }}
-
   release:
+    if: ${{ startsWith(github.ref, '@userdocs/desktop@') }}
     runs-on: ${{ matrix.os }}
 
     strategy:
