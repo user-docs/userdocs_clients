@@ -1,16 +1,15 @@
-import { Runner } from "packages/runner/src/runner/runner";
-
 import { app, ipcMain } from 'electron';
 import { 
   mainWindow, 
   navigateToLoginPage, 
   authenticateJohnDavenport, 
   createMainWindow } from './main_window/navigation'
+import * as Runner from '@userdocs/runner'
+import { configSchema } from './configSchema'
+
 const path = require('path')
 const isDev = require('electron-is-dev');
 const Store = require('electron-store');
-const schema = require('./configSchema')
-const Runner = require('@userdocs/runner')
 
 if (isDev) {
   require('electron-reload')(__dirname, {
@@ -18,7 +17,7 @@ if (isDev) {
   });
 }
 
-const store = new Store({schema})
+const store = new Store({configSchema})
 
 const stepUpdated = function(step) { 
   mainWindow().webContents.send('stepStatusUpdated', step); 
@@ -88,7 +87,7 @@ ipcMain.on('openBrowser', async (event) => {
 
 async function openBrowser() {
   if(!userdocs.runner) throw ("No RUnner")
-  userdocs.runner = await Runner.openBrowser(userdocs.runner, userdocs.configuration)
+  userdocs.runner = await Runner.openBrowser(userdocs.runner)
   userdocs.runner.automationFramework.browser.on('disconnected', () => browserClosed(null))
   mainWindow().webContents.send('browserOpened', { sessionId: 'id' })
   return userdocs.runner
