@@ -43,5 +43,5 @@
     "electron-builder": "^22.10.5",
     "electron-reload": "^1.5.0"
   },
-  "gitHead": "3b2ebaf00f1926de1fdadd26bd63a99c3c1d7737"
+  "gitHead": "1e49aa31f38d99327d303b476ad46a5963be6d95"
 }
