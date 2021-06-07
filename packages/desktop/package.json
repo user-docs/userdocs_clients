@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/desktop",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "description": "Authors steps and processes for collection of screenshots",
   "repository": "https://github.com/johns10/userdocs_clients",
   "main": "build/index.js",
@@ -33,7 +33,7 @@
     "pack": "electron-builder --dir"
   },
   "dependencies": {
-    "@userdocs/runner": "^1.0.8",
+    "@userdocs/runner": "^1.0.9",
     "electron-is-dev": "^2.0.0",
     "electron-store": "^8.0.0",
     "electron-updater": "^4.3.9"
