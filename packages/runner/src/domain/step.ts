@@ -120,7 +120,7 @@ async function runWithRetries(step: Step, runner: Runner, retry: number, error: 
   const maxRetries = runner.maxRetries
   const browser = runner.automationFramework.browser
   const handler = runner.automationFramework.stepHandler(step)
-  const configuration = { imagePath: runner.imagePath }
+  const configuration = { imagePath: runner.imagePath, maxWaitTime: runner.maxWaitTime }
   if (retry < maxRetries) {
     try {
       step = await handler(browser, step, configuration)
