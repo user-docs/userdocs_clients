@@ -1,0 +1,23 @@
+{
+  "name": "@userdocs/server",
+  "version": "0.0.0",
+  "description": "Automation server",
+  "main": "index.js",
+  "author": "John Davnpoort",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "yarn run clean && yarn run compile",
+    "clean": "rimraf -rf ./dist",
+    "compile": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "yarn run build",
+    "start": "yarn run build && node dist/index.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.5.0",
+    "subscriptions-transport-ws": "^0.9.18"
+  }
+}
