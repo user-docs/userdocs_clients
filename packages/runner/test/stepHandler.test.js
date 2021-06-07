@@ -1,4 +1,4 @@
-const { Puppet } = require('../lib/automation/puppet')
+const { Puppet } = require('../src/automation/puppet')
 
 test('stepFunction returns a navigate function', async () => {
   const step = { stepType: { name: 'Navigate' } }
@@ -40,4 +40,10 @@ test('stepFunction returns a Apply Annotation function', async () => {
   const step = { stepType: { name: 'Apply Annotation' } }
   handler = Puppet.stepHandler(step)
   expect(handler.name).toBe('Apply Annotation')
+})
+
+test('stepFunction returns a Wait For Element function', async () => {
+  const step = { stepType: { name: 'Wait for Element' } }
+  handler = Puppet.stepHandler(step)
+  expect(handler.name).toBe('Wait for Element')
 })

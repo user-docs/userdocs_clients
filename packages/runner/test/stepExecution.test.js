@@ -1,10 +1,11 @@
 const { existsSync, unlink } = require('fs')
 const path = require('path')
-const { Puppet } = require('../lib/automation/puppet')
+const { isObject } = require('util')
+const { Puppet } = require('../src/automation/puppet')
 const StepFixtures = require('./fixtures/step.js')
 
 var browser
-beforeAll( async () => { browser = await Puppet.openBrowser({}); });
+beforeAll( async () => { browser = await Puppet.openBrowser({ environment: 'test' }); });
 afterAll( async () => { await Puppet.closeBrowser(browser, {}); });
 
 
@@ -84,4 +85,23 @@ test('Scroll into view scrolls to an element', async () => {
   const handle = await page.$(selector)
   expect(handle).toEqual(expect.any(Object))
   expect(handle).not.toBe([])
+})
+
+test ('Wait waits for an element', async() => {
+  const url = 'https://the-internet.herokuapp.com/add_remove_elements/'
+  const step = { screenshot: {}, process: { name: 'test' }, stepType: { name: 'Wait for Element' }, element: { selector: "//button[contains(., 'Delete')]", strategy: { name: 'xpath' } } }
+
+  const handler = Puppet.stepHandler(step)
+  const page = (await browser.pages())[0]
+  await page.goto(url)
+  let addElementHandle = (await page.$x("//button[contains(., 'Add Element')]"))[0]
+  wait = new Promise(resolve => setTimeout(resolve, 50))
+  wait.then(() => { 
+    addElementHandle.click()
+  })
+  result = await handler(browser, step, { maxWaitTime: 100 })
+  console.log("returned")
+  handles = page.$x("//button[contains(., 'Delete')]")
+  expect(handles).not.toBe([])
+  await new Promise(resolve => setTimeout(resolve, 100))
 })

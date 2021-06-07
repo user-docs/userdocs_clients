@@ -1,4 +1,4 @@
-const { Puppet } = require('../lib/automation/puppet')
+const { Puppet } = require('../src/automation/puppet')
 
 test('openBrowser opens the browser', async () => {
   browser = await Puppet.openBrowser({})

@@ -1,4 +1,4 @@
-const Runner = require('../lib/runner/runner')
+const Runner = require('../src/runner/runner')
 const StepFixtures = require('./fixtures/step.js')
 
 /*

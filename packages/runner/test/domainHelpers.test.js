@@ -1,4 +1,4 @@
-const Helpers = require('../lib/domain/helpers')
+const Helpers = require('../src/domain/helpers')
 
 test('Helpers.fetchCallbacks returns a list of functions', async () => {
   hello = () => { return 'Hello' }

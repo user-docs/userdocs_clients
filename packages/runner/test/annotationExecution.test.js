@@ -1,5 +1,5 @@
-const { stepHandlers } = require('../lib/automation/puppeteer/stepHandlers')
-const { Puppet } = require('../lib/automation/puppet')
+const { stepHandlers } = require('../src/automation/puppeteer/stepHandlers')
+const { Puppet } = require('../src/automation/puppet')
 
 var browser
 const url = 'https://the-internet.herokuapp.com/add_remove_elements/'
