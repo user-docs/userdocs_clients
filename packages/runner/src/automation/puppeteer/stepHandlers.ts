@@ -3,7 +3,7 @@ import { currentPage, getElementHandle } from './helpers'
 import { Page, ElementHandle, Browser } from 'puppeteer'
 import { StyleFunctionsText } from '../../annotation/style'
 import { annotationHandlers } from '../../annotation/annotation'
-import { Configuration } from '../automation'
+import { Configuration } from '../../runner/runner'
 import * as fs from 'fs/promises';
 
 const path = require('path')
@@ -126,7 +126,7 @@ export const stepHandlers: StepHandler = {
     })
     return step
   },
-  "Scroll into View": async(browser: Browser, step: Step) => { 
+  "Scroll to Element": async(browser: Browser, step: Step) => { 
     const selector = step.element.selector
     const strategy = step.element.strategy.name
     const page: Page | undefined = await currentPage(browser)
@@ -154,6 +154,19 @@ export const stepHandlers: StepHandler = {
       throw error
     }
     
+    return step
+  },
+  "Wait for Element": async(browser: Browser, step: Step, configuration: Configuration) => {
+    const selector = step.element.selector
+    const strategy = step.element.strategy.name
+    const page: Page | undefined = await currentPage(browser)
+    if (!page) { throw new Error("Page not retreived from browser")}
+    if (strategy == 'xpath') {
+      console.log("Waiting", configuration.maxWaitTime)
+      await page.waitForXPath(selector, { visible: true, timeout: configuration.maxWaitTime })
+    } else if (strategy == 'css') {
+      await page.waitForSelector(selector, { visible: true, timeout: configuration.maxWaitTime })
+    }
     return step
   }
 }
