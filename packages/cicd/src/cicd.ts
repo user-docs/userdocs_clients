@@ -9,8 +9,8 @@ export async function initialize(url, credentials, ) {
     automationFrameworkName: 'puppeteer',
     maxRetries: 3,
     environment: 'cicd',
-    imagePath: null,
-    userDataDirPath: null,
+    imagePath: '',
+    userDataDirPath: '',
     callbacks: {
       step: {
         preExecutionCallbacks: [ 'startLastStepInstance' ],
