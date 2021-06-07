@@ -39,6 +39,7 @@ const userdocs = {
   configuration: {
     automationFrameworkName: store.get('automationFrameworkName', 'puppeteer'),
     maxRetries: store.get('maxRetries', 10),
+    maxWaitTime: store.get('maxWaitTime', 10),
     environment: store.get('environment', 'desktop'),
     imagePath: store.get('imagePath', ''),
     userDataDirPath: store.get('userDataDirPath', ''),
