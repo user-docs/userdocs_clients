@@ -49,6 +49,11 @@ export const Puppet = {
         .concat('--single-process')
         .concat('--no-zygote')
         .concat('--no-sandbox')
+    } else if (runner.environment == 'test') {
+      args = puppeteer.defaultArgs()
+        .concat('--single-process')
+        .concat('--no-zygote')
+        .concat('--no-sandbox')
     } else args = puppeteer.defaultArgs()
 
     const browser = await puppeteer.launch({ 
