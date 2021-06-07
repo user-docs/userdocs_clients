@@ -29,7 +29,7 @@
     "compile": "tsc -p tsconfig.build.json",
     "build": "yarn run clean && yarn run compile && electron-builder",
     "publish": "yarn run build && electron-builder --mac --windows --linux --publish always",
-    "start": "yarn run compile && electron build/index.js",
+    "start_desktop": "electron build/index.js",
     "pack": "electron-builder --dir"
   },
   "dependencies": {

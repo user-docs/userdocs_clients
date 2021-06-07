@@ -9,8 +9,9 @@
     "clean": "lerna run clean",
     "build": "lerna run build",
     "publish": "lerna publish",
+    "compile": "lerna run compile",
     "test": "lerna run test",
-    "start": "lerna run start",
+    "start_desktop": "lerna run compile && lerna run start_desktop",
     "lint": "eslint --ext js,ts ."
   },
   "devDependencies": {
