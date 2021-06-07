@@ -68,7 +68,7 @@ export const stepHandlers: StepHandler = {
   "Element Screenshot": async(browser: Browser, step: Step, configuration: Configuration) => {
     const selector = step.element.selector
     const strategy = step.element.strategy.name
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 250));
     let handle = await getElementHandle(browser, selector, strategy)
     if (!handle) { throw new ElementNotFound(strategy, selector) }
     let base64 = await handle.screenshot({ encoding: "base64"});
@@ -86,12 +86,13 @@ export const stepHandlers: StepHandler = {
     } else {
       step.screenshot.base64 = base64
     } 
+    await new Promise(resolve => setTimeout(resolve, 250));
     return step
   },
   "Full Screen Screenshot": async(browser: Browser, step: Step, configuration: Configuration) => {
     const processName = step.process ? step.process.name : ""
     const stepOrder = step.order
-    await new Promise(resolve => setTimeout(resolve, 500));  
+    await new Promise(resolve => setTimeout(resolve, 250));  
     const page: Page | undefined = await currentPage(browser) 
     if (!page) { throw new Error("Page not retreived from browser") }
     let base64: any = await page.screenshot({ encoding: "base64" });  
@@ -110,6 +111,7 @@ export const stepHandlers: StepHandler = {
     } else {
       step.screenshot.base64 = base64
     }
+    await new Promise(resolve => setTimeout(resolve, 250));
     return step
   },
   "Clear Annotations": async(browser: Browser, step: Step, configuration: Configuration) => {
