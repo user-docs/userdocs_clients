@@ -72,8 +72,9 @@ export const stepHandlers: StepHandler = {
     let handle = await getElementHandle(browser, selector, strategy)
     if (!handle) { throw new ElementNotFound(strategy, selector) }
     let base64 = await handle.screenshot({ encoding: "base64"});
+
     var fileName = step.screenshot.name 
-      ? step.screenshot.name 
+      ? step.screenshot.name + ".png"
       : step.process.name + " " + step.order + ".png"
 
     if(configuration.imagePath != '') {
@@ -98,7 +99,7 @@ export const stepHandlers: StepHandler = {
     let base64: any = await page.screenshot({ encoding: "base64" });  
 
     var fileName = step.screenshot.name 
-      ? step.screenshot.name 
+      ? step.screenshot.name + ".png"
       : step.process.name + " " + step.order + ".png"
 
     if(configuration.imagePath != '') {
