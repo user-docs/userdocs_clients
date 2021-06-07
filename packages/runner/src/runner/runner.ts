@@ -7,6 +7,7 @@ import * as Job from '../domain/job'
 export interface Runner {
   automationFramework: any,
   maxRetries: number,
+  maxWaitTime: number,
   userDataDirPath?: string,
   imagePath?: string,
   environment: string,
@@ -30,6 +31,7 @@ export interface Callbacks {
 export interface Configuration {
   browser?: object, 
   maxRetries: number,
+  maxWaitTime: number,
   automationFrameworkName: string,
   userDataDirPath?: string,
   imagePath?: string,
@@ -58,6 +60,7 @@ export function initialize(configuration: Configuration) {
   var runner: Runner = {
     automationFramework: automationFrameworks[configuration.automationFrameworkName],
     maxRetries: configuration.maxRetries,
+    maxWaitTime: configuration.maxWaitTime,
     environment: configuration.environment,
     imagePath: configuration.imagePath,
     callbacks: {
