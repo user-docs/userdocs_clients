@@ -12,7 +12,8 @@
   "scripts": {
     "clean": "rimraf -rf ./dist",
     "compile": "tsc -p tsconfig.build.json",
-    "build": "yarn run clean && yarn run compile && pkg -t win-x64,linux,alpine,macos --out-path dist dist/index.js --public",
+    "build": "yarn run clean && yarn run compile",
+    "dist": "yarn run clean && yarn run compile && pkg -t win-x64,linux,alpine,macos --out-path dist dist/index.js --public",
     "prepublishOnly": "yarn run build",
     "test": "jest"
   },

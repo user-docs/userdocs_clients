@@ -28,7 +28,7 @@
     "clean": "rimraf -rf ./dist",
     "compile": "tsc -p tsconfig.build.json",
     "build": "yarn run clean && yarn run compile && electron-builder",
-    "publish": "yarn run build && electron-builder",
+    "publish": "yarn run build",
     "start_desktop": "electron build/index.js",
     "pack": "electron-builder --dir"
   },
@@ -43,5 +43,5 @@
     "electron-builder": "^22.10.5",
     "electron-reload": "^1.5.0"
   },
-  "gitHead": "b06de25576c1d3269b285e6dd113929b3c3e8085"
+  "gitHead": "06611d9a4a61403efe84886cc78fcd587d9b20a0"
 }
