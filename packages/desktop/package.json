@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/desktop",
-  "version": "0.0.34",
+  "version": "0.0.32",
   "description": "Authors steps and processes for collection of screenshots",
   "repository": "https://github.com/johns10/userdocs_clients",
   "main": "build/index.js",
@@ -28,11 +28,12 @@
     "clean": "rimraf -rf ./dist",
     "compile": "tsc -p tsconfig.build.json",
     "build": "yarn run clean && yarn run compile && electron-builder",
+    "publish": "yarn run build && electron-builder",
     "start_desktop": "electron build/index.js",
     "pack": "electron-builder --dir"
   },
   "dependencies": {
-    "@userdocs/runner": "^1.0.13",
+    "@userdocs/runner": "^1.0.11",
     "electron-is-dev": "^2.0.0",
     "electron-store": "^8.0.0",
     "electron-updater": "^4.3.9"
@@ -42,5 +43,5 @@
     "electron-builder": "^22.10.5",
     "electron-reload": "^1.5.0"
   },
-  "gitHead": "5aad9b81c2fb7159aba9a1eae744517f67b61916"
+  "gitHead": "3b2ebaf00f1926de1fdadd26bd63a99c3c1d7737"
 }
