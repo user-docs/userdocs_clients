@@ -72,10 +72,10 @@ test('Full Screen Screenshot takes a screenshot', async () => {
   unlink(filePath, () => { "" })
 })
 
-test('Scroll into view scrolls to an element', async () => {
+test('Scroll to Element scrolls to an element', async () => {
   const url = 'https://the-internet.herokuapp.com/large'
   const selector = "#large-table"
-  const step = { element: { selector: selector, strategy: { name: 'css' }}, stepType: { name: 'Scroll into View' } }
+  const step = { element: { selector: selector, strategy: { name: 'css' }}, stepType: { name: 'Scroll to Element' } }
 
   const handler = Puppet.stepHandler(step)
   const page = (await browser.pages())[0]
