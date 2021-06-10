@@ -2,7 +2,7 @@ import { Page, Browser } from 'puppeteer'
 
 export async function currentPage(browser: Browser) {
   let page
-  const pages = await browser.pages()
+  const pages: Array<Page> = await browser.pages()
   for (let i = 0; i < pages.length && !page; i++) {
     const isHidden = await pages[i].evaluate(() => document.hidden)
     if (!isHidden) {
