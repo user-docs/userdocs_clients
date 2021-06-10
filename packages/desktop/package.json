@@ -30,7 +30,8 @@
     "build": "yarn run clean && yarn run compile",
     "dist": "yarn run build && electron-builder",
     "publish": "yarn run build",
-    "start_desktop": "yarn run build && electron build/index.js",
+    "start_dev": "yarn run build && electron build/index.js",
+    "start_linux": "./dist/linux-unpacked/user_docs",
     "pack": "electron-builder --dir"
   },
   "dependencies": {
@@ -44,5 +45,5 @@
     "electron-builder": "^22.10.5",
     "electron-reload": "^1.5.0"
   },
-  "gitHead": "170c857e433bab8c67c0718ec7c0b88f063ed3c4"
+  "gitHead": "1a822605c4471428ece3f9dc7c496fcd6a50ec10"
 }
