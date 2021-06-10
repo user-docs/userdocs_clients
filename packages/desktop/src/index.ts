@@ -155,3 +155,7 @@ app.whenReady().then(main)
 app.on("ready", () => {
 	autoUpdater.checkForUpdatesAndNotify()
 });
+
+app.on("before-quit", async () => {
+  await Runner.closeBrowser(userdocs.runner, userdocs.configuration)
+})
