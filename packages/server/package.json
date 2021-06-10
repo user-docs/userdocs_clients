@@ -20,5 +20,5 @@
     "graphql": "^15.5.0",
     "subscriptions-transport-ws": "^0.9.18"
   },
-  "gitHead": "d61d3f99fbf5923bacc64b08f1c02dda5e5d83ac"
+  "gitHead": "22ede14ce54ad25fb0b9fcdb990bba919bff30db"
 }
