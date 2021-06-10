@@ -148,6 +148,7 @@ ipcMain.on('configure', async (event, message) => {
 ipcMain.on('testSelector', async (event, message) => {
   automationModule = puppeteer
   automationModule.testSelector(userdocs.browser, message)
+  console.log("Maybe I need to push some stuff in here")
 })
 */
 app.whenReady().then(main)
