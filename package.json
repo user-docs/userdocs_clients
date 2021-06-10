@@ -11,7 +11,7 @@
     "publish": "lerna publish",
     "compile": "lerna run compile",
     "test": "lerna run test",
-    "start_desktop": "lerna run compile && lerna run start_desktop",
+    "start_desktop": "lerna run compile && lerna run start_desktop --stream",
     "lint": "eslint --ext js,ts ."
   },
   "devDependencies": {

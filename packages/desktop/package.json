@@ -27,9 +27,10 @@
     "prepublishOnly": "yarn run build",
     "clean": "rimraf -rf ./dist",
     "compile": "tsc -p tsconfig.build.json",
-    "build": "yarn run clean && yarn run compile && electron-builder",
+    "build": "yarn run clean && yarn run compile",
+    "dist": "yarn run build && electron-builder",
     "publish": "yarn run build",
-    "start_desktop": "electron build/index.js",
+    "start_desktop": "yarn run build && electron build/index.js",
     "pack": "electron-builder --dir"
   },
   "dependencies": {
@@ -43,5 +44,5 @@
     "electron-builder": "^22.10.5",
     "electron-reload": "^1.5.0"
   },
-  "gitHead": "06611d9a4a61403efe84886cc78fcd587d9b20a0"
+  "gitHead": "170c857e433bab8c67c0718ec7c0b88f063ed3c4"
 }
