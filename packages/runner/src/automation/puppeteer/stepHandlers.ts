@@ -120,7 +120,8 @@ export const stepHandlers: StepHandler = {
     if (!page) { throw new Error("Page not retreived from browser") }
     page.evaluate(() => {
       for (let i = 0; i < (window as any).active_annotations.length; i++) {
-        document.body.removeChild((window as any).active_annotations[i]);
+        const element = (window as any).active_annotations[i];
+        element.parentNode.removeChild(element);
       }
       (window as any).active_annotations = []
     })

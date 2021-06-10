@@ -12,7 +12,8 @@ export interface Runner {
   imagePath?: string,
   environment: string,
   callbacks: RunnerCallbacks,
-  strategy?: string
+  strategy?: string,
+  css?: string
 }
 
 export interface RunnerCallbacks {
@@ -42,6 +43,7 @@ export interface Configuration {
     process: CallbackConfiguration,
     job: CallbackConfiguration
   },
+  css?: string,
   lib?: { [ key: string ]: Function } // need?
 }
 
@@ -63,6 +65,7 @@ export function initialize(configuration: Configuration) {
     maxWaitTime: configuration.maxWaitTime,
     environment: configuration.environment,
     imagePath: configuration.imagePath,
+    css: configuration.css,
     callbacks: {
       step: {
         preExecutionCallbacks: [],
@@ -93,6 +96,7 @@ export function reconfigure(runner: Runner, configuration: Configuration) {
   runner.environment = configuration.environment
   runner.imagePath = configuration.imagePath
   runner.userDataDirPath = configuration.userDataDirPath
+  runner.css = configuration.css
   runner = configureCallbacks(runner, configuration)
   return runner
 }

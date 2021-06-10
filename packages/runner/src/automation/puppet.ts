@@ -1,7 +1,7 @@
 import { Step } from '../domain/step'
 import { stepHandlers } from './puppeteer/stepHandlers'
 import { Runner, Configuration } from '../runner/runner'
-import { Browser } from 'puppeteer'
+import { Browser, Page } from 'puppeteer'
 import * as path from 'path'
 import * as os from 'os'
 
@@ -61,6 +61,21 @@ export const Puppet = {
       ignoreDefaultArgs: true,
       args: args 
     });
+
+    const pages = await browser.pages()
+    if (runner.css) {
+      for (var page of pages) {
+        await page.evaluateOnNewDocument((css)=>{
+          var style = document.createElement('style');
+          style.type = 'text/css';
+          style.innerHTML = css
+          document.addEventListener('DOMContentLoaded', () => { 
+            document.getElementsByTagName('head')[0].appendChild(style); 
+          }, false); 
+        }, `${runner.css}`);
+      }
+    }
+
     return browser
   },
   closeBrowser: async(browser: Browser, configuration: Configuration) => {

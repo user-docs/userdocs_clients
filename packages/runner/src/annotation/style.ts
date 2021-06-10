@@ -1,74 +1,51 @@
 export const StyleFunctionsText: any  = {
-  styleLabel: label.toString(),
-  styleWrapper: wrapper.toString(),
   styleBadge: badge.toString(),
-  styleOutline: outline.toString()
+  styleOutline: outline.toString(),
+  styleLocator: locator.toString(),
+  styleMask: mask.toString()
 }
 
-function badge(element: HTMLSpanElement, size: number, fontSize: number, color: string) {
-  if(!size) throw new Error('Badge size not entered')
-  if(!fontSize) throw new Error('Font size not entered')
-  if(!color) throw new Error('Badge Color not entered')
-  element.style.position = 'relative';
-  element.style.display = 'inline-table';
-  element.style.width = (2 * size).toString() + 'px';
-  element.style.height = (2 * size).toString() + 'px';
-  element.style.borderRadius = '50%';
-  element.style.fontSize = fontSize.toString() + 'px';
-  element.style.textAlign = 'center';
-  element.style.background = color;
-
-  return element;
-}
-
-function wrapper(element: HTMLDivElement, rect: DOMRect, size: number, xOffset: number, yOffset: number, xOrientation: string, yOrientation: string) {
-  const x_calcs: { [key: string]: string } = {
-    L: Math.round(rect.left - size + xOffset).toString() + 'px',
-    M: Math.round(rect.left + rect.width/2 - size + xOffset).toString() + 'px',
-    R: Math.round(rect.right - size + xOffset).toString() + 'px'
-  }
-  const y_calcs: { [key: string]: string } = {
-    T: Math.round(rect.top - size + yOffset).toString() + 'px',
-    M: Math.round(rect.bottom - rect.height/2 - size + yOffset).toString() + 'px',
-    B: Math.round(rect.bottom - size + yOffset).toString() + 'px'
-  }
-
-  const x = x_calcs[xOrientation]
-  const y = y_calcs[yOrientation]
-  const z_index = 999999
-
-  element.style.display = 'static';
-  element.style.justifyContent = 'center';
-  element.style.alignItems = 'center';
-  element.style.minHeight = '';
-  element.style.position = 'fixed';
-  element.style.top = y;
-  element.style.left = x;
-  element.style.zIndex = z_index.toString();
-
+function locator(element: HTMLSpanElement, parentElement: HTMLSpanElement) {
+  const parentStyle = window.getComputedStyle(parentElement)
+  const leftOffset = parseInt(parentStyle.marginLeft) + parseInt(parentStyle.paddingLeft) + parseInt(parentStyle.borderLeftWidth)
+  const topOffset = parseInt(parentStyle.marginTop) + parseInt(parentStyle.paddingTop) + parseInt(parentStyle.borderTopWidth)
+  element.style.left = `-${leftOffset}px`;
+  element.style.top = `-${topOffset}px`;
   return element
 }
 
-function label(element: HTMLSpanElement, size: number, fontSize: number, labelText: string) {
-  element.style.position = 'relative';
-  element.style.top = ((size * 2 - fontSize) / 2).toString() + 'px';
-  element.textContent = labelText;
-  element.style.color = 'white';
+function mask(element: HTMLSpanElement, parentElement: HTMLSpanElement) {
+  const parentRect = parentElement.getBoundingClientRect();
+  element.style.width = `${parentRect.width}px`
+  element.style.height = `${parentRect.height}px`
+  return element
+}
 
+function badge(element: HTMLSpanElement, size: number, fontSize: number, color: string, xOrientation: string, yOrientation: string) {
+  if(size) element.style.width = (2 * size).toString() + 'px';
+  if(size) element.style.height = (2 * size).toString() + 'px';
+  if(fontSize) element.style.fontSize = fontSize.toString() + 'px';
+  if(color) element.style.background = color;
+  if(xOrientation == 'L') element.style.right = '50%'
+  else if(xOrientation == 'R') element.style.right = '-50%'
+  if(yOrientation == 'M') element.style.top = '50%'
+  else if(yOrientation == 'B') element.style.top = '100%'
   return element;
 }
 
 function outline(elementToOutline: HTMLSpanElement, element: HTMLSpanElement, color: string, thickness: number) {
   const rect = elementToOutline.getBoundingClientRect();
-  const zIndex = 999998
+  const parentStyle = window.getComputedStyle(elementToOutline)
+  const leftOffset = parseInt(parentStyle.marginLeft) + parseInt(parentStyle.paddingLeft) + parseInt(parentStyle.borderLeftWidth)
+  const topOffset = parseInt(parentStyle.marginTop) + parseInt(parentStyle.paddingTop) + parseInt(parentStyle.borderTopWidth)
   
-  element.style.position = 'fixed';
   element.style.width = Math.round(rect.width).toString() + 'px'
   element.style.height = Math.round(rect.height).toString() + 'px'
-  element.style.outline = color + ' solid ' + thickness + 'px';
-  element.style.top = Math.round(rect.top).toString() + 'px';
-  element.style.left = Math.round(rect.left).toString() + 'px';
-  element.style.zIndex = zIndex.toString();
+  if (color) element.style.outlineColor = color
+  if (thickness) element.style.outlineWidth = `${thickness}px`;
+  element.style.outlineStyle = 'solid'
+  element.style.left = `-${leftOffset}px`;
+  element.style.top = `-${topOffset}px`;
 
   return element
 }

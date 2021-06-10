@@ -9,6 +9,7 @@ interface AnnotationHandler { [ key: string ]: Function }
 export const annotationHandlers: AnnotationHandler = {
   "Badge": (step: Step, elementToAnnotate: HTMLElement, style: { [key: string]: string }) => {
     // Get vars for these elements
+    console.log("Applying Badge Annotation")
     const xOrientation = step.annotation.xOrientation;
     const yOrientation = step.annotation.yOrientation;
     const size = step.annotation.size;
@@ -18,34 +19,34 @@ export const annotationHandlers: AnnotationHandler = {
     const yOffset = step.annotation.yOffset;
     const fontSize = step.annotation.fontSize;
     const annotationId = step.annotation.id;
+
+    var locatorElement = document.createElement('div');
+    locatorElement.id = `userdocs-annotation-${annotationId}-locator`
+    locatorElement.classList.add("userdocs-locator")
+    const styleLocator = new Function(`return ${style.styleLocator}`)()
+    locatorElement = styleLocator(locatorElement, elementToAnnotate)
+
+    var maskElement = document.createElement('div');
+    maskElement.id = `userdocs-mask-${annotationId}-mask`
+    maskElement.classList.add("userdocs-mask")
+    const styleMask = new Function(`return ${style.styleMask}`)()
+    maskElement = styleMask(maskElement, elementToAnnotate)
   
     var badgeElement = document.createElement('span');
     badgeElement.id = `userdocs-annotation-${annotationId}-badge`
+    badgeElement.textContent = labelText;
     badgeElement.classList.add("userdocs-badge")
     const styleBadge = new Function(`return ${style.styleBadge}`)()
-    badgeElement = styleBadge(badgeElement, size, fontSize, color);
-  
-    var labelElement = document.createElement('span');
-    labelElement.id = `userdocs-annotation-${annotationId}-label`
-    labelElement.classList.add("userdocs-label")
-    const styleLabel = new Function(`return ${style.styleLabel}`)()
-    labelElement = styleLabel(labelElement, size, fontSize, labelText);
-  
-    const rect = elementToAnnotate.getBoundingClientRect();
-    var wrapperElement = document.createElement('div');
-    wrapperElement.id = `userdocs-annotation-${annotationId}-wrapper`
-    wrapperElement.classList.add("userdocs-wrapper")
-    const styleWrapper = new Function(`return ${style.styleWrapper}`)()
-    wrapperElement = styleWrapper(wrapperElement, rect, size, xOffset, yOffset, xOrientation, yOrientation);
+    badgeElement = styleBadge(badgeElement, size, fontSize, color, xOrientation, yOrientation);
   
     try {
-      document.body.appendChild(wrapperElement);
-      wrapperElement.appendChild(badgeElement); 
-      badgeElement.appendChild(labelElement);
+      elementToAnnotate.prepend(locatorElement);
+      locatorElement.append(maskElement);
+      maskElement.append(badgeElement); 
       if (window.active_annotations) {
-        window.active_annotations.push(wrapperElement);
+        window.active_annotations.push(locatorElement);
       } else {
-        window.active_annotations = [ wrapperElement ]
+        window.active_annotations = [ locatorElement ]
       }
       return step
     } catch(error) {
@@ -57,6 +58,12 @@ export const annotationHandlers: AnnotationHandler = {
     const color = step.annotation.color;
     const thickness = step.annotation.thickness;
 
+    var locatorElement = document.createElement('div');
+    locatorElement.id = `userdocs-annotation-${annotationId}-locator`
+    locatorElement.classList.add("userdocs-locator")
+    const styleLocator = new Function(`return ${style.styleLocator}`)()
+    locatorElement = styleLocator(locatorElement, elementToAnnotate)
+
     var outlineElement = document.createElement('div');
     outlineElement.id = `userdocs-annotation-${annotationId}-outline`
     outlineElement.classList.add("userdocs-outline")
@@ -64,7 +71,8 @@ export const annotationHandlers: AnnotationHandler = {
     outlineElement = styleOutline(elementToAnnotate, outlineElement, color, thickness)
   
     try {
-      document.body.appendChild(outlineElement)
+      elementToAnnotate.append(locatorElement);
+      locatorElement.append(outlineElement)
       if (window.active_annotations) {
         window.active_annotations.push(outlineElement);
       } else {
@@ -87,41 +95,40 @@ export const annotationHandlers: AnnotationHandler = {
     const fontSize = step.annotation.fontSize;
     const annotationId = step.annotation.id;
   
-    var badgeElement = document.createElement('span');
-    badgeElement.id = `userdocs-annotation-${annotationId}-badge`
-    badgeElement.classList.add("userdocs-badge")
-    const styleBadge = new Function(`return ${style.styleBadge}`)()
-    badgeElement = styleBadge(badgeElement, size, fontSize, color);
-  
-    var labelElement = document.createElement('span');
-    labelElement.id = `userdocs-annotation-${annotationId}-label`
-    labelElement.classList.add("userdocs-label")
-    const styleLabel = new Function(`return ${style.styleLabel}`)()
-    labelElement = styleLabel(labelElement, size, fontSize, labelText);
-  
-    const rect = elementToAnnotate.getBoundingClientRect();
-    var wrapperElement = document.createElement('div');
-    wrapperElement.id = `userdocs-annotation-${annotationId}-wrapper`
-    wrapperElement.classList.add("userdocs-wrapper")
-    const styleWrapper = new Function(`return ${style.styleWrapper}`)()
-    wrapperElement = styleWrapper(wrapperElement, rect, size, xOffset, yOffset, xOrientation, yOrientation);
+    var locatorElement = document.createElement('div');
+    locatorElement.id = `userdocs-annotation-${annotationId}-locator`
+    locatorElement.classList.add("userdocs-locator")
+    const styleLocator = new Function(`return ${style.styleLocator}`)()
+    locatorElement = styleLocator(locatorElement, elementToAnnotate)
 
     var outlineElement = document.createElement('div');
     outlineElement.id = `userdocs-annotation-${annotationId}-outline`
     outlineElement.classList.add("userdocs-outline")
     const styleOutline = new Function(`return ${style.styleOutline}`)()
     outlineElement = styleOutline(elementToAnnotate, outlineElement, color, thickness)
+
+    var maskElement = document.createElement('div');
+    maskElement.id = `userdocs-mask-${annotationId}-mask`
+    maskElement.classList.add("userdocs-mask")
+    const styleMask = new Function(`return ${style.styleMask}`)()
+    maskElement = styleMask(maskElement, elementToAnnotate)
+  
+    var badgeElement = document.createElement('span');
+    badgeElement.id = `userdocs-annotation-${annotationId}-badge`
+    badgeElement.textContent = labelText;
+    badgeElement.classList.add("userdocs-badge")
+    const styleBadge = new Function(`return ${style.styleBadge}`)()
+    badgeElement = styleBadge(badgeElement, size, fontSize, color, xOrientation, yOrientation);
   
     try {
-      document.body.appendChild(wrapperElement);
-      document.body.appendChild(outlineElement)
-      wrapperElement.appendChild(badgeElement); 
-      badgeElement.appendChild(labelElement);
+      elementToAnnotate.append(locatorElement);
+      locatorElement.append(outlineElement)
+      locatorElement.append(maskElement); 
+      maskElement.appendChild(badgeElement);
       if (window.active_annotations) {
-        window.active_annotations.push(wrapperElement);
-        window.active_annotations.push(outlineElement);
+        window.active_annotations.push(locatorElement);
       } else {
-        window.active_annotations = [ outlineElement, wrapperElement ]
+        window.active_annotations = [ locatorElement ]
       }
       return step
     } catch(error) {
@@ -129,7 +136,7 @@ export const annotationHandlers: AnnotationHandler = {
     }
   },
   "Blur": (step: Step, element: HTMLElement, style: { [key: string]: string }) => {
-    element.style.textShadow = "0 0 5px rgba(0,0,0,0.5)";
+    element.style.textShadow = "rgba(0, 0, 0, 0.5) 0px 0px 5px";
     element.style.color = "transparent";
     return step
   },
