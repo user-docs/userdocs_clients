@@ -121,7 +121,7 @@ export const annotationHandlers: AnnotationHandler = {
     badgeElement = styleBadge(badgeElement, size, fontSize, color, xOrientation, yOrientation);
   
     try {
-      elementToAnnotate.append(locatorElement);
+      elementToAnnotate.prepend(locatorElement);
       locatorElement.append(outlineElement)
       locatorElement.append(maskElement); 
       maskElement.appendChild(badgeElement);
