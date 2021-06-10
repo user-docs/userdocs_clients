@@ -133,9 +133,19 @@ ipcMain.on('start', (event) => {
 
 
 ipcMain.on('configure', async (event, message) => {
-  if (message.image_path) store.set('imagePath', message.image_path)
-  if (message.user_data_dir_path) store.set('userDataDirPath', message.user_data_dir_path)
-  if (message.css) store.set('css', message.css)
+  console.log("Configuring")
+  if (message.image_path) {
+    store.set('imagePath', message.image_path)
+    userdocs.configuration.imagePath = message.image_path
+  }
+  if (message.user_data_dir_path) {
+    store.set('userDataDirPath', message.user_data_dir_path)
+    userdocs.configuration.userDataDirPath = message.user_data_dir_path
+  }
+  if (message.css) {
+    store.set('css', message.css)
+    userdocs.configuration.css = message.css
+  }
   if (message.strategy) userdocs.configuration.strategy = message.strategy
   try {
     userdocs.runner = Runner.reconfigure(userdocs.runner, userdocs.configuration)
