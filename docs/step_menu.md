@@ -1,9 +1,5 @@
 # Steps Menu
 
-## Accessible at
-
-`/processes/:process_id/steps`
-
 ## Menu
 
 The steps menu shows all the steps in a process. It is always filtered by the process id in the URL. It's typically accessed in the context of the selected version. The breadcrumb to the record is displayed at the top of the page.
@@ -17,3 +13,7 @@ The steps menu shows all the steps in a process. It is always filtered by the pr
 5. **Run Step** - Runs the current step. It will create a step instance, associated with the step. As each step finishes, it will report back with its status. If the step fails, it will set the status of the step instance to failed.
 6. **Edit Step** - Opens the step form to edit this step.
 7. **Delete Step** - Deletes this step.
+
+## Accessible at
+
+`/processes/:process_id/steps`
