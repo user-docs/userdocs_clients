@@ -86,6 +86,7 @@ export const stepHandlers: StepHandler = {
       step.screenshot = { base64: base64, stepId: step.id }
     } else {
       step.screenshot.base64 = base64
+      step.screenshot.stepId = step.id
     } 
     await new Promise(resolve => setTimeout(resolve, 250));
     return step
@@ -111,6 +112,7 @@ export const stepHandlers: StepHandler = {
       step.screenshot = { base64: base64, stepId: step.id }
     } else {
       step.screenshot.base64 = base64
+      step.screenshot.stepId = step.id
     }
     await new Promise(resolve => setTimeout(resolve, 250));
     return step
