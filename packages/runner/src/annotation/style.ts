@@ -9,6 +9,7 @@ function locator(element: HTMLSpanElement, parentElement: HTMLSpanElement) {
   const parentStyle = window.getComputedStyle(parentElement)
   const leftOffset = parseInt(parentStyle.marginLeft) + parseInt(parentStyle.paddingLeft) + parseInt(parentStyle.borderLeftWidth)
   const topOffset = parseInt(parentStyle.marginTop) + parseInt(parentStyle.paddingTop) + parseInt(parentStyle.borderTopWidth)
+
   element.style.left = `-${leftOffset}px`;
   element.style.top = `-${topOffset}px`;
   return element
@@ -22,12 +23,16 @@ function mask(element: HTMLSpanElement, parentElement: HTMLSpanElement) {
 }
 
 function badge(element: HTMLSpanElement, size: number, fontSize: number, color: string, xOrientation: string, yOrientation: string) {
+  const logString = `
+    Creating a badge element, with width: ${element.style.width}, height: ${element.style.height}, font size: 
+  `
   if(size) element.style.width = (2 * size).toString() + 'px';
   if(size) element.style.height = (2 * size).toString() + 'px';
   if(fontSize) element.style.fontSize = fontSize.toString() + 'px';
   if(color) element.style.background = color;
-  if(xOrientation == 'L') element.style.right = '50%'
-  else if(xOrientation == 'R') element.style.right = '-50%'
+  if(xOrientation == 'L') element.style.float = 'left'
+  else if(xOrientation == 'M') element.style.left = '50%'
+  else if(xOrientation == 'R') element.style.float = 'right'
   if(yOrientation == 'M') element.style.top = '50%'
   else if(yOrientation == 'B') element.style.top = '100%'
   return element;
