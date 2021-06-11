@@ -14,3 +14,13 @@ The processes are listed here. Interact with them by clicking the referenced ele
 4. **Run Process** - The play symbol will run the current process. It will create a process instance, associated with the process, and one step instance associated with each step. As each step finishes, it will report back with its status. If the process fails, it will set the status of the failed step, and leave the remaining step instances in a `not_started` state.
 5. **Edit Process** - The edit button will open the process menu, so that you can modify that process.
 6. **Delete Process** - Deletes the process.
+
+## Accessible at
+
+`/versions/:version_id/processes`
+
+Displays the processes for a specific version. Used to drill down to a process when you've selected a different version in the picker.
+
+`/processes`
+
+Displays the processes for the currently selected version.
