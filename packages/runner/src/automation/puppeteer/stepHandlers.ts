@@ -171,6 +171,15 @@ export const stepHandlers: StepHandler = {
       await page.waitForSelector(selector, { visible: true, timeout: configuration.maxWaitTime })
     }
     return step
+  },
+  "Convert to Static": async(browser: Browser, step: Step, configuration: Configuration) => {
+    // from: https://github.com/zaqqaz/visual-unit-tests/blob/master/src/utils/testUtils.ts
+    const page: Page | undefined = await currentPage(browser)
+    if (!page) { throw new Error("Page not retreived from browser")}
+    const document = await page.evaluate(() => document.querySelector('*').outerHTML );
+    console.log(document)
+    await page.setContent(document);
+    return step
   }
 }
 
