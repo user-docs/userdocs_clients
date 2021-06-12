@@ -10,3 +10,6 @@ The Element subform is displayed on the step form for any step type that referen
 4. **Transfer Selector** - This button will transfer the selector, automatically sent over from the automated browser from the 'Transferred Selector' element (designated by 8) into the selector field.
 5. **Test Selector** - This button will highlight the selector in the automated browser window, to help you test your selector.
 6. **Transferred Selector** - Displays the selector transferred over from the automated browser for review before transferring into the field.
+
+
+> The Transfer Selector and Test Selector features are currently offline, and will be re-enabled in the near future.

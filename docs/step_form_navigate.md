@@ -1,6 +1,6 @@
 ## Navigation Step Form
 
-Selecting Navigate from the Step Type select input will cause the Navigation form to render, displaying these options:
+The Navigate Step type will navigate to the given URL in the browser. Selecting Navigate from the Step Type select input will cause the Navigation form to render, displaying these options:
 
 ![New Step Form Reference](images/step_form_reference_navigation.png)
 
