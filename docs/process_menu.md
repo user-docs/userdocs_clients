@@ -1,10 +1,6 @@
 # Processes Page
 
-The Processes page displays all the processes for the selected team, project and version.  The current selections are displayed in the breadcrumb.
-
-## Processes
-
-The processes are listed here. Interact with them by clicking the referenced element.
+The Processes page displays all the processes for the selected team, project and version.  The current selections are displayed in the breadcrumb. 
 
 ![Process Menu Reference](images/process_menu_reference.png)
 
