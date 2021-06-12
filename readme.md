@@ -1,7 +1,7 @@
 ![UserDocs Logo](docs/images/logo.png)
 
 # UserDocs
-## Automated Screenshot Collection and Media Generation for Web-Based Software
+## Automated Screenshot Collection for Web-Based Software
 
 In 1983, Apple revolutionized the computing industry with the release of the Macintosh. With it, they released the first user manual we could find that included screenshots of their GUI. This manual included gems such as:
 
@@ -13,3 +13,4 @@ Almost 40 years later, many technical writing teams have adopted the Docs as Cod
 
 The process of manual screenshot collection and annotation is incredibly monotonous and time-consuming. Every time the software changes, the screenshots are out of date, and must be updated. For companies that ship code rapidly, technical writers can feel like they are always behind as they update the documentation.
 
+## Automate with UserDocs
