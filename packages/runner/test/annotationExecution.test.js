@@ -18,9 +18,11 @@ css = `
     width: 0;
     height: 0;
     float: left;
+    overflow: visible;
   }
   .userdocs-mask{
     position: absolute;
+    display: flex;
   }
   .userdocs-badge {
     float: left;
