@@ -30,6 +30,9 @@ export const Puppet = {
         .filter(arg => String(arg).toLowerCase() !== '--headless')
         .concat("--proxy-server='direct://'")
         .concat('--proxy-bypass-list=*')
+      if (runner.userDataDirPath) {
+        args.push('--user-data-dir=' + runner.userDataDirPath);
+      }
     } else if(runner.environment == 'desktop') {
       executablePath = puppeteer.executablePath().replace("app.asar", "app.asar.unpacked")
       args = puppeteer.defaultArgs()
