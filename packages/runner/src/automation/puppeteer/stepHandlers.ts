@@ -172,13 +172,17 @@ export const stepHandlers: StepHandler = {
     }
     return step
   },
-  "Convert to Static": async(browser: Browser, step: Step, configuration: Configuration) => {
+  "Enable Javascript": async(browser: Browser, step: Step, configuration: Configuration) => {
+    const page: Page | undefined = await currentPage(browser)
+    if (!page) { throw new Error("Page not retreived from browser")}
+    await page.setJavaScriptEnabled(true);
+    return step
+  },
+  "Disable Javascript": async(browser: Browser, step: Step, configuration: Configuration) => {
     // from: https://github.com/zaqqaz/visual-unit-tests/blob/master/src/utils/testUtils.ts
     const page: Page | undefined = await currentPage(browser)
     if (!page) { throw new Error("Page not retreived from browser")}
-    const document = await page.evaluate(() => document.querySelector('*').outerHTML );
-    console.log(document)
-    await page.setContent(document);
+    await page.setJavaScriptEnabled(false);
     return step
   }
 }
