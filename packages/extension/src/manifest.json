@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "manifest_version": 3,
   "description": "A Chrome extension that assists with authoring processes in the UserDocs Application Suite",
+  "content_security_policy": {
+    "extension_pages": "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self';base-uri 'self';form-action 'self'"
+  },
   "permissions": [
     "storage",
     "webNavigation",
@@ -20,8 +23,8 @@
   },
   "action": {
     "default_icon": "images/app_icon_16.png",
-    "default_title": "Headless Recorder",
-    "default_popup": "index.html"
+    "default_title": "UserDocs Assistant",
+    "default_popup": "popup.html"
   },
   "commands": {
     "TOGGLE_SCREENSHOT_MODE": {
