@@ -4,8 +4,8 @@
   "description": "Assists with authoring steps and processes in the UserDocs Application Suite",
   "main": "index.js",
   "scripts": {
-    "watch:tailwind": "NODE_ENV=development postcss src/tailwind.css -o extension/dist/tailwind.dist.css -w",
-    "dev": "concurrently \"npm run watch:tailwind\" \"NODE_ENV=development DEBUG=extenstion:* webpack --watch\"",
+    "watch:tailwind": "NODE_ENV=development postcss src/tailwind.css -o build/tailwind.dist.css -w",
+    "dev": "concurrently \"npm run watch:tailwind\" \"NODE_ENV=development DEBUG=extenstion:* webpack --mode=development --watch\"",
     "test": "jest"
   },
   "repository": {
@@ -26,6 +26,7 @@
     "@babel/preset-typescript": "^7.14.5",
     "@vue/test-utils": "^1.0.0-beta.24",
     "alpinejs": "^3.0.1",
+    "autoprefixer": "^10.2.6",
     "babel": "^6.23.0",
     "babel-jest": "^27.0.2",
     "babel-loader": "^8.2.2",

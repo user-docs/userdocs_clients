@@ -1,9 +1,30 @@
-<!doctype html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-  </head>
-  <body>
-    <p>Hello World</p>
-  </body>
+    <head>
+        <link rel="stylesheet" type="text/css" href="popup.css">
+    </head>
+    <body>
+        <div class="p-6 min-w-popup h-64">
+            <h1 class="text-gray-500 text-2xl">Hello Web Extension</h1>
+            <p class="py-2 text-lg tracking-wide">
+                Update me in <span class="inline-block bg-gray-100 rounded-sm text-sm p-1 leading-none whitespace-no-wrap text-purple-600 font-mono align-baseline">`src/popup/index.html`</span>
+            </p>
+            <hr />
+            <div class="py-2" x-data="{ open: false }">
+                <button
+                    class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+                    x-on:click="open = true"
+                >
+                    Test Alpine
+                </button>
+
+                <div
+                    class="mt-4 bg-gray-100 text-center rounded-sm"
+                    x-show="open"
+                    x-on:click.away="open = false"
+                >
+                    <div class="w-full text-4xl text-teal-500 p-4">Great Scotttt!!!!</div>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>

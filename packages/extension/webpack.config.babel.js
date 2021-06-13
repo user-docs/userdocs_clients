@@ -67,17 +67,19 @@ const base = {
     new CopyPlugin({
       patterns: [
         { from: './src/manifest.json', to: './manifest.json' },
-        { from: './src/images', to: 'images' }
+        { from: './src/images', to: 'images' },
+        { from: './src/popup/index.css', to: './popup.css' },
       ]
     }),
     new HtmlWebpackPlugin({
       template: './src/popup/template.html',
-      chunks: ['popup']}),
+      chunks: ['popup'],
+      filename: 'popup.html'
+    }),
     new HtmlWebpackPlugin({
       template: './src/options/template.html',
       chunks: ['options'],
       filename: 'options.html'
-
     }),
     new webpack.DefinePlugin({
       'process.env': {
