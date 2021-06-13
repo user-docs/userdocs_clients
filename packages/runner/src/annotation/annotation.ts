@@ -35,9 +35,9 @@ export const annotationHandlers: AnnotationHandler = {
     const elementRect = locatorElement.getBoundingClientRect();
     const parentStyle = window.getComputedStyle(elementToAnnotate)
     const locatorStyle = window.getComputedStyle(locatorElement)
-    const topAdjustment = (parentRect.top - parseInt(parentStyle.marginTop) - parseInt(parentStyle.paddingTop)) - elementRect.top
-    const leftAdjustment = (parentRect.left - parseInt(parentStyle.marginLeft) - parseInt(parentStyle.paddingLeft)) - elementRect.left
-    console.log(`Top adjustment of ${topAdjustment}`)
+    const topAdjustment = parentRect.top - elementRect.top
+    const leftAdjustment = parentRect.left - elementRect.left
+    
     console.log(`
       Locator Top is ${elementRect.top}. 
       Parent Top is ${parentRect.top}. 
@@ -46,14 +46,14 @@ export const annotationHandlers: AnnotationHandler = {
       Top adjustment of ${topAdjustment}
     `)
     console.log(`
-      Locator Left is ${locatorStyle.left}. 
+      Locator Left is ${elementRect.left}. 
       Parent Left is ${parentRect.left}. 
       Margin Left is ${parentStyle.marginLeft}.  
       Padding left is ${parseInt(parentStyle.paddingLeft)}. 
       Left adjustment of ${leftAdjustment}
     `)
     locatorElement.style.top = `${parseInt(locatorStyle.top) + topAdjustment}px`
-    locatorElement.style.left = `${parseInt(locatorStyle.left) - leftAdjustment}px`
+    locatorElement.style.left = `${parseInt(locatorStyle.left) + leftAdjustment}px`
     // End Position Locator
 
     var maskElement = document.createElement('div');
@@ -70,7 +70,7 @@ export const annotationHandlers: AnnotationHandler = {
     badgeElement.textContent = labelText;
     badgeElement.classList.add("userdocs-badge")
     const styleBadge = new Function(`return ${style.styleBadge}`)()
-    badgeElement = styleBadge(badgeElement, size, fontSize, color, xOrientation, yOrientation);
+    badgeElement = styleBadge(badgeElement, size, fontSize, color, xOrientation, yOrientation, xOffset, yOffset);
   
     try {
       maskElement.append(badgeElement); 
@@ -163,7 +163,7 @@ export const annotationHandlers: AnnotationHandler = {
     badgeElement.textContent = labelText;
     badgeElement.classList.add("userdocs-badge")
     const styleBadge = new Function(`return ${style.styleBadge}`)()
-    badgeElement = styleBadge(badgeElement, size, fontSize, color, xOrientation, yOrientation);
+    badgeElement = styleBadge(badgeElement, size, fontSize, color, xOrientation, yOrientation, xOffset, yOffset);
   
     try {
       elementToAnnotate.prepend(locatorElement);
