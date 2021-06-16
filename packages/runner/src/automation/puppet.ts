@@ -30,6 +30,8 @@ export const Puppet = {
         .filter(arg => String(arg).toLowerCase() !== '--headless')
         .concat("--proxy-server='direct://'")
         .concat('--proxy-bypass-list=*')
+        .concat("--load-extension=/home/johns10/Documents/userdocs_clients/packages/extension/extension")
+        //.concat("--disable-extensions-except=/home/johns10/Documents/userdocs_clients/packages/extension/extension")
       if (runner.userDataDirPath) {
         args.push('--user-data-dir=' + runner.userDataDirPath);
       }
@@ -40,6 +42,8 @@ export const Puppet = {
         .filter(arg => String(arg).toLowerCase() !== '--headless')
         .concat("--proxy-server='direct://'")
         .concat('--proxy-bypass-list=*')
+        .concat("--load-extension=/home/johns10/Documents/userdocs_clients/packages/extension/extension")
+        //.concat("--disable-extensions-except=/home/johns10/Documents/userdocs_clients/packages/extension/extension")
       if (runner.userDataDirPath) {
         args.push('--user-data-dir=' + runner.userDataDirPath);
       }
