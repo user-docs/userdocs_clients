@@ -70,8 +70,8 @@ export const Puppet = {
     });
 
     const pages = await browser.pages()
-    if (runner.css) {
-      for (var page of pages) {
+    for (var page of pages) {
+      if (runner.css) {
         await page.evaluateOnNewDocument((css)=>{
           var style = document.createElement('style');
           style.type = 'text/css';
@@ -81,6 +81,7 @@ export const Puppet = {
           }, false); 
         }, `${runner.css}`);
       }
+      page.exposeFunction('sendEvent', runner.callbacks.browserEvent)
     }
 
     return browser
