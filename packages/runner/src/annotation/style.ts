@@ -22,7 +22,7 @@ function mask(element: HTMLSpanElement, parentElement: HTMLSpanElement) {
   return element
 }
 
-function badge(element: HTMLSpanElement, size: number, fontSize: number, color: string, xOrientation: string, yOrientation: string, xOffset: number, yOffset: number) {
+function badge(element: HTMLSpanElement, parentElement: HTMLSpanElement, size: number, fontSize: number, color: string, xOrientation: string, yOrientation: string, xOffset: number, yOffset: number) {
   const logString = `
     Styling a badge element, with width: ${element.style.width}, height: ${element.style.height}, font size: 
   `
@@ -30,21 +30,38 @@ function badge(element: HTMLSpanElement, size: number, fontSize: number, color: 
   if(size) element.style.height = (2 * size).toString() + 'px';
   if(fontSize) element.style.fontSize = fontSize.toString() + 'px';
   if(color) element.style.background = color;
-  if(xOrientation == 'L') element.style.float = 'left'
+  if(xOrientation == 'L') element.style.left = '0%'
   else if(xOrientation == 'M') element.style.left = '50%'
-  else if(xOrientation == 'R') element.style.float = 'right'
-  if(yOrientation == 'M') element.style.top = '50%'
+  else if(xOrientation == 'R') element.style.left = '100%'
+  if(yOrientation == 'T') element.style.top = '0%'
+  else if(yOrientation == 'M') element.style.top = '50%'
   else if(yOrientation == 'B') element.style.top = '100%'
 
   const elementStyle = window.getComputedStyle(element)
+  const parentRect = parentElement.getBoundingClientRect()
 
   if (xOffset) {
-    console.log(`Performing an x offset of ${elementStyle.left + xOffset}px`)
-    element.style.left = `${elementStyle.left + xOffset}px`
+    var finalLeft
+    const percentAdjustment = ( xOffset / parentRect.width ) * 100
+    if (element.style.left) { 
+      finalLeft = parseInt(element.style.left) + percentAdjustment
+    } else {
+      finalLeft = percentAdjustment
+    }
+    console.log(`Performing an x offset of ${elementStyle.left + xOffset}px. Left will be ${finalLeft}`)
+    element.style.left = `${finalLeft}%`
   }
   if (yOffset) {
-    console.log(`Performing an y offset of ${elementStyle.top + yOffset}px`)
-    element.style.top = `${elementStyle.top + yOffset}px`
+    var finalTop
+    const percentAdjustment = ( yOffset / parentRect.height ) * 100
+    console.log(element.style.top)
+    if (element.style.top) { 
+      finalTop = parseInt(element.style.top) + percentAdjustment
+    } else {
+      finalTop = percentAdjustment
+    }
+    console.log(`Performing an y offset of ${elementStyle.top + yOffset}px. Top will be ${finalTop}`)
+    element.style.top = `${finalTop}%`
   }
 
   return element;
