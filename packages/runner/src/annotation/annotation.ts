@@ -23,7 +23,8 @@ export const annotationHandlers: AnnotationHandler = {
     var locatorElement = document.createElement('div');
 
     // Append locator to parent
-    elementToAnnotate.prepend(locatorElement);
+    //elementToAnnotate.prepend(locatorElement);
+    elementToAnnotate.insertAdjacentElement('beforebegin', locatorElement)
 
     locatorElement.id = `userdocs-annotation-${annotationId}-locator`
     locatorElement.classList.add("userdocs-locator")
