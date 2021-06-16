@@ -19,7 +19,8 @@ export interface Runner {
 export interface RunnerCallbacks {
   step: Callbacks,
   process: Callbacks,
-  job: Callbacks
+  job: Callbacks,
+  browserEvent?: Function
 }
 
 export interface Callbacks {
@@ -41,7 +42,8 @@ export interface Configuration {
   callbacks: {
     step: CallbackConfiguration,
     process: CallbackConfiguration,
-    job: CallbackConfiguration
+    job: CallbackConfiguration,
+    browserEvent?: Function
   },
   css?: string,
   lib?: { [ key: string ]: Function } // need?
@@ -84,7 +86,8 @@ export function initialize(configuration: Configuration) {
         executionCallback: () => {},
         successCallbacks: [],
         failureCallbacks: []
-      }
+      },
+      browserEvent: null
     }
   }
   runner = configureCallbacks(runner, configuration)
@@ -111,6 +114,8 @@ export function configureCallbacks(runner: Runner, configuration: Configuration)
   const jobExecutionCallback: Function = Job.handlers[configuration.callbacks.job.executionCallback]
   if (!jobExecutionCallback) throw new Error(`Job Execution callback ${configuration.callbacks.job.executionCallback} not implemented`)
 
+  const browserEventCallback: Function = configuration.callbacks.browserEvent
+
   runner.callbacks.step = {
     preExecutionCallbacks: Helpers.fetchCallbacks(configuration.callbacks.step.preExecutionCallbacks, Step.handlers),
     executionCallback: stepExecutionCallback,
@@ -129,6 +134,7 @@ export function configureCallbacks(runner: Runner, configuration: Configuration)
     successCallbacks: Helpers.fetchCallbacks(configuration.callbacks.job.successCallbacks, Job.handlers),
     failureCallbacks: Helpers.fetchCallbacks(configuration.callbacks.job.failureCallbacks, Job.handlers)
   }
+  runner.callbacks.browserEvent = browserEventCallback
   return runner
 }
 
