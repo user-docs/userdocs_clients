@@ -184,6 +184,15 @@ export const stepHandlers: StepHandler = {
     if (!page) { throw new Error("Page not retreived from browser")}
     await page.setJavaScriptEnabled(false);
     return step
+  },
+  "Submit Form": async(browser: Browser, step: Step, configuration: Configuration) => {
+    const selector = step.element.selector
+    const strategy = step.element.strategy.name
+    const page: Page | undefined = await currentPage(browser)
+    if (!page) { throw new Error("Page not retreived from browser")}
+    const handle: ElementHandle = await getElementHandle(browser, selector, strategy)
+    await handle.evaluate(handle => handle.submit())
+    return step
   }
 }
 
