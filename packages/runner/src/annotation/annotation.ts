@@ -71,7 +71,7 @@ export const annotationHandlers: AnnotationHandler = {
     badgeElement.textContent = labelText;
     badgeElement.classList.add("userdocs-badge")
     const styleBadge = new Function(`return ${style.styleBadge}`)()
-    badgeElement = styleBadge(badgeElement, size, fontSize, color, xOrientation, yOrientation, xOffset, yOffset);
+    badgeElement = styleBadge(badgeElement, maskElement, size, fontSize, color, xOrientation, yOrientation, xOffset, yOffset);
   
     try {
       maskElement.append(badgeElement); 
@@ -164,7 +164,7 @@ export const annotationHandlers: AnnotationHandler = {
     badgeElement.textContent = labelText;
     badgeElement.classList.add("userdocs-badge")
     const styleBadge = new Function(`return ${style.styleBadge}`)()
-    badgeElement = styleBadge(badgeElement, size, fontSize, color, xOrientation, yOrientation, xOffset, yOffset);
+    badgeElement = styleBadge(badgeElement, maskElement, size, fontSize, color, xOrientation, yOrientation, xOffset, yOffset);
   
     try {
       elementToAnnotate.prepend(locatorElement);
