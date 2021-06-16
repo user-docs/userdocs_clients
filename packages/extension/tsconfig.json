@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "resolveJsonModule": true,
-    "types": ["jest"]
+    "lib": [ "DOM", "ES2017" ],
+    "types": ["jest", "chrome"]
   }
 }

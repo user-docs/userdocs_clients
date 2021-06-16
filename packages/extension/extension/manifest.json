@@ -1,0 +1,37 @@
+{
+  "name": "UserDocs Assistant",
+  "version": "0.0.1",
+  "description": "A Chrome extension that assists with authoring processes in the UserDocs Application Suite",
+  "devtools_page": "./dist/devtools.html",
+  "permissions": [
+    "contextMenus",
+    "tabs",
+    "debugger",
+    "storage",
+    "*://*/"
+  ],
+  "manifest_version": 2,
+  "browser_action": {
+    "default_popup": "./dist/popup.html",
+    "default_title": "Open the popup",
+    "default_icon":"./dist/icons/icon-16.png"
+  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "content_scripts": [
+    {
+      "js": ["dist/content.js"],
+      "css": ["dist/content.css"],
+      "matches": ["https://*/*"]
+    }
+  ],
+  "background": {
+    "scripts": ["dist/background.js"]
+  },
+  "options_ui": {
+    "page": "dist/options.html",
+    "open_in_tab": false
+  },
+  "web_accessible_resources": [
+    "dist/page.js"
+  ]
+}
