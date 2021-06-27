@@ -1,7 +1,8 @@
+import { actions } from '../actions'
+  
 export interface State {
   badgeState: string,
-  width: number,
-  height: number
+  authoring: boolean
 }
 
 const MENU_ID = 'USERDOCS_ASSISTANT_CONTEXT_MENU'
@@ -9,46 +10,63 @@ const SCREENSHOT_ID = 'SCREENSHOT'
 const ELEMENT_SCREENSHOT_ID = 'ELEMENT_SCREENSHOT'
 const ANNOTATE_ID = 'ANNOTATE'
 
-const actions = {
-  START: 'START',
-  STOP: 'STOP',
-  CREATE_ANNOTATION: 'CREATE_ANNOTATION'
-}
+const SENDABLE_ACTIONS = [ actions.CREATE_ANNOTATION, actions.TEST_SELECTOR, actions.ELEMENT_SCREENSHOT ]
 
-var STATE: State
-var DEVTOOLS_PANEL_PORT: chrome.runtime.Port
+var PANEL_PORT: chrome.runtime.Port
+var DEVTOOLS_PORT: chrome.runtime.Port
 
 chrome.runtime.onConnect.addListener(function(port) {
   if (port.name === 'devtoolsPanel') {
-    console.log("DTP Open")
-    DEVTOOLS_PANEL_PORT = port
+    PANEL_PORT = port
     port.onMessage.addListener(function(message) {
-      console.log("Background received devtools message")
-      if (message.action === actions.CREATE_ANNOTATION) {
-        console.log("CA to content script")
-        chrome.tabs.query({ active: true }, function(tabs){
-          console.log(tabs)
-          chrome.tabs.sendMessage(tabs[0].id, message);  
-        });
-      }
+      console.log(`Background received devtools panel ${message.action} message`)
+      if(SENDABLE_ACTIONS.includes(message.action)) sendToFirstTab(message)
+    })
+  }
+  if (port.name === 'devtools') {
+    DEVTOOLS_PORT = port
+    port.onMessage.addListener(function(message) {
+      chrome.storage.local.get([ 'authoring' ], (result) => {
+        const authoring  = result.authoring
+        if (message.action === actions.ITEM_SELECTED) {
+          if (PANEL_PORT) PANEL_PORT.postMessage({ selector: message.selector }) 
+          if (authoring) sendToFirstTab(message)
+        }
+      })
     })
   }
 })
 
 function boot() {
   console.debug("Booting Background Script")
-  STATE = {badgeState: 'none', width: 500, height: 500}
-  chrome.runtime.onMessage.addListener(msg => {
-    if (msg.action && msg.action === actions.START) this.start()
-    if (msg.action && msg.action === actions.STOP) this.stop()
-    if (msg === 'startAuthoring')  start()
-    if (msg.action && msg.action === 'itemSelected') {
-      chrome.tabs.query({ active: true }, function(tabs){
-        chrome.tabs.sendMessage(tabs[0].id, msg);  
-      });
-      if (DEVTOOLS_PANEL_PORT) DEVTOOLS_PANEL_PORT.postMessage({ selector: msg.selector })
-    }
+  let state: State = { badgeState: 'none', authoring: false }
+  chrome.storage.local.set(state)
+
+  chrome.runtime.onMessage.addListener(message => {
+    chrome.storage.local.get([ 'authoring' ], (result) => {
+      const authoring  = result.authoring
+      if (message.action) {
+        if (message.action === actions.START) start()
+        if (message.action === actions.STOP) stop()
+        if (message.action === actions.click) {
+          console.log("Background page, click message")
+          if (DEVTOOLS_PORT) DEVTOOLS_PORT.postMessage(message)
+          if (PANEL_PORT) PANEL_PORT.postMessage({ selector: message.selector }) 
+          if (authoring) sendToFirstTab(message)
+        }
+        if (message.action === actions.load) {
+          console.log("Background page, navigate message")
+          if (authoring) sendToFirstTab(message)
+        }
+      }
+    })
   })
+}
+
+function sendToFirstTab(message) {
+  chrome.tabs.query({ active: true }, function(tabs){
+    chrome.tabs.sendMessage(tabs[0].id, message);  
+  });
 }
 
 function start() {
