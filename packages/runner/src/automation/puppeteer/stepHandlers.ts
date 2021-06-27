@@ -147,6 +147,7 @@ export const stepHandlers: StepHandler = {
     const strategy = step.element.strategy.name
     const annotationType = step.annotation.annotationType.name
     const annotationHandler = annotationHandlers[annotationType]
+    if (!annotationHandler) { throw new Error(`Annotation handler ${annotationType} not implemented`) }
     const handle: ElementHandle = await getElementHandle(browser, selector, strategy)
     if (!handle) { throw new ElementNotFound(strategy, selector) }
     const page: Page | undefined = await currentPage(browser)
