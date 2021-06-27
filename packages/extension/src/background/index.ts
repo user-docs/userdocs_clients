@@ -52,40 +52,23 @@ function boot() {
 }
 
 function start() {
-  console.log('start recording')
-  STATE.badgeState = 'rec'
-
-  chrome.browserAction.setBadgeText({ text: STATE.badgeState })
+  console.log('start authoring')
+  const state: State = { badgeState: 'yes', authoring: true }
+  chrome.storage.local.set(state)
+  chrome.browserAction.setBadgeText({ text: state.badgeState })
 
   chrome.contextMenus.removeAll()
-
   chrome.contextMenus.create({
     id: MENU_ID,
     title: 'UserDocs Assistant',
     contexts: ['all']
   })
-
   chrome.contextMenus.create({
     id: MENU_ID + SCREENSHOT_ID,
     title: 'Take Screenshot (Ctrl+Shift+S)',
     parentId: MENU_ID,
     contexts: ['all']
   })
-
-  chrome.contextMenus.create({
-    id: MENU_ID + ELEMENT_SCREENSHOT_ID,
-    title: 'Take Element Screenshot (Ctrl+Shift+E)',
-    parentId: MENU_ID,
-    contexts: ['all']
-  })
-
-  chrome.contextMenus.create({
-    id: MENU_ID + ANNOTATE_ID,
-    title: 'Apply Annotation (Ctrl+Shift+A)',
-    parentId: MENU_ID,
-    contexts: ['all']
-  })
-
   chrome.contextMenus.onClicked.addListener(menuInteractionhandler)
 
   injectScript()
