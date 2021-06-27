@@ -7,12 +7,21 @@ export function browserClosed(payload) {
   element.dispatchEvent(event)
 }
 
+export function browserEventHandler(payload) {
+  console.log("Browser Event Occured in electron")
+  const element = document.getElementById('browser-event-handler');
+  const event = new CustomEvent("browser-event", {
+    bubbles: false, detail: payload
+  })
+  element.dispatchEvent(event)
+}
+
 export function browserOpened(payload) {
   console.log("Browser Opened")
   const element = document.querySelector('#automated-browser-controls');
   const event = new CustomEvent("browser-opened", {
       bubbles: false,
-      detail: payload
+      detail: payload.detail
   })
   element.dispatchEvent(event)
 }
