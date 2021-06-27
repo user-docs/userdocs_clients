@@ -1,1 +1,6 @@
-@import "../dist/tailwind.dist.css"
+@import "../dist/tailwind.dist.css";
+
+input:checked ~ .dot {
+  transform: translateX(100%);
+  background-color: #48bb78;
+}
