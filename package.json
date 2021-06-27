@@ -9,10 +9,11 @@
     "clean": "lerna run clean",
     "build": "lerna run build",
     "publish": "lerna publish",
-    "compile": "lerna run compile",
+    "compile": "lerna run compile fa-edit",
     "dist": "lerna run dist",
     "test": "lerna run test",
-    "start_desktop": "lerna run compile && lerna run start_desktop --stream",
+    "dev": "lerna run compile && lerna run dev --stream",
+    "start_linux": "lerna run start_linux",
     "lint": "eslint --ext js,ts ."
   },
   "devDependencies": {
