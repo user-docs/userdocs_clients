@@ -1,14 +1,10 @@
-chrome.devtools.panels.elements.createSidebarPane("UserDocs",
-  function(sidebar) {
-    sidebar.setPage('./dist/panel.html');
-});
+import { actions } from "../actions";
 
 export function sendCurrentSelector() {
-  console.log("Sending current selector")
-  chrome.devtools.inspectedWindow.eval(`testContent($0)`, 
+  chrome.devtools.inspectedWindow.eval(`generateSelector($0)`, 
     { useContentScriptContext: true }, (result, isException) => {
       if(!isException) {
-        chrome.runtime.sendMessage({ action: 'itemSelected', selector: result });
+        backgroundPageConnection.postMessage({ action: actions.ITEM_SELECTED, selector: result });
       } else {
         console.log(isException)
       }
@@ -16,23 +12,23 @@ export function sendCurrentSelector() {
   )
 }
 
-function elementSelectionChanged() {
-  console.log("selection changed")
-  sendCurrentSelector()
-}
+var backgroundPageConnection = chrome.runtime.connect({ name: "devtools" }); 
+backgroundPageConnection.onMessage.addListener(function (message) {
+  if (message.action) {
+    if (message.action == actions.click) {
+      const script = `inspect($('${message.selector}'))`
+      chrome.devtools.inspectedWindow.eval(script, (result, isException) => {
+        if (isException) console.log(isException)
+      })
+    }
+  }
+});
 
-chrome.devtools.panels.elements.onSelectionChanged.addListener(elementSelectionChanged)
+chrome.devtools.panels.elements.createSidebarPane("UserDocs",
+  function(sidebar) {
+    sidebar.setPage('./dist/panel.html');
+});
 
-console.log("firing up")
+chrome.devtools.panels.elements.onSelectionChanged.addListener(sendCurrentSelector)
+
 sendCurrentSelector()
-
-const script = `
-  var result  
-  console.log('test start'); 
-  console.log(testContent); 
-  try {
-    result = 
-  } catch(e) { console.log(e)}
-  console.log(result)
-  result
-`
