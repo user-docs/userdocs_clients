@@ -14,7 +14,7 @@ const Store = require('electron-store');
 
 if (isDev) {
   require('electron-reload')(__dirname, {
-    electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
+    electron: path.join(__dirname, '../', 'node_modules', '.bin', 'electron')
   });
 }
 
@@ -28,6 +28,12 @@ const stepUpdated = function(step) {
 const processUpdated = function(process) { 
   mainWindow().webContents.send('processUpdated', process); 
   return process 
+}
+
+const browserEventHandler = function(event) {
+  console.log('browserEventHandler')
+  console.log(event)
+  mainWindow().webContents.send('browserEvent', event);
 }
 
 const userdocs = {
@@ -63,7 +69,8 @@ const userdocs = {
         executionCallback: 'run',
         successCallbacks: [ 'completeLastJobInstance' ],
         failureCallbacks: [ 'failLastJobInstance' ]
-      }
+      },
+      browserEvent: browserEventHandler
     }
   }
 }
