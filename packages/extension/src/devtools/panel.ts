@@ -23,24 +23,6 @@ document
   })
 
 document
-  .getElementById("badge")
-  .addEventListener('click', (event) => { 
-    let element: any = document.getElementById("selector")
-    let selector = element.value
-    const message = { action: actions.CREATE_ANNOTATION, annotationType: "Badge", selector: selector }
-    devtools_connection.postMessage(message)
-  })
-
-document
-  .getElementById("outline")
-  .addEventListener('click', (event) => { 
-    let element: any = document.getElementById("selector")
-    let selector = element.value
-    const message = { action: actions.CREATE_ANNOTATION, annotationType: "Outline", selector: selector }
-    devtools_connection.postMessage(message)
-  })
-
-document
   .getElementById("element-screenshot")
   .addEventListener('click', (event) => { 
     console.log("Element Screenshot button clicked")
@@ -49,3 +31,27 @@ document
     const message = { action: actions.ELEMENT_SCREENSHOT, selector: selector }
     devtools_connection.postMessage(message)
   })
+
+document
+  .getElementById("badge")
+  .addEventListener('click', (event) => sendAnnotationMessage(event))
+
+document
+  .getElementById("outline")
+  .addEventListener('click', (event) => sendAnnotationMessage(event))
+
+document
+  .getElementById("blur")
+  .addEventListener('click', (event) => sendAnnotationMessage(event))
+
+document
+  .getElementById("badge-blur")
+  .addEventListener('click', (event) => sendAnnotationMessage(event))
+
+function sendAnnotationMessage(event) {
+  const element: any = document.getElementById("selector")
+  const selector = element.value
+  const annotationType = event.target.innerText
+  const message = { action: actions.CREATE_ANNOTATION, annotationType: annotationType, selector: selector }
+  devtools_connection.postMessage(message)
+}
