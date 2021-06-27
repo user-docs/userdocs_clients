@@ -91,6 +91,12 @@ function start() {
   injectScript()
 }
 
+function stop () {
+  const state: State = { badgeState: '', authoring: false }
+  chrome.storage.local.set(state)
+  chrome.browserAction.setBadgeText({text: state.badgeState})
+}
+
 function injectScript() {
   chrome.tabs.executeScript({ file: './dist/page.js', allFrames: true })
 }
