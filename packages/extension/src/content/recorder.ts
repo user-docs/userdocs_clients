@@ -30,7 +30,6 @@ export function addAllListeners (events) {
 }
 
 export function recordEvent (e) {
-  console.log('recordEvent fired')
   if(!actions[e.type]) throw new Error(`action ${e.type} not added to actions.ts`)
 
   const message = {
@@ -44,37 +43,18 @@ export function recordEvent (e) {
   }
   
   try {
-    sendMessage(message)
+    chrome.runtime.sendMessage(message)
   } catch (e) {}
 }
 
-
-export async function sendMessage (msg) {
-  console.log("SendMessage called")
-  window.postMessage({ from: "UserDocs", detail: msg }, "*");
-
-  try {
-  } catch(e) {
-    console.log("error")
-    console.log(e)
-  }
-}
-
 export function getWindowLocation (e) {
-  const eventsWithWindowLocation = {
-    load: true
-  }
-
-  console.log(`href is ${eventsWithWindowLocation[e.type] ? e.target.location.href : null}`)
-
+  const eventsWithWindowLocation = { load: true }
   return eventsWithWindowLocation[e.type] ? e.target.location.href : null
 }
 
 
 export function getSelector (e) {
-  if (e.target.id) {
-    return `#${e.target.id}`
-  }
+  if (e.target.id) return `#${e.target.id}`
 
   const eventsWithElements = {
     click: true,
@@ -89,8 +69,6 @@ export function getSelector (e) {
 
 
 export function getCoordinates (evt) {
-  console.log('getCoordinates')
-  console.log(evt)
   const eventsWithCoordinates = {
     mouseup: true,
     mousedown: true,
@@ -100,7 +78,7 @@ export function getCoordinates (evt) {
   return eventsWithCoordinates[evt.type] ? { x: evt.clientX, y: evt.clientY } : null
 }
 
-export function testContent(element) {
+export function generateSelector(element) {
   return finder(element, {
     seedMinLength: 5,
     optimizedMinLength: (element) ? 2 : 10
