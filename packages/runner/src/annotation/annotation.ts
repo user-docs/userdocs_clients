@@ -96,7 +96,7 @@ export const annotationHandlers: AnnotationHandler = {
 
     locatorElement.id = `userdocs-annotation-${annotationId}-locator`
     locatorElement.classList.add("userdocs-locator")
-    elementToAnnotate.prepend(locatorElement);
+    elementToAnnotate.insertAdjacentElement('beforebegin', locatorElement)
 
     const styleLocator = new Function(`return ${style.styleLocator}`)()
     locatorElement = styleLocator(locatorElement, elementToAnnotate)
