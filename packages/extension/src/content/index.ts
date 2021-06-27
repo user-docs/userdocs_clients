@@ -1,9 +1,10 @@
+import { actions } from '../actions';
 import * as Recorder from './recorder'
 
 declare global {
   interface Window { 
     eventRecorder: any;
-    testContent: Function; 
+    generateSelector: Function;
   }
 }
 
@@ -31,11 +32,15 @@ s.onload = function() {
 (document.head || document.documentElement).appendChild(s);
 
 chrome.runtime.onMessage.addListener(msg => { 
-  console.log(msg)
-  if (msg.action === 'CREATE_ANNOTATION') {
-    window.postMessage({ detail: msg }, "*");
+  let logString = "Content Script received a message."
+  if (msg.action) {
+    if (msg.action === actions.CREATE_ANNOTATION) window.postMessage(msg, "*");
+    if (msg.action === actions.ELEMENT_SCREENSHOT) window.postMessage(msg, "*");
+    if (msg.action == actions.ITEM_SELECTED) window.postMessage(msg, "*");
+    if (msg.action == actions.TEST_SELECTOR) window.postMessage(msg, "*");
+    if (msg.action == actions.click) window.postMessage(msg, "*");
+    if (msg.action == actions.load) window.postMessage(msg, "*");
   }
-  if (msg.action && msg.action == 'itemSelected') window.postMessage({ detail: msg }, "*")
 })
 
-window.testContent = Recorder.testContent 
+window.generateSelector = Recorder.generateSelector 
