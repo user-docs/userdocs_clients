@@ -1,5 +1,5 @@
 const { ipcRenderer, contextBridge } = require('electron')
-const { browserOpened, browserClosed, stepUpdated, processUpdated } = require('./events.js')
+const { browserOpened, browserClosed, stepUpdated, processUpdated, browserEventHandler } = require('./events.js')
 
 
 contextBridge.exposeInMainWorld('userdocs', {
@@ -12,10 +12,11 @@ contextBridge.exposeInMainWorld('userdocs', {
   executeProcess: (process) => { ipcRenderer.send('executeProcess', process) },
   executeJob: (job) => { ipcRenderer.send('executeJob', job)},
   start: () => { ipcRenderer.send('start')},
-  testSelector: (message) => { ipcRenderer.send('testSelector', message)}
+  testSelector: (message) => { ipcRenderer.send('testSelector', message)},
 })
 
 ipcRenderer.on('browserOpened', (event, payload) => browserOpened(payload))
 ipcRenderer.on('browserClosed', (event, payload) => browserClosed(payload))
 ipcRenderer.on('stepStatusUpdated', (event, payload) => { stepUpdated(payload) }) 
 ipcRenderer.on('processUpdated', (event, payload) => processUpdated(payload))
+ipcRenderer.on('browserEvent', (event, payload) => browserEventHandler(payload))
