@@ -27,10 +27,10 @@ chrome.runtime.onConnect.addListener(function(port) {
     DEVTOOLS_PORT = port
     port.onMessage.addListener(function(message) {
       chrome.storage.local.get([ 'authoring' ], (result) => {
-        const authoring  = result.authoring
+        // const authoring  = result.authoring
         if (message.action === actions.ITEM_SELECTED) {
           if (PANEL_PORT) PANEL_PORT.postMessage({ selector: message.selector }) 
-          if (authoring) sendToFirstTab(message)
+          sendToFirstTab(message)
         }
       })
     })
