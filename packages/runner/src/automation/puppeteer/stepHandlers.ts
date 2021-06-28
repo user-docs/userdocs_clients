@@ -176,7 +176,8 @@ export const stepHandlers: StepHandler = {
   "Enable Javascript": async(browser: Browser, step: Step, configuration: Configuration) => {
     const page: Page | undefined = await currentPage(browser)
     if (!page) { throw new Error("Page not retreived from browser")}
-    await page.setJavaScriptEnabled(true);
+    await page.setJavaScriptEnabled(true)
+    await page.reload({ waitUntil: ["networkidle0", "domcontentloaded"] })
     return step
   },
   "Disable Javascript": async(browser: Browser, step: Step, configuration: Configuration) => {
