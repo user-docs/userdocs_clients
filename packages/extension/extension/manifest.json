@@ -1,7 +1,7 @@
 {
   "name": "UserDocs Assistant",
   "version": "0.0.1",
-  "description": "A Chrome extension that assists with authoring processes in the UserDocs Application Suite",
+  "description": "A Chrome extension that assists with authoring processes in the UserDocs Application Suite.",
   "devtools_page": "./dist/devtools.html",
   "permissions": [
     "contextMenus",
