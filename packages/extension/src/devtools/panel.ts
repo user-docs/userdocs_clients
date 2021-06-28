@@ -48,6 +48,10 @@ document
   .getElementById("badge-blur")
   .addEventListener('click', (event) => sendAnnotationMessage(event))
 
+document
+  .getElementById("badge-outline")
+  .addEventListener('click', (event) => sendAnnotationMessage(event))
+
 function sendAnnotationMessage(event) {
   const element: any = document.getElementById("selector")
   const selector = element.value
