@@ -19,4 +19,4 @@ config create:
 @production:
     ssh: userdshi@server292.web-hosting.com:21098
     user: userdshi
-    path: /public/html
+    path: /public_html
