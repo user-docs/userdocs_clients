@@ -1,6 +1,6 @@
 path: wp-core
 url: http://user-docs.com
-user: userdshi
+user: johns10davenport
 color: false
 disabled_commands:
   - db drop
@@ -18,5 +18,5 @@ config create:
 # An alias can include 'user', 'url', 'path', 'ssh', or 'http'
 @production:
     ssh: userdshi@server292.web-hosting.com:21098
-    user: userdshi
-    path: /public_html
+    user: johns10davenport
+    path: /home/userdshi/public_html
