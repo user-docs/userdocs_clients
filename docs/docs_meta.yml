@@ -1,0 +1,33 @@
+docs:
+  - file_name: process_reference.md
+    post_title: Processes
+    post_name: processes
+    post_status: publish
+    description:  Processes
+    post_type: page
+    post_author: John Davenport
+    id: 217
+  - file_name: annotation_placement.md
+    post_title: Annotation Placement
+    post_name: annotation-placement
+    post_status: publish
+    description: Annotation Placement
+    post_type: page
+    post_author: John Davenport
+    id: 223
+  - file_name: annotation_subform_reference.md
+    post_title: Annotation Subform
+    post_name: annotation-subform
+    post_status: publish
+    description: Annotation Subform
+    post_type: page
+    post_author: John Davenport
+    id: 235
+  - file_name: step_form_navigate.md
+    post_title: Navigation Step Form
+    post_name: navigation-step-form
+    post_status: publish
+    description: Navigation Step Form
+    post_type: page
+    post_author: John Davenport
+    id: 240
