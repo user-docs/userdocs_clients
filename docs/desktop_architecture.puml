@@ -1,0 +1,27 @@
+@startuml
+skinparam backgroundcolor transparent
+cloud {
+    [UserDocs]
+    [UserDocs] -right-> () api
+  }
+
+  package "browser" {
+    () hooks
+    () ui
+    [UserDocs] <-down-> [UserDocs Client]
+    hooks <-up-> [UserDocs Client]
+    ui <-up-> [UserDocs Client]
+  }
+
+  package "localhost" {
+    hooks <-down-> [Desktop]
+    [Desktop] <-left-> [Chrome]
+  }
+
+
+  ui <-left-> [User]
+  [User] <-down-> Chrome
+  [User]
+  Chrome <-down-> [LAN Device]
+  Chrome <-down-> [WAN Device]
+@enduml

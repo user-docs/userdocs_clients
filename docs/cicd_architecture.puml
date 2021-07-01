@@ -1,0 +1,16 @@
+@startuml
+cloud {
+    [UserDocs]
+    [UserDocs] -right-> () api
+  }
+
+  package "container" {
+    () api <-down-> [Runner]
+    [Runner] <-left-> [Test]
+    [Runner] <-down-> [Headless Chrome]
+    [Test] <-down-> [Headless Chrome]
+  }
+
+  [Headless Chrome] <-down-> [LAN Device]
+  [Headless Chrome] <-down-> [WAN Device]
+@enduml
