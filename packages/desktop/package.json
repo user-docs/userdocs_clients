@@ -9,7 +9,7 @@
   "homepage": "https://user-docs.com",
   "build": {
     "appId": "johns10@gmail.com",
-    "productName": "UserDocs Desktop",
+    "productName": "UserDocs",
     "mac": {
       "target": "dmg",
       "category": "public.app-category.developer-tools"
@@ -30,8 +30,9 @@
     "build": "yarn run clean && yarn run compile",
     "dist": "yarn run build && electron-builder",
     "publish": "yarn run build",
-    "start_dev": "yarn run build && electron build/index.js",
+    "dev": "yarn run build && electron build/index.js",
     "start_linux": "./dist/linux-unpacked/user_docs",
+    "start_windows": "./dist/win-unpacked/UserDocs.exe",
     "pack": "electron-builder --dir"
   },
   "dependencies": {
