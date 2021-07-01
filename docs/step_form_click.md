@@ -1,4 +1,4 @@
-## Click Step Form
+# Click Step Form
 
 The Click Step type is used to click on elements in a page. Selecting Click from the Step Type select input will cause the Click form to render, displaying these fields:
 

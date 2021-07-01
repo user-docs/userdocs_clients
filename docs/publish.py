@@ -1,6 +1,7 @@
 import yaml
 import subprocess
 import re
+import logging
 
 meta_file = open("docs_meta.yml")
 meta_data = yaml.safe_load(meta_file)
@@ -12,8 +13,13 @@ def rewrite_links(content, docs):
   pattern = r'(?<!\!)\[[^\]]+\]\(([^)]+)\.md\)'
   result = re.findall(pattern, content)
   for name in result:
+    logging.debug("Attempting to rewrite link for " + name)
     doc = get_doc(docs, name)
-    slug = doc["post_name"]
+    try:
+      slug = doc["post_name"]
+    except TypeError:
+      logging.error("Doc not found for " + name + ", link won't get rewritten")
+      slug = ""
     content = rewrite_link(content, name, slug)
 
   return content
@@ -29,7 +35,7 @@ def get_doc(docs, name):
       return doc
 
 for doc in docs:
-  print(f'publishing {doc["file_name"]}')
+  logging.info(f'publishing {doc["file_name"]}')
   id = str(doc["id"])
   post_title = doc["post_title"]
   post_status = doc["post_status"]
