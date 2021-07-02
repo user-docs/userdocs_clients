@@ -24,16 +24,16 @@
     ]
   },
   "scripts": {
-    "prepublishOnly": "yarn run build",
+    "build": "yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./dist",
     "compile": "tsc -p tsconfig.build.json",
-    "build": "yarn run clean && yarn run compile",
     "dist": "yarn run build && electron-builder",
+    "pack": "electron-builder --dir",
+    "prepublishOnly": "yarn run build",
     "publish": "yarn run build",
     "dev": "yarn run build && electron build/index.js",
     "start_linux": "./dist/linux-unpacked/user_docs",
-    "start_windows": "./dist/win-unpacked/UserDocs.exe",
-    "pack": "electron-builder --dir"
+    "start_windows": "./dist/win-unpacked/UserDocs.exe"
   },
   "dependencies": {
     "@userdocs/runner": "^1.0.23",
@@ -46,5 +46,5 @@
     "electron-builder": "^22.10.5",
     "electron-reload": "^1.5.0"
   },
-  "gitHead": "bd148b434a87a623f1a180aec699ed7ee70bdad0"
+  "gitHead": "99e0edfd14438859df62348157aec1eeaac2344e"
 }
