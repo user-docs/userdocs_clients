@@ -1,4 +1,4 @@
-## Element Subform
+# Element Subform
 
 The Element subform is displayed on the step form for any step type that references elements (such as click or fill field):
 

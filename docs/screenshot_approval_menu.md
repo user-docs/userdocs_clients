@@ -1,4 +1,4 @@
-## Screenshot Approval
+# Screenshot Approval
 
 Whenever processes run, UserDocs will compare the collected images to the current images. Userdocs uses ```magick compare -metric PSNR``` to diff the images in the background. UserDocs will not diff images that don't have the same height and weight. The approval workflow will be displayed without the diff.
 
