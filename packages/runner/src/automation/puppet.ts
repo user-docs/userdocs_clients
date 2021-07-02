@@ -2,8 +2,7 @@ import { Step } from '../domain/step'
 import { stepHandlers } from './puppeteer/stepHandlers'
 import { Runner, Configuration } from '../runner/runner'
 import { Browser, Page } from 'puppeteer'
-import * as path from 'path'
-import * as os from 'os'
+const path = require('path')
 
 const puppeteer = require('puppeteer')
 
@@ -21,16 +20,18 @@ export const Puppet = {
   },
   openBrowser: async(runner: Runner) => {
     var executablePath = puppeteer.executablePath()
+    let extensionPath = path.join((global as any).monoRepoRoot, 'packages', 'extension', 'extension')
     var args
 
+
     if(runner.environment == 'development') {
-      executablePath = puppeteer.executablePath()
+      executablePath = puppeteer.executablePath() 
       args = puppeteer.defaultArgs()
         .filter(arg => String(arg).toLowerCase() !== '--disable-extensions')
         .filter(arg => String(arg).toLowerCase() !== '--headless')
         .concat("--proxy-server='direct://'")
         .concat('--proxy-bypass-list=*')
-        .concat("--load-extension=/home/johns10/Documents/userdocs_clients/packages/extension/extension")
+        .concat(`--load-extension=${extensionPath}`)
         //.concat("--disable-extensions-except=/home/johns10/Documents/userdocs_clients/packages/extension/extension")
       if (runner.userDataDirPath) {
         args.push('--user-data-dir=' + runner.userDataDirPath);
@@ -42,7 +43,7 @@ export const Puppet = {
         .filter(arg => String(arg).toLowerCase() !== '--headless')
         .concat("--proxy-server='direct://'")
         .concat('--proxy-bypass-list=*')
-        .concat("--load-extension=/home/johns10/Documents/userdocs_clients/packages/extension/extension")
+        .concat(`--load-extension=${extensionPath}`)
         //.concat("--disable-extensions-except=/home/johns10/Documents/userdocs_clients/packages/extension/extension")
       if (runner.userDataDirPath) {
         args.push('--user-data-dir=' + runner.userDataDirPath);
