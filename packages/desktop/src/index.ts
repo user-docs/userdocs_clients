@@ -12,6 +12,8 @@ const path = require('path')
 const isDev = require('electron-is-dev');
 const Store = require('electron-store');
 
+(global as any).monoRepoRoot = path.join(path.resolve(__dirname), '/..', '/..', '/..')
+
 if (isDev) {
   require('electron-reload')(__dirname, {
     electron: path.join(__dirname, '../', 'node_modules', '.bin', 'electron')
@@ -32,7 +34,6 @@ const processUpdated = function(process) {
 
 const browserEventHandler = function(event) {
   console.log('browserEventHandler')
-  console.log(event)
   mainWindow().webContents.send('browserEvent', event);
 }
 
@@ -91,7 +92,6 @@ function main() {
 }
 
 ipcMain.on('openBrowser', async (event) => { 
-  console.log(userdocs.configuration)
   if(!userdocs.runner.automationFramework.browser) userdocs.runner = await openBrowser()
   return true
  })
@@ -124,13 +124,11 @@ ipcMain.on('execute', async (event, step) => {
 
 ipcMain.on('executeProcess', async (event, process) => {
   if(!userdocs.runner.automationFramework.browser) await openBrowser()
-  console.log(`bout to run runner process ${userdocs.runner}`)
   await Runner.executeProcess(process, userdocs.runner)
 })
 
 ipcMain.on('executeJob', async (event, job) => {
   if(!userdocs.runner.automationFramework.browser) userdocs.runner = await openBrowser()
-  console.log(`bout to run runner job`)
   await Runner.executeJob(job, userdocs.runner)
 })
 
@@ -140,7 +138,6 @@ ipcMain.on('start', (event) => {
 
 
 ipcMain.on('configure', async (event, message) => {
-  console.log("Configuring")
   if (message.image_path) {
     store.set('imagePath', message.image_path)
     userdocs.configuration.imagePath = message.image_path
