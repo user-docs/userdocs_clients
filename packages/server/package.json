@@ -10,10 +10,12 @@
     "build": "yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./dist",
     "compile": "tsc -p tsconfig.build.json",
+    "watch": "tsc-watch --noClear -p ./tsconfig.build.json",
     "prepublishOnly": "yarn run build",
     "start": "yarn run build && node dist/index.js"
   },
   "dependencies": {
+    "@userdocs/extension": "^1.0.2",
     "@userdocs/runner": "^1.0.23",
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",

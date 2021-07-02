@@ -15,9 +15,12 @@
     "clean": "rimraf -rf ./dist",
     "compile": "tsc -p tsconfig.build.json",
     "prepublishOnly": "yarn run build",
+    "watch": "tsc-watch --noClear -p ./tsconfig.build.json",
     "test": "jest"
   },
   "dependencies": {
+    "@userdocs/extension": "^1.0.2",
+    "find-yarn-workspace-root": "^2.0.0",
     "fs": "^0.0.1-security",
     "puppeteer": "^9.1.1",
     "uuid": "^8.3.2"
