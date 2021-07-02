@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/server",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Automation server",
   "main": "index.js",
   "author": "John Davnport",
