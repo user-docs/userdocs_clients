@@ -49,5 +49,8 @@
     "electron-builder": "^22.10.5",
     "electron-reload": "^1.5.0"
   },
-  "gitHead": "99e0edfd14438859df62348157aec1eeaac2344e"
+  "optionalDependencies": {
+    "win-node-env": "^0.4.0"
+  },
+  "gitHead": "436de12adaf553994c5e361370765aee44afef15"
 }
