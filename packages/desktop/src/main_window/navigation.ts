@@ -5,11 +5,11 @@ var SESSION_URL
 var APPLICATION_URL
 
 if (isDev) {
-  SESSION_URL = "https://dev.user-docs.com:4002/session/new"
-  APPLICATION_URL = "https://dev.user-docs.com:4002"
+  SESSION_URL = "https://dev.user-docs.com:4002'"
+  SESSION_URL = APPLICATION_URL + "/session/new"
 } else {
-  SESSION_URL = "https://app.user-docs.com/session/new"
   APPLICATION_URL = "https://app.user-docs.com"
+  SESSION_URL = APPLICATION_URL + "/session/new"
 }
 
 export async function navigateToLoginPage (mainWindow) {
