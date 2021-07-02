@@ -3,7 +3,7 @@
   "version": "0.0.15",
   "description": "Automation server",
   "main": "index.js",
-  "author": "John Davnpoort",
+  "author": "John Davnport",
   "license": "MIT",
   "private": false,
   "scripts": {
