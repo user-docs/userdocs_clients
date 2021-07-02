@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/server",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Automation server",
   "main": "index.js",
   "author": "John Davnpoort",
@@ -15,8 +15,8 @@
     "start": "yarn run build && node dist/index.js"
   },
   "dependencies": {
-    "@userdocs/extension": "^1.0.2",
-    "@userdocs/runner": "^1.0.23",
+    "@userdocs/extension": "^1.0.3",
+    "@userdocs/runner": "^1.0.24",
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
     "graphql": "^15.5.0",
