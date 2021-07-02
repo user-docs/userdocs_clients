@@ -3,7 +3,6 @@ import { stepHandlers } from './puppeteer/stepHandlers'
 import { Runner, Configuration } from '../runner/runner'
 import { Browser, Page } from 'puppeteer'
 const path = require('path')
-
 const puppeteer = require('puppeteer')
 
 export const Puppet = {
@@ -27,7 +26,6 @@ export const Puppet = {
       executablePath = puppeteer.executablePath() 
       extensionPath =  require.resolve('@userdocs/extension')
       extensionPath = path.join(extensionPath, '/..', '/..')
-      console.log(extensionPath)
       args = puppeteer.defaultArgs()
         .filter(arg => String(arg).toLowerCase() !== '--disable-extensions')
         .filter(arg => String(arg).toLowerCase() !== '--headless')
@@ -43,7 +41,6 @@ export const Puppet = {
       extensionPath = (global as any).electronPath
       extensionPath = path.join(extensionPath, '/..', '/..')
       extensionPath = path.join(extensionPath, "resources", "app.asar.unpacked", "node_modules", "@userdocs", "extension", "extension")
-      console.log(extensionPath)
       args = puppeteer.defaultArgs()
         .filter(arg => String(arg).toLowerCase() !== '--disable-extensions')
         .filter(arg => String(arg).toLowerCase() !== '--headless')
