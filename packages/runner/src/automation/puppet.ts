@@ -20,12 +20,14 @@ export const Puppet = {
   },
   openBrowser: async(runner: Runner) => {
     var executablePath = puppeteer.executablePath()
-    let extensionPath = path.join((global as any).monoRepoRoot, 'packages', 'extension', 'extension')
+    var extensionPath
     var args
-
 
     if(runner.environment == 'development') {
       executablePath = puppeteer.executablePath() 
+      extensionPath =  require.resolve('@userdocs/extension')
+      extensionPath = path.join(extensionPath, '/..', '/..')
+      console.log(extensionPath)
       args = puppeteer.defaultArgs()
         .filter(arg => String(arg).toLowerCase() !== '--disable-extensions')
         .filter(arg => String(arg).toLowerCase() !== '--headless')
@@ -38,6 +40,10 @@ export const Puppet = {
       }
     } else if(runner.environment == 'desktop') {
       executablePath = puppeteer.executablePath().replace("app.asar", "app.asar.unpacked")
+      extensionPath = (global as any).electronPath
+      extensionPath = path.join(extensionPath, '/..', '/..')
+      extensionPath = path.join(extensionPath, "resources", "app.asar.unpacked", "node_modules", "@userdocs", "extension", "extension")
+      console.log(extensionPath)
       args = puppeteer.defaultArgs()
         .filter(arg => String(arg).toLowerCase() !== '--disable-extensions')
         .filter(arg => String(arg).toLowerCase() !== '--headless')
