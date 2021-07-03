@@ -14,10 +14,12 @@
     "compile": "tsc -p tsconfig.build.json",
     "build": "yarn run clean && yarn run compile",
     "dist": "yarn run clean && yarn run compile && pkg -t win-x64,linux,alpine,macos --out-path dist dist/index.js --public",
+    "watch": "tsc-watch --noClear -p ./tsconfig.buildjson",
     "prepublishOnly": "yarn run build",
     "test": "jest"
   },
   "dependencies": {
+    "@userdocs/extension": "^1.0.2",
     "@userdocs/runner": "^1.0.23",
     "axios": "^0.21.1",
     "electron-is-dev": "^2.0.0",

@@ -2,6 +2,7 @@
   "name": "@userdocs/extension",
   "version": "1.0.2",
   "description": "Assists with authoring steps and processes in the UserDocs Application Suite",
+  "main": "extension/dist/background",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -19,7 +20,7 @@
     "watch:tailwind": "NODE_ENV=development postcss src/tailwind.css -o extension/dist/tailwind.dist.css -w",
     "dev:tailwind": "NODE_ENV=development postcss src/tailwind.css -o extension/dist/tailwind.dist.css",
     "build:tailwind": "NODE_ENV=production postcss src/tailwind.css -o extension/dist/tailwind.dist.css",
-    "dev": "concurrently \"npm run watch:tailwind\" \"NODE_ENV=development webpack --config webpack.config.js --mode=development --watch\"",
+    "watch": "concurrently \"npm run watch:tailwind\" \"NODE_ENV=development webpack --config webpack.config.js --mode=development --watch\"",
     "build": "npm run build:tailwind && webpack --mode production"
   },
   "dependencies": {

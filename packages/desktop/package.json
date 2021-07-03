@@ -21,6 +21,9 @@
     },
     "files": [
       "build/**/*"
+    ],
+    "asarUnpack": [
+      "node_modules/@userdocs/extension/extension"
     ]
   },
   "scripts": {
@@ -30,7 +33,7 @@
     "build": "yarn run clean && yarn run compile",
     "dist": "yarn run build && electron-builder",
     "publish": "yarn run build",
-    "dev": "yarn run build && electron build/index.js",
+    "dev": "tsc-watch --noClear -p ./tsconfig.build.json --onSuccess \"electron build/index.js\"",
     "start_linux": "./dist/linux-unpacked/user_docs",
     "start_windows": "./dist/win-unpacked/UserDocs.exe",
     "pack": "electron-builder --dir"
