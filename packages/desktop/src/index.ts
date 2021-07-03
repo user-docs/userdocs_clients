@@ -12,8 +12,6 @@ const path = require('path')
 const isDev = require('electron-is-dev');
 const Store = require('electron-store');
 
-(global as any).monoRepoRoot = path.join(path.resolve(__dirname), '/..', '/..', '/..')
-
 if (isDev) {
   require('electron-reload')(__dirname, {
     electron: path.join(__dirname, '../', 'node_modules', '.bin', 'electron')
@@ -84,6 +82,7 @@ function main() {
       .then( mainWindow => authenticateJohnDavenport(mainWindow))
       .catch( e => console.log(e))
   } else {
+    (global as any).electronPath = app.getAppPath()
     createMainWindow()
       .then( mainWindow => navigateToLoginPage(mainWindow) )
       .catch( e => console.log(e))
