@@ -5,7 +5,7 @@ var SESSION_URL
 var APPLICATION_URL
 
 if (isDev) {
-  SESSION_URL = "https://dev.user-docs.com:4002'"
+  APPLICATION_URL = "https://app.user-docs.com"
   SESSION_URL = APPLICATION_URL + "/session/new"
 } else {
   APPLICATION_URL = "https://app.user-docs.com"
