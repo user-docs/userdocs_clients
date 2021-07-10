@@ -42,6 +42,8 @@ for doc in docs:
   post_type = doc["post_type"]
   post_author = doc["post_author"]
   description = doc["description"]
+  post_parent = doc["post_parent"]
+  post_category = doc["post_category"]
   post_file = open(doc["file_name"])
   post_content = post_file.read()
   post_content = post_content.replace("images/", base_image_url)
@@ -53,6 +55,8 @@ for doc in docs:
     f'--post_type="{post_type}"',
     f'--post_author="{post_author}"',
     f'--description="{description}"',
-    f'--post_content={post_content}'
+    f'--post_content={post_content}',
+    f'--post_parent={post_parent}',
+    f'--post_category={post_category}'
   ]
-  process = subprocess.Popen(args)
+  process = subprocess.run(args)

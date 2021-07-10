@@ -1,5 +1,3 @@
-# Fill Field Step Form
-
 The Fill Field Step Type will simulate user input to a field. It will enter the specified string of characters into the selected element. Selecting Fill Field from the Step Type select input will cause the Fill Field form to render, displaying these fields:
 
 ![Fill Field Form Reference](images/step_form_reference_fill_field.png)

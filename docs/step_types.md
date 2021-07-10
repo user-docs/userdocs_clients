@@ -1,5 +1,3 @@
-# Step Types
-
 Step Types are the different types of steps that can be executed in the browser. Each step type has a handler implemented for the selected automation framework (we only support puppeteer at this time). Check out the puppeteer step handlers [here](https://github.com/johns10/userdocs_clients/blob/main/packages/runner/src/automation/puppeteer/stepHandlers.ts).
 
 When a step is issued to the runner for execution, the Automation Framework will look up the handler for it, and execute it on the automated browser.

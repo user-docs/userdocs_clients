@@ -1,5 +1,3 @@
-# Screenshot Subform
-
 The Screenshot subform is displayed on the step form for any step type that references screenshots ([Element Screenshot](step_form_element_screenshot.md) and [Full Screen Screenshot](step_form_full_screen_screenshot.png)).
 
 ![Screenshot Subform Ok](images/step_form_reference_screenshot_subform_ok.png)

@@ -1,0 +1,1 @@
+Annotation Types represent the elements that can be added to the page, and the ways that existing elements can be modified for screenshot collection. Each annotation type supports a different set of inputs, and will create or modify the page in different ways. Each annotation type is described seperately in it's own article. 

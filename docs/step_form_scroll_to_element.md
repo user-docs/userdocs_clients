@@ -1,5 +1,3 @@
-# Scroll to Element Step Form
-
 The 'Scroll to Element' step type is used to scroll to a specific element into the viewport, setting the scene properly for a screenshot. Please note that this step will scroll the element to the top of the viewport by default. If there is a floating navbar or other floating elements, they may obscure the element to which you've scrolled. In that case, scroll to a preceding element.
 
 To make a 'Scroll to Element' step, navigate to an existing or new step.

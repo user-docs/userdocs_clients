@@ -1,6 +1,3 @@
-# Set Size Explicit Step Form
-
-
 The Set Size Explicit Step Type may set the size of the viewport, or the window in the browser depending on the automation framework in use. Selecting Set Size Explicit from the Step Type select input will cause the Set Size Explicit form to render, displaying these fields:
 
 ![Fill Field Form Reference](images/step_form_reference_set_size_explicit.png)

@@ -1,5 +1,3 @@
-# New Step Form
-
 When creating a step for the first time, most options will not be available. Select your step type to expose other options.
 
 ![New Step Form Reference](images/step_form_reference_new.png)
