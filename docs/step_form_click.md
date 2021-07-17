@@ -1,4 +1,6 @@
-The Click Step type is used to click on elements in a page. Selecting Click from the Step Type select input will cause the Click form to render, displaying these fields:
+The Click Step type clicks an element on a page. It has built in waits and retries. If the element doesn't render immediately, UserDocs will wait for it to appear before attempting to click. If this fails, UserDocs will wait and retry ten times, waiting longer on each retry. 
+
+Selecting Click from the Step Type select input will cause the Click form to render, displaying these fields:The Click Step type is used to click on elements in a page. Selecting Click from the Step Type select input will cause the Click form to render, displaying these fields:
 
 ![New Step Form Reference](images/step_form_reference_click.png)
 

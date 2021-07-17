@@ -6,7 +6,7 @@ Manual screenshot collection and annotation is time-consuming and boring. Automa
 
 ## Change Management
 
-It's difficult to track down UI changes. Automating identification of structural and visual changes streamlines change management.
+It's difficult to track down UI changes. UserDocs reporting highlights both visual and structural changes in the UI.
 
 ## Quality
 

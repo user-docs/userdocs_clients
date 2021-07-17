@@ -339,3 +339,11 @@ docs:
     post_category: documentation
     post_parent: 1043
     id: 1070
+  - file_name: automation_guidelines.md
+    post_title: Automation Guidelines
+    post_name: automation-guidelines
+    post_status: publish
+    description: Guidelines for Creating Screenshot Automation Processes
+    post_type: page
+    post_author: johns10davenport
+    id: 1075

@@ -1,8 +1,8 @@
 # Features
 
-## Interactive Automation Authoring
+## Interactive Authoring
 
-Add steps to set the scene for, and collect screenshots of your application. Run steps individually, so you can step through your processes and ensure they execute properly. Run entire processes to ensure they execute completely in real time. Assemble your steps and processes into jobs, intended for execution in CI/CD and test your entire automated workflow before deploying.
+Create processes to automatically collect screenshots from your application. Step through processes to debug them, or run them to ensure they execute completely in real time. Assemble your steps and processes into jobs, intended for execution in CI/CD and test your entire automated workflow before deploying.
 
 ## Automated Annotations
 
