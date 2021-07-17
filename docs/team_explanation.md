@@ -1,0 +1,1 @@
+Teams organize users into groups so they can collaborate on their screenshot automation projects. Teams establish access privileges so content isn't exposed to users outside your team. Teams also hold several settings that apply to all content in a teams portfolio, like CSS styles, storage locations and credentials.

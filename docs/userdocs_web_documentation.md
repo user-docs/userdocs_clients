@@ -1,0 +1,3 @@
+Welcome to the documentation for the [UserDocs Web Application](https://user-docs.com/userdocs-web/). [UserDocs Web](https://user-docs.com/userdocs-web/) is a web-based front end for building automated screenshot collection processes. These documents describe how to use the product to automate your screenshots.
+
+We built all the screenshots in our documentationwith the UserDocs screenshot automation Suite. We write our documentation in markdown, and published to our WordPress site using internally developed tools. Check out the source code for our documentation on the [userdocs_clients github](https://github.com/johns10/userdocs_clients/tree/main/docs). 

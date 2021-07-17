@@ -1,5 +1,3 @@
-# Badge Annotation Type
-
 The 'badge' annotation type places a circular badge with a single-character label in its center. The badge is an indicator used in conjunction with related text content. See the badge annotations in the following screenshot.
 
 The 'badge' annotation type uses the [annotation mask](annotation_placement.md) to place an invisible mask over the target element. UserDocs places the badge on the mask. The badge can be moved around the mask using CSS or the orientation fields. To create a badge annotation, pick 'Badge' from the annotation type field on the annotation subform.

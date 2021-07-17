@@ -1,5 +1,3 @@
-# Annotation Placement
-
 To place annotations without disrupting the flow and spacing of the existing document, UserDocs places multiple elements on the page:
 
 * The locator is a `0px/0px` element that is placed adjacent to the element to annotate

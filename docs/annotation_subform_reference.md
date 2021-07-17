@@ -1,5 +1,3 @@
-# Annotation Subform Reference
-
 The annotation subform defines the properties of annotations applied to an HTML element. The annotation subform can be seen on the [step form](step_form_navigate.md)
 
 ![Annotation Subform Reference](images/annotation_subform_reference.png)

@@ -1,5 +1,3 @@
-# Steps Menu
-
 The steps menu shows all the steps in a process. It is always filtered by the process id in the URL. It's typically accessed in the context of the selected version. The breadcrumb to the record is displayed at the top of the page.
 
 ![Step Menu Reference](images/step_menu_reference.png)

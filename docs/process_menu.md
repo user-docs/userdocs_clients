@@ -1,5 +1,3 @@
-# Processes Menu
-
 The Processes page displays all the processes for the selected team, project and version.  The current selections are displayed in the breadcrumb. 
 
 ![Process Menu Reference](images/process_menu_reference.png)
@@ -19,4 +17,4 @@ Displays the processes for a specific version. Used to drill down to a process w
 
 `/processes`
 
-Displays the processes for the currently selected version.
+Displays the processes for the selected version.

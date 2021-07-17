@@ -1,5 +1,3 @@
-# Apply Annotation Step Form
-
 The 'Apply Annotation' step type adds or modifies HTML elements on a web page. Those elements can highlight, annotate, or obscure existing content. Use annotations to apply graphics before taking the screenshot, so you don't have to apply them manually with another tool. These elements will be applied in the CI/CD and desktop applications.
 
 UserDocs changes HTML content to create annotations. In most cases, UserDocs attempts to make all annotations without modifying the existing document structure or styles. Some cases preclude UserDocs from making these modifications without changing the style or structure of the underlying document (like blurring text).  
