@@ -344,6 +344,18 @@ docs:
     post_name: automation-guidelines
     post_status: publish
     description: Guidelines for Creating Screenshot Automation Processes
-    post_type: page
+    post_type: docs
     post_author: johns10davenport
+    post_category: documentation
+    post_parent: 1043
     id: 1075
+  - file_name: first_process.md
+    post_title: Your First Process
+    post_name: first-process
+    post_status: publish
+    description: Instructions on Creating your First Process
+    post_type: docs
+    post_author: johns10davenport
+    post_category: documentation
+    post_parent: 1043
+    id: 1101

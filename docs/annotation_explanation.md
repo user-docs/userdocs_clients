@@ -3,6 +3,7 @@ UserDocs automatically annotates HTML pages so technical writers and content cre
 Annotations are graphic elements, which are added to screenshots. The purpose of an annotation is to correlate UI elements with text instructions or explanations. Annotated images are commonly used in software documentation, because they help the user to correlate what they see on the screen with text descriptions, or instructions. 
 
 Annotations can serve many different purposes, such as:
+
 * Direct a users attention to a specific portion of the UI
 * Indicate what portion of the ui a user should interact with
 * Explain a portion of the ui
