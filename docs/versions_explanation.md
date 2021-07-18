@@ -1,0 +1,1 @@
+Versions represent individual versions of your project, product, or application. Projects have multiple versions, so you can maintain screenshot collection processes for current and previous versions. If you don't wish to maintain processes for multiple versions, simply create a default version, and maintain all your processes on that version. 

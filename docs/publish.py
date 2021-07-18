@@ -13,19 +13,20 @@ def rewrite_links(content, docs):
   pattern = r'(?<!\!)\[[^\]]+\]\(([^)]+)\.md\)'
   result = re.findall(pattern, content)
   for name in result:
-    logging.debug("Attempting to rewrite link for " + name)
+    print("Attempting to rewrite link for " + name)
     doc = get_doc(docs, name)
     try:
       slug = doc["post_name"]
     except TypeError:
       logging.error("Doc not found for " + name + ", link won't get rewritten")
       slug = ""
-    content = rewrite_link(content, name, slug)
+    content = rewrite_link(content, name, "", slug)
 
   return content
 
-def rewrite_link(content, name, slug):
+def rewrite_link(content, name, path, slug):
   file_name = name + ".md"
+  # link = "/" + path + slug # Looks unnecessary to rewrite the path
   link = "/" + slug
   return content.replace(file_name, link)
 
@@ -33,6 +34,31 @@ def get_doc(docs, name):
   for doc in docs:
     if doc["file_name"] == name + ".md":
       return doc
+
+"""
+This was to rewrite the path according to the parents. Looks unnecessary.
+def get_doc_by_id(docs, id):
+  for doc in docs:
+    if doc["id"] == id:
+      return doc
+
+def get_parents(parents, docs, doc):
+  parent_id = doc["post_parent"]
+  if parent_id == 0:
+    return reversed(parents)
+  else:
+    parent = get_doc_by_id(docs, parent_id)
+    parents.append(parent['post_name'])
+    parents = get_parents(parents, docs, parent)
+    return parents
+
+def build_path(parents):
+  path = ""
+  for parent in parents:
+    path += parent + "/"
+
+  return path
+"""
 
 for doc in docs:
   logging.info(f'publishing {doc["file_name"]}')

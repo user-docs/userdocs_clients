@@ -17,4 +17,4 @@ Displays the processes for a specific version. Used to drill down to a process w
 
 `/processes`
 
-Displays the processes for the currently selected version.
+Displays the processes for the selected version.

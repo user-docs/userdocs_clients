@@ -27,11 +27,11 @@ docs:
     post_type: docs
     post_author: johns10davenport
     post_category: documentation
-    post_parent: 856
+    post_parent: 309
     id: 284
   - file_name: annotation_type_badge.md
     post_title: Badge Annotation Type
-    post_name: annotation-type-badge
+    post_name: badge-annotation-type
     post_status: publish
     description: Badge Annotation Type
     post_type: docs
@@ -51,7 +51,7 @@ docs:
     id: 252
   - file_name: annotation_type_badge_outline.md
     post_title: Badge Outline Annotation Type
-    post_name: annotation-type-badge-outline
+    post_name: badge-outline-annotation-type
     post_status: publish
     description: Badge Outline Annotation Type
     post_type: docs
@@ -61,7 +61,7 @@ docs:
     id: 254
   - file_name: annotation_type_blur.md
     post_title: Blur Annotation Type
-    post_name: annotation-type-blur
+    post_name: blur-annotation-type
     post_status: publish
     description: Reference documentation for the Blur Annotation Type in the UserDocs Application.
     post_type: docs
@@ -71,33 +71,23 @@ docs:
     id: 261
   - file_name: step_form_click.md
     post_title: Click Step Form
-    post_name: step-form-click
+    post_name: click-step-form
     post_status: publish
     description: Reference documentation for the click step in the UserDocs application.
     post_type: docs
     post_author: johns10davenport
     post_category: documentation
-    post_parent: 856
+    post_parent: 309
     id: 286
-  - file_name: documentation.md
-    post_title: Documentation
-    post_name: documentation
-    post_status: publish
-    description: Page describing the UserDocs documentation.
-    post_type: docs
-    post_author: johns10davenport
-    post_category: documentation
-    post_parent: 0
-    id: 432
   - file_name: step_form_element_screenshot.md
     post_title: Element Screenshot Step Form
-    post_name: step-form-element-screenshot
+    post_name: element-screenshot-step-form
     post_status: publish
     description: Reference documentation for the element screenshot step in the UserDocs application.
     post_type: docs
     post_author: johns10davenport
     post_category: documentation
-    post_parent: 856
+    post_parent: 309
     id: 292
   - file_name: element_subform.md
     post_title: Element Subform
@@ -117,11 +107,11 @@ docs:
     post_type: docs
     post_author: johns10davenport
     post_category: documentation
-    post_parent: 432
+    post_parent: 1043
     id: 267
   - file_name: step_form_fill_field.md
     post_title: Fill Field Step Form
-    post_name: step-form-fill-field
+    post_name: fill-field-step-form
     post_status: publish
     description: Reference documentation for the fill field step in the UserDocs application.
     post_type: docs
@@ -131,13 +121,13 @@ docs:
     id: 295
   - file_name: step_form_navigate.md
     post_title: Navigation Step Form
-    post_name: step-form-navigate
+    post_name: navigation-step-form
     post_status: publish
     description: Reference documentation for the navigate step in the UserDocs application.
     post_type: docs
     post_author: johns10davenport
     post_category: documentation
-    post_parent: 856
+    post_parent: 309
     id: 240
   - file_name: step_form_new.md
     post_title: New Step Form
@@ -147,7 +137,7 @@ docs:
     post_type: docs
     post_author: johns10davenport
     post_category: documentation
-    post_parent: 856
+    post_parent: 309
     id: 298
   - file_name: annotation_type_outline.md
     post_title: Outline Annotation Type
@@ -187,7 +177,7 @@ docs:
     post_type: docs
     post_author: johns10davenport
     post_category: documentation
-    post_parent: 432
+    post_parent: 1043
     id: 217
   - file_name: screenshot_approval_menu.md
     post_title: Screenshot Approval Menu
@@ -197,11 +187,11 @@ docs:
     post_type: docs
     post_author: johns10davenport
     post_category: documentation
-    post_parent: 0
+    post_parent: 856
     id: 281
   - file_name: screenshot_subform_reference.md
     post_title: Screenshot Subform
-    post_name: screenshot-subform-reference
+    post_name: screenshot-subform
     post_status: publish
     description: Reference documentation for the screenshot subform in the UserDocs application.
     post_type: docs
@@ -217,17 +207,17 @@ docs:
     post_type: docs
     post_author: johns10davenport
     post_category: documentation
-    post_parent: 856
+    post_parent: 309
     id: 300
   - file_name: step_form_set_size_explicit.md
     post_title: Set Size Explicit Step
-    post_name: step-form-set-size-explicit
+    post_name: set-size-explicit-step
     post_status: publish
     description: Reference documentation for the set size explicit step in the UserDocs application.
     post_type: docs
     post_author: johns10davenport
     post_category: documentation
-    post_parent: 856
+    post_parent: 309
     id: 302
   - file_name: step_menu.md
     post_title: Step Menu
@@ -257,7 +247,7 @@ docs:
     post_type: docs
     post_author: johns10davenport
     post_category: documentation
-    post_parent: 432
+    post_parent: 1043
     id: 856
   - file_name: annotation_explanation.md
     post_title: Annotations
@@ -267,9 +257,9 @@ docs:
     post_type: docs
     post_author: johns10davenport
     post_category: documentation
-    post_parent: 432
+    post_parent: 1043
     id: 858
-  - file_name: annotation_type_reference.md
+  - file_name: annotation_type_explanation.md
     post_title: Annotation Types
     post_name: annotation-types
     post_status: publish
@@ -279,3 +269,73 @@ docs:
     post_category: documentation
     post_parent: 858
     id: 860
+  - file_name: team_explanation.md
+    post_title: Teams
+    post_name: teams
+    post_status: publish
+    description: Teams
+    post_type: docs
+    post_author: johns10davenport
+    post_category: documentation
+    post_parent: 1043
+    id: 1028
+  - file_name: team_form_reference.md
+    post_title: Team Form
+    post_name: team-form
+    post_status: publish
+    description: Documentation about the Team Form
+    post_type: docs
+    post_author: johns10davenport
+    post_category: documentation
+    post_parent: 1028
+    id: 1033
+  - file_name: userdocs_web_documentation.md
+    post_title: UserDocs Web Documentation
+    post_name: userdocs-web-documentation
+    post_status: publish
+    description: Document Describing the UserDocs Web Application Documentation
+    post_type: docs
+    post_author: johns10davenport
+    post_category: documentation
+    post_parent: 0
+    id: 1043
+  - file_name: projects_explanation.md
+    post_title: Projects
+    post_name: projects
+    post_status: publish
+    description: Document Describing the Projects Datatype
+    post_type: docs
+    post_author: johns10davenport
+    post_category: documentation
+    post_parent: 1043
+    id: 1055
+  - file_name: projects_menu_reference.md
+    post_title: Project Menu
+    post_name: project-menu
+    post_status: publish
+    description: Document Describing the Project Menu
+    post_type: docs
+    post_author: johns10davenport
+    post_category: documentation
+    post_parent: 1055
+    id: 1056
+  - file_name: projects_form_reference.md
+    post_title: Projects Form
+    post_name: project-form
+    post_status: publish
+    description: Document Describing the Projects Form
+    post_type: docs
+    post_author: johns10davenport
+    post_category: documentation
+    post_parent: 1055
+    id: 1065
+  - file_name: versions_explanation.md
+    post_title: Versions
+    post_name: versions
+    post_status: publish
+    description: Document Describing the Versions Object
+    post_type: docs
+    post_author: johns10davenport
+    post_category: documentation
+    post_parent: 1043
+    id: 1070
