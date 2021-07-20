@@ -4,6 +4,11 @@ import * as Process from '../domain/process'
 import * as Helpers from '../domain/helpers'
 import * as Job from '../domain/job'
 
+export interface Override {
+  url: string,
+  project_id: number
+}
+
 export interface Runner {
   automationFramework: any,
   maxRetries: number,
@@ -13,7 +18,8 @@ export interface Runner {
   environment: string,
   callbacks: RunnerCallbacks,
   strategy?: string,
-  css?: string
+  css?: string,
+  overrides?: Array<Override>
 }
 
 export interface RunnerCallbacks {
@@ -46,6 +52,7 @@ export interface Configuration {
     browserEvent?: Function
   },
   css?: string,
+  overrides?: Array<Override>
   lib?: { [ key: string ]: Function } // need?
 }
 
@@ -68,6 +75,7 @@ export function initialize(configuration: Configuration) {
     environment: configuration.environment,
     imagePath: configuration.imagePath,
     css: configuration.css,
+    overrides: configuration.overrides,
     callbacks: {
       step: {
         preExecutionCallbacks: [],
