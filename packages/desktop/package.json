@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/desktop",
-  "version": "0.0.51",
+  "version": "0.0.52",
   "description": "Authors steps and processes for collection of screenshots.",
   "repository": "https://github.com/johns10/userdocs_clients",
   "main": "build/index.js",
@@ -39,7 +39,7 @@
     "start_windows": "./dist/win-unpacked/UserDocs.exe"
   },
   "dependencies": {
-    "@userdocs/runner": "^1.0.24",
+    "@userdocs/runner": "^1.0.25",
     "electron-is-dev": "^2.0.0",
     "electron-store": "^8.0.0",
     "electron-updater": "^4.3.9"
