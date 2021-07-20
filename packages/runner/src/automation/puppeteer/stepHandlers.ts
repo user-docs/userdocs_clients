@@ -13,12 +13,30 @@ interface StepHandler {
 }
 
 export const stepHandlers: StepHandler = {
-  "Navigate": async(browser: Browser, step: Step) => {
-    const url = step.page.url
+  "Navigate": async(browser: Browser, step: Step, configuration: Configuration) => {
     const page: Page | undefined = await currentPage(browser)
+    const overrides = configuration.overrides
+    const project_id = step.page.version.project.id
+    const url = step.page.url
+
+    var baseUrl = step.page.version.project.baseUrl
+    var finalUrl = ""
+
+    const filteredOverrides = overrides.filter(o => o.project_id == project_id)
+    if (filteredOverrides.length > 0) {
+      const override = filteredOverrides[0]
+      console.log(`Overriding base url ${override.url}`)
+      baseUrl = override.url
+    }
+
+    if (url.startsWith("/")) {
+      finalUrl = baseUrl + url
+    } else {
+      finalUrl = url
+    }
 
     if (page) {
-      await page.goto(url) 
+      await page.goto(finalUrl) 
     } else {
       throw new Error("Page not retreived from browser")
     }
