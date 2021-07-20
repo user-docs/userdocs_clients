@@ -48,6 +48,7 @@ const userdocs = {
     environment: store.get('environment', 'desktop'),
     imagePath: store.get('imagePath', ''),
     css: store.get('css', ''),
+    overrides: store.get('overrides', ''),
     userDataDirPath: store.get('userDataDirPath', ''),
     strategy: "xpath",
     callbacks: {
@@ -148,6 +149,10 @@ ipcMain.on('configure', async (event, message) => {
   if (message.css) {
     store.set('css', message.css)
     userdocs.configuration.css = message.css
+  }
+  if (message.overrides) {
+    store.set('overrides', message.overrides)
+    userdocs.configuration.overrides = message.overrides
   }
   if (message.strategy) userdocs.configuration.strategy = message.strategy
   try {
