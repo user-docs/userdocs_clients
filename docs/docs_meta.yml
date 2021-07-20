@@ -359,3 +359,13 @@ docs:
     post_category: documentation
     post_parent: 1043
     id: 1101
+  - file_name: default_injected_css.md
+    post_title: Default Injected CSS
+    post_name: default-injected-css
+    post_status: publish
+    description: Documentation on the default recommended CSS classes for UserDocs
+    post_type: docs
+    post_author: johns10davenport
+    post_category: documentation
+    post_parent: 1043
+    id: 1111
