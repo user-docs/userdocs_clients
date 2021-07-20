@@ -36,17 +36,22 @@ export async function execute(step: Step, runner: Runner)  {
   }
   try {
     step = await runner.callbacks.step.executionCallback(step, runner)
+
     for(const callback of runner.callbacks.step.successCallbacks) { 
       try { step = await callback(step, runner)  }
       catch(e) { console.error("Step run problem") }
     }
     console.debug(`Execution of step ${step.id}, ${step.name} completed successfully`)
+
   } catch(error) {
+
     for(const callback of runner.callbacks.step.failureCallbacks) { 
       step = await callback(step, runner, error) 
     }
+
     console.debug(`Execution of step ${step.id}, ${step.name} failed because ${error}`)
     console.debug(error.stack)
+
   }
   console.timeEnd("Step Timer")
   console.groupEnd();
@@ -120,7 +125,7 @@ async function runWithRetries(step: Step, runner: Runner, retry: number, error: 
   const maxRetries = runner.maxRetries
   const browser = runner.automationFramework.browser
   const handler = runner.automationFramework.stepHandler(step)
-  const configuration = { imagePath: runner.imagePath, maxWaitTime: runner.maxWaitTime }
+  const configuration = { imagePath: runner.imagePath, maxWaitTime: runner.maxWaitTime, overrides: runner.overrides }
   if (retry < maxRetries) {
     try {
       step = await handler(browser, step, configuration)
