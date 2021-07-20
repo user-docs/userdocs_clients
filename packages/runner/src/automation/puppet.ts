@@ -31,6 +31,7 @@ export const Puppet = {
         .filter(arg => String(arg).toLowerCase() !== '--headless')
         .concat("--proxy-server='direct://'")
         .concat('--proxy-bypass-list=*')
+        .concat('--hide-scrollbars')
         .concat(`--load-extension=${extensionPath}`)
         //.concat("--disable-extensions-except=/home/johns10/Documents/userdocs_clients/packages/extension/extension")
       if (runner.userDataDirPath) {
@@ -46,6 +47,7 @@ export const Puppet = {
         .filter(arg => String(arg).toLowerCase() !== '--headless')
         .concat("--proxy-server='direct://'")
         .concat('--proxy-bypass-list=*')
+        .concat('--hide-scrollbars')
         .concat(`--load-extension=${extensionPath}`)
         //.concat("--disable-extensions-except=/home/johns10/Documents/userdocs_clients/packages/extension/extension")
       if (runner.userDataDirPath) {
@@ -60,12 +62,14 @@ export const Puppet = {
         .concat('--single-process')
         .concat('--no-zygote')
         .concat('--no-sandbox')
+        .concat('--hide-scrollbars')
     } else if (runner.environment == 'test') {
       args = puppeteer.defaultArgs()
         .concat('--single-process')
         .concat('--no-zygote')
         .concat('--no-sandbox')
-    } else args = puppeteer.defaultArgs()
+        .concat('--hide-scrollbars')
+    } else args = puppeteer.defaultArgs() 
 
     const browser = await puppeteer.launch({ 
       executablePath: executablePath,
