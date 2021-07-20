@@ -68,14 +68,17 @@ export const stepHandlers: StepHandler = {
   "Element Screenshot": async(browser: Browser, step: Step, configuration: Configuration) => {
     const selector = step.element.selector
     const strategy = step.element.strategy.name
+    var fileName = step.process.name + " " + step.order + ".png"
     await new Promise(resolve => setTimeout(resolve, 250));
     let handle = await getElementHandle(browser, selector, strategy)
     if (!handle) { throw new ElementNotFound(strategy, selector) }
     let base64 = await handle.screenshot({ encoding: "base64"});
 
-    var fileName = step.screenshot.name 
-      ? step.screenshot.name + ".png"
-      : step.process.name + " " + step.order + ".png"
+    if (step.screenshot) {
+      fileName = step.screenshot.name 
+        ? step.screenshot.name + ".png"
+        : step.process.name + " " + step.order + ".png"
+    }
 
     if(configuration.imagePath != '') {
       const filePath = path.join(configuration.imagePath, fileName)
@@ -94,15 +97,18 @@ export const stepHandlers: StepHandler = {
   "Full Screen Screenshot": async(browser: Browser, step: Step, configuration: Configuration) => {
     const processName = step.process ? step.process.name : ""
     const stepOrder = step.order
+    var fileName = step.process.name + " " + step.order + ".png"
     await new Promise(resolve => setTimeout(resolve, 250));  
     const page: Page | undefined = await currentPage(browser) 
     if (!page) { throw new Error("Page not retreived from browser") }
     let base64: any = await page.screenshot({ encoding: "base64" });  
 
-    var fileName = step.screenshot.name 
-      ? step.screenshot.name + ".png"
-      : step.process.name + " " + step.order + ".png"
-
+    if (step.screenshot) {
+      fileName = step.screenshot.name 
+        ? step.screenshot.name + ".png"
+        : step.process.name + " " + step.order + ".png"
+    }
+    
     if(configuration.imagePath != '') {
       const filePath = path.join(configuration.imagePath, fileName)
       await writeFile(filePath, base64);
