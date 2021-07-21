@@ -22,22 +22,18 @@ export const stepHandlers: StepHandler = {
     var baseUrl = step.page.version.project.baseUrl
     var finalUrl = ""
 
-    console.log(1)
-    console.log(overrides)
     const filteredOverrides = overrides.filter(o => o.project_id == project_id)
     if (filteredOverrides.length > 0) {
       const override = filteredOverrides[0]
       console.log(`Overriding base url ${override.url}`)
       baseUrl = override.url
     }
-    console.log(2)
 
     if (url.startsWith("/")) {
       finalUrl = baseUrl + url
     } else {
       finalUrl = url
     }
-    console.log(3)
 
     if (page) {
       await page.goto(finalUrl) 
@@ -109,10 +105,6 @@ export const stepHandlers: StepHandler = {
       filePath = path.join(configuration.appDataDir, "UserDocs", "images", fileName)
     }
 
-    console.log(`Img Data to ${configuration.imagePath}`)
-    console.log(`App Data to ${configuration.appDataDir}`)
-    console.log(`Writing to ${filePath}`)
-
     await writeFile(filePath, base64);
 
     if (step.screenshot === null) { 
@@ -145,11 +137,7 @@ export const stepHandlers: StepHandler = {
     } else {
       filePath = path.join(configuration.appDataDir, "UserDocs", "images", fileName)
     }
-
-    console.log(`Img Data to ${configuration.imagePath}`)
-    console.log(`App Data to ${configuration.appDataDir}`)
-    console.log(`Writing to ${filePath}`)
-
+    
     await writeFile(filePath, base64);
 
     if (step.screenshot === null) { 
