@@ -51,6 +51,8 @@ const userdocs = {
     overrides: store.get('overrides', ''),
     userDataDirPath: store.get('userDataDirPath', ''),
     strategy: "xpath",
+    appDataDir: app.getPath("appData"),
+    appPath: app.getAppPath(),
     callbacks: {
       step: {
         preExecutionCallbacks: [ 'startLastStepInstance', stepUpdated ],
