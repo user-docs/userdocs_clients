@@ -19,7 +19,9 @@ export interface Runner {
   callbacks: RunnerCallbacks,
   strategy?: string,
   css?: string,
-  overrides?: Array<Override>
+  overrides?: Array<Override>,
+  appDataDir: string,
+  appPath: string
 }
 
 export interface RunnerCallbacks {
@@ -52,7 +54,9 @@ export interface Configuration {
     browserEvent?: Function
   },
   css?: string,
-  overrides?: Array<Override>
+  overrides?: Array<Override>,
+  appDataDir: string,
+  appPath: string,
   lib?: { [ key: string ]: Function } // need?
 }
 
@@ -76,6 +80,8 @@ export function initialize(configuration: Configuration) {
     imagePath: configuration.imagePath,
     css: configuration.css,
     overrides: configuration.overrides,
+    appDataDir: configuration.appDataDir,
+    appPath: configuration.appPath,
     callbacks: {
       step: {
         preExecutionCallbacks: [],
