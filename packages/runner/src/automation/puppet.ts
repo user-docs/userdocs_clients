@@ -39,7 +39,7 @@ export const Puppet = {
       }
     } else if(runner.environment == 'desktop') {
       executablePath = puppeteer.executablePath().replace("app.asar", "app.asar.unpacked")
-      extensionPath = (global as any).electronPath
+      extensionPath = runner.appPath
       extensionPath = path.join(extensionPath, '/..', '/..')
       extensionPath = path.join(extensionPath, "resources", "app.asar.unpacked", "node_modules", "@userdocs", "extension", "extension")
       args = puppeteer.defaultArgs()

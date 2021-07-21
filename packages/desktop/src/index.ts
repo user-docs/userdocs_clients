@@ -85,7 +85,6 @@ function main() {
       .then( mainWindow => authenticateJohnDavenport(mainWindow))
       .catch( e => console.log(e))
   } else {
-    (global as any).electronPath = app.getAppPath()
     createMainWindow()
       .then( mainWindow => navigateToLoginPage(mainWindow) )
       .catch( e => console.log(e))
