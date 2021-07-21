@@ -22,18 +22,22 @@ export const stepHandlers: StepHandler = {
     var baseUrl = step.page.version.project.baseUrl
     var finalUrl = ""
 
+    console.log(1)
+    console.log(overrides)
     const filteredOverrides = overrides.filter(o => o.project_id == project_id)
     if (filteredOverrides.length > 0) {
       const override = filteredOverrides[0]
       console.log(`Overriding base url ${override.url}`)
       baseUrl = override.url
     }
+    console.log(2)
 
     if (url.startsWith("/")) {
       finalUrl = baseUrl + url
     } else {
       finalUrl = url
     }
+    console.log(3)
 
     if (page) {
       await page.goto(finalUrl) 
@@ -87,6 +91,7 @@ export const stepHandlers: StepHandler = {
     const selector = step.element.selector
     const strategy = step.element.strategy.name
     var fileName = step.process.name + " " + step.order + ".png"
+    var filePath = ""
     await new Promise(resolve => setTimeout(resolve, 250));
     let handle = await getElementHandle(browser, selector, strategy)
     if (!handle) { throw new ElementNotFound(strategy, selector) }
@@ -99,9 +104,16 @@ export const stepHandlers: StepHandler = {
     }
 
     if(configuration.imagePath != '') {
-      const filePath = path.join(configuration.imagePath, fileName)
-      await writeFile(filePath, base64);
+      filePath = path.join(configuration.imagePath, fileName)
+    } else {
+      filePath = path.join(configuration.appDataDir, "UserDocs", "images", fileName)
     }
+
+    console.log(`Img Data to ${configuration.imagePath}`)
+    console.log(`App Data to ${configuration.appDataDir}`)
+    console.log(`Writing to ${filePath}`)
+
+    await writeFile(filePath, base64);
 
     if (step.screenshot === null) { 
       step.screenshot = { base64: base64, stepId: step.id }
@@ -116,6 +128,7 @@ export const stepHandlers: StepHandler = {
     const processName = step.process ? step.process.name : ""
     const stepOrder = step.order
     var fileName = step.process.name + " " + step.order + ".png"
+    var filePath = ""
     await new Promise(resolve => setTimeout(resolve, 250));  
     const page: Page | undefined = await currentPage(browser) 
     if (!page) { throw new Error("Page not retreived from browser") }
@@ -128,9 +141,16 @@ export const stepHandlers: StepHandler = {
     }
     
     if(configuration.imagePath != '') {
-      const filePath = path.join(configuration.imagePath, fileName)
-      await writeFile(filePath, base64);
+      filePath = path.join(configuration.imagePath, fileName)
+    } else {
+      filePath = path.join(configuration.appDataDir, "UserDocs", "images", fileName)
     }
+
+    console.log(`Img Data to ${configuration.imagePath}`)
+    console.log(`App Data to ${configuration.appDataDir}`)
+    console.log(`Writing to ${filePath}`)
+
+    await writeFile(filePath, base64);
 
     if (step.screenshot === null) { 
       step.screenshot = { base64: base64, stepId: step.id }
