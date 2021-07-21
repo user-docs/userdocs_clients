@@ -7,6 +7,7 @@ import {
 import * as Runner from '@userdocs/runner'
 import { configSchema } from './configSchema'
 import { autoUpdater } from 'electron-updater'
+import * as fs from 'fs';
 
 const path = require('path')
 const isDev = require('electron-is-dev');
@@ -89,6 +90,14 @@ function main() {
       .then( mainWindow => navigateToLoginPage(mainWindow) )
       .catch( e => console.log(e))
   }
+  const appPath = app.getPath("appData")
+  const name = app.getName()
+  const defaultImagePath = path.join(appPath, name, "images")
+  const defaultDataDirPath = path.join(appPath, name, "chromeDataDir")
+
+  if (!fs.existsSync(defaultImagePath)) fs.mkdirSync(defaultImagePath)
+  if (!fs.existsSync(defaultDataDirPath)) fs.mkdirSync(defaultDataDirPath)
+
   userdocs.runner = Runner.initialize(userdocs.configuration)
 }
 
