@@ -41,9 +41,11 @@
   },
   "dependencies": {
     "@userdocs/runner": "^1.0.25",
+    "@userdocs/server": "^0.0.19",
     "electron-is-dev": "^2.0.0",
     "electron-store": "^8.0.0",
-    "electron-updater": "^4.3.9"
+    "electron-updater": "^4.3.9",
+    "keytar": "^7.7.0",
   },
   "devDependencies": {
     "autoprefixer": "^10.3.1",
