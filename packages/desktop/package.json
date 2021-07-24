@@ -27,14 +27,15 @@
     ]
   },
   "scripts": {
-    "build": "yarn run clean && yarn run compile",
+    "copyHtml": "cpx ./src/gui ./build",
+    "build": "postcss src/gui/style.css -o build/gui/style.css && yarn run clean && yarn run compile && npm run copyHtml",
     "clean": "rimraf -rf ./dist",
     "compile": "tsc -p tsconfig.build.json",
     "dist": "yarn run build && electron-builder",
     "pack": "electron-builder --dir",
     "prepublishOnly": "yarn run build",
     "publish": "yarn run build",
-    "dev": "tsc-watch --noClear -p ./tsconfig.build.json --onSuccess \"electron build/index.js\"",
+    "dev": "postcss src/gui/style.css -o build/gui/style.css && npm run copyHtml && tsc-watch --noClear -p ./tsconfig.build.json --onSuccess \"electron build/index.js\"",
     "start_linux": "./dist/linux-unpacked/user_docs",
     "start_windows": "./dist/win-unpacked/UserDocs.exe"
   },
@@ -45,9 +46,16 @@
     "electron-updater": "^4.3.9"
   },
   "devDependencies": {
+    "autoprefixer": "^10.3.1",
+    "concurrently": "^6.2.0",
+    "cpx": "^1.5.0",
     "electron": "12.0.9",
     "electron-builder": "^22.10.5",
-    "electron-reload": "^1.5.0"
+    "electron-reload": "^1.5.0",
+    "postcss": "^8.3.6",
+    "postcss-cli": "^8.3.1",
+    "postcss-import": "^14.0.2",
+    "postcss-loader": "^6.1.1"
   },
   "optionalDependencies": {
     "win-node-env": "^0.4.0"
