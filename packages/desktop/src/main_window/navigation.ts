@@ -26,16 +26,37 @@ export async function createMainWindow () {
   return win
 }
 
-export async function navigateToApplication (mainWindow) {
-  console.log("navigateToApplication")
-  return mainWindow.loadURL(APPLICATION_URL)
+export async function getCredentials() {
+  let email = ''
+  let password = ''
+  try {
+    email = await keytar.getPassword('UserDocs', 'email')
+    password = await keytar.getPassword('UserDocs', 'password')
+  } catch(e) {
+    email = null
+    password = null
+  }
+  return {email: email, password: password}
 }
 
-export async function authenticateJohnDavenport(mainWindow) {
-  mainWindow = BrowserWindow.getAllWindows()[0]
-  mainWindow.webContents.executeJavaScript("document.querySelector('#user_email').value = 'johns10davenport@gmail.com'")
-  mainWindow.webContents.executeJavaScript("document.querySelector('#user_password').value = 'userdocs'")
-  mainWindow.webContents.executeJavaScript("document.querySelector('button').click()")
+export async function checkCredentials (mainWindow) {
+  const credentials = await getCredentials()
+  const email = credentials.email
+  const password = credentials.password
+  var navigateFunction
+  var response
+
+  if (email && password && email != '' && password != '') {
+    try { 
+      const tokens = await loginAPI(email, password, isDev) 
+      response = await loginUI(tokens.access_token, isDev)
+      navigateFunction = navigateToApplication
+    }
+    catch(e) { 
+      navigateFunction = navigateToLoginPage
+    }
+  }
+  await navigateFunction(mainWindow, response.headers)
   return mainWindow
 }
 
