@@ -60,44 +60,42 @@ export async function checkCredentials (mainWindow) {
   return mainWindow
 }
 
-export async function createMainWindow () {  
-  app.commandLine.appendSwitch('ignore-certificate-errors');
-  var win = await new BrowserWindow({
-    width: 1600,
-    height: 800,
-    webPreferences: {
-      preload: require('path').join(__dirname, './preload.js'),
-      devTools: true,
-      enableRemoteModule: false,
-      webSecurity: false
-    }
+export async function navigateToLoginPage (mainWindow) {
+  return mainWindow.loadFile('./gui/login.html')
+}
   })
-  /*
-  userdocs.mainWindow = win
-  win.webContents.on('did-navigate', (event, input) => {
-    console.log("Did Navigate")
-    console.log(event.sender)
-    console.log(event.sender.getTitle())
-    console.log(event.sender.getType())
-    console.log(event.sender.debugger)
-    console.log(event.sender.inspectElement())
-  })
-  win.webContents.on('will-navigate', (event, input) => { console.log("Will Navigate") })
-  win.webContents.on('will-redirect', (event, input) => { console.log("Will Redirect") })
-  win.webContents.on('did-start-navigation', (event, input) => { console.log("did-start-navigation") })
-  win.webContents.on('will-redirect', (event, input) => { console.log("will-redirect") })
-  win.webContents.on('did-redirect-navigation', (event, input) => { console.log("did-redirect-navigation") })
-  win.webContents.on('did-navigate', (event, input) => { console.log('did-navigate') })
-  win.webContents.on('did-frame-navigate', (event, input) => { console.log('did-frame-navigate') })
-  win.webContents.on('did-navigate-in-page', (event, input) => { console.log("did-navigate-in-page") })
-  win.webContents.on('app-command', (event, input) => { console.log('app-command') })
-  win.webContents.on('devtools-reload-page', (event, input) => {
-    console.log('devtools-reload-page')
-  })
-  */
-  return win
+
+function parseCookies(headers) {
+  return headers['set-cookie'][0]
+  .split(/; */)
+  .reduce((acc, c) => {
+    console.log(acc)
+    console.log(c)
+    const [ key, v ] = c.split('=', 2); 
+    if (v) acc[key] = decodeURIComponent(v)
+    else acc[key] = true
+
+    return acc
+  }, {})
 }
 
+export async function navigateToApplication (mainWindow, headers) {
+  let url
+
+  if(isDev) url = "https://dev.user-docs.com:4002"
+  else url = "https://app.user-docs.com"
+
+  if (headers) {
+    const cookie = parseCookies(headers)
+    cookie.url = url
+    cookie.name = '_userdocs_web_key'
+    cookie.value = cookie._userdocs_web_key
+    delete cookie._userdocs_web_key
+    await session.defaultSession.cookies.set(cookie)
+  }
+
+  return mainWindow.loadURL(APPLICATION_URL)
+}
 export function mainWindow () {
   return BrowserWindow.getAllWindows()[0]
 }
