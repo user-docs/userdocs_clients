@@ -12,9 +12,13 @@ import * as fs from 'fs';
 import { loginAPI, loginUI } from './main_window/login'
 import * as keytar from 'keytar';
 
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+
 const path = require('path')
 const isDev = require('electron-is-dev');
 const Store = require('electron-store');
+const PORT = Math.floor(Math.random() * (65535 - 49152) + 49152);
+
 
 if (isDev) {
   require('electron-reload')(__dirname, {
@@ -105,7 +109,7 @@ function main() {
   if (!fs.existsSync(defaultImagePath)) fs.mkdirSync(defaultImagePath)
   if (!fs.existsSync(defaultDataDirPath)) fs.mkdirSync(defaultDataDirPath)
 
-  start(server, 4001)
+  start(server, PORT)
   userdocs.runner = Runner.initialize(userdocs.configuration)
 }
 
@@ -193,13 +197,8 @@ ipcMain.on('configure', async (event, message) => {
   } 
 })
 
-/*
-ipcMain.on('testSelector', async (event, message) => {
-  automationModule = puppeteer
-  automationModule.testSelector(userdocs.browser, message)
-  console.log("Maybe I need to push some stuff in here")
-})
-*/
+ipcMain.handle('port', async() => { return PORT })
+
 app.whenReady().then(main)
 
 app.on("ready", () => {

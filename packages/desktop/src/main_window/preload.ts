@@ -13,7 +13,8 @@ contextBridge.exposeInMainWorld('userdocs', {
   executeJob: (job) => { ipcRenderer.send('executeJob', job)},
   start: () => { ipcRenderer.send('start')},
   testSelector: (message) => { ipcRenderer.send('testSelector', message)},
-  login: (credentials) => { return ipcRenderer.invoke('login', credentials) }
+  login: (credentials) => { return ipcRenderer.invoke('login', credentials) },
+  port: () => { return ipcRenderer.invoke('port') }
 })
 
 ipcRenderer.on('browserOpened', (event, payload) => browserOpened(payload))
