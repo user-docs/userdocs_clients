@@ -73,8 +73,6 @@ function parseCookies(headers) {
   return headers['set-cookie'][0]
   .split(/; */)
   .reduce((acc, c) => {
-    console.log(acc)
-    console.log(c)
     const [ key, v ] = c.split('=', 2); 
     if (v) acc[key] = decodeURIComponent(v)
     else acc[key] = true

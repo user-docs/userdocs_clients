@@ -114,8 +114,6 @@ function handleMessage (msg, sender) {
   msg.frameId = sender ? sender.frameId : null
   msg.frameUrl = sender ? sender.url : null
 
-  console.log(msg)
-
   if (!this._isPaused) {
     this._recording.push(msg)
     chrome.storage.local.set({ recording: this._recording }, () => {
