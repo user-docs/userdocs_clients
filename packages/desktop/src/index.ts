@@ -18,10 +18,10 @@ const isDev = require('electron-is-dev');
 const Store = require('electron-store');
 const PORT = Math.floor(Math.random() * (65535 - 49152) + 49152);
 
-
 if (isDev) {
   require('electron-reload')(__dirname, {
-    electron: path.join(__dirname, '../', 'node_modules', '.bin', 'electron')
+    electron: path.join(__dirname, '../', 'node_modules', '.bin', 'electron'),
+    hardResetMethod: 'exit'
   });
 }
 
