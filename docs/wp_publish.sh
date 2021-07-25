@@ -1,7 +1,9 @@
 wp @production post create \
-  --post_content="$(cat step_form_navigate.md)" \
-  --post_title='Navigation Step Form' \
+  --post_content="$(cat default_injected_css.md)" \
+  --post_title='default-injected-css' \
   --post_status='publish' \
-  --description='Document Describing the Annotation Subform' \
-  --post_type='page' \
-  --post_author='John Davenport'
+  --description='Instructions on Creating your First Process' \
+  --post_type='docs' \
+  --post_author='johns10davenport'
+
+
