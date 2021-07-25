@@ -126,6 +126,20 @@ function browserClosed(id) {
   mainWindow().webContents.send('browserClosed', browserId)
 }
 
+ipcMain.handle('login', async (event, credentials) => {
+	try {
+    const apiResponse = await loginAPI(credentials.email, credentials.password, isDev)
+    await loginUI(apiResponse.access_token, isDev)
+    keytar.setPassword('UserDocs', 'email', credentials.email)
+    keytar.setPassword('UserDocs', 'password', credentials.password)
+    keytar.setPassword('UserDocs', 'renewal_token', apiResponse.data.renewal_token)
+    return true
+	} catch (error) {
+    console.log("Login failed")
+    return false
+	}
+})
+
 ipcMain.on('execute', async (event, step) => {
   if(!userdocs.runner) throw ("No RUnner")
   if(!userdocs.runner.automationFramework.browser) userdocs.runner = await openBrowser()
