@@ -12,9 +12,18 @@ if (isDev) {
   SESSION_URL = APPLICATION_URL + "/session/new"
 }
 
-export async function navigateToLoginPage (mainWindow) {
-  console.log("navigateToLoginPage")
-  return mainWindow.loadURL(SESSION_URL)
+export async function createMainWindow () {  
+  app.commandLine.appendSwitch('ignore-certificate-errors');
+  var win = await new BrowserWindow({
+    width: 1600,
+    height: 800,
+    show: false,
+    webPreferences: {
+      preload: require('path').join(__dirname, './preload.js'),
+      devTools: true
+    }
+  })
+  return win
 }
 
 export async function navigateToApplication (mainWindow) {
