@@ -86,12 +86,15 @@ function main() {
   if(isDev) {
     userdocs.configuration.environment = 'development'
     createMainWindow()
-      .then( mainWindow => navigateToLoginPage(mainWindow) )
-      .then( mainWindow => authenticateJohnDavenport(mainWindow))
+      .then( mainWindow => checkCredentials(mainWindow) )
+      .then( mainWindow => addEventListeners(mainWindow) )
+      .then( mainWindow => mainWindow.show() )
       .catch( e => console.log(e))
   } else {
     createMainWindow()
-      .then( mainWindow => navigateToLoginPage(mainWindow) )
+      .then( mainWindow => checkCredentials(mainWindow) )
+      .then( mainWindow => addEventListeners(mainWindow) )
+      .then( mainWindow => mainWindow.show() )
       .catch( e => console.log(e))
   }
   const appPath = app.getPath("appData")
