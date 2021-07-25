@@ -23,6 +23,7 @@ if (isDev) {
 }
 
 const store = new Store(configSchema)
+const server = create(store)
 
 const stepUpdated = function(step) { 
   mainWindow().webContents.send('stepStatusUpdated', step); 
