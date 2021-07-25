@@ -2,25 +2,30 @@
   "name": "@userdocs/server",
   "version": "0.0.19",
   "description": "Automation server",
-  "main": "index.js",
+  "main": "dist/index",
+  "types": "dist/index",
+  "repository": "https://github.com/johns10/userdocs_clients",
   "author": "John Davnport",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "private": false,
   "scripts": {
     "build": "yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./dist",
     "compile": "tsc -p tsconfig.build.json",
-    "watch": "tsc-watch --noClear -p ./tsconfig.build.json",
     "prepublishOnly": "yarn run build",
-    "start": "yarn run build && node dist/index.js"
+    "watch": "tsc-watch --noClear -p ./tsconfig.build.json",
+    "start": "yarn run build && tsc-watch --noClear -p ./tsconfig.build.json --onSuccess \"node dist/index.js\""
   },
   "dependencies": {
+    "@types/node": "^16.4.0",
     "@userdocs/extension": "^1.0.3",
     "@userdocs/runner": "^1.0.25",
-    "express": "^4.17.1",
-    "express-graphql": "^0.12.0",
-    "graphql": "^15.5.0",
-    "subscriptions-transport-ws": "^0.9.18"
+    "apollo-server": "^3.0.2",
+    "graphql": "^15.5.1"
   },
-  "gitHead": "2190ed8c0cc283d4aeb30e5a33bb78a85e003805"
+  "gitHead": "012c88af0fd9253965193cbe3464f175f81a60ef",
+  "devDependencies": {}
 }
