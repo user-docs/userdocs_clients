@@ -4,8 +4,7 @@ import { app, ipcMain } from 'electron';
 import { 
   mainWindow, 
   checkCredentials,
-  createMainWindow,
-  addEventListeners } from './main_window/navigation'
+  createMainWindow } from './main_window/navigation'
 import { configSchema } from './configSchema'
 import { autoUpdater } from 'electron-updater'
 import * as fs from 'fs';
