@@ -1,94 +1,110 @@
-import express from 'express'
-import { graphqlHTTP } from 'express-graphql'
-import { buildSchema, execute, subscribe } from 'graphql' 
-const { createServer } = require('http');
+import { ApolloServer, gql } from 'apollo-server'
+
 import * as Runner from '@userdocs/runner'
-import { SubscriptionServer } from 'subscriptions-transport-ws'
 
-const PORT = 4100;
-
-const configuration = {
-  automationFrameworkName: 'puppeteer',
-  maxRetries: 3,
-  environment: 'desktop',
-  imagePath: 'imagePath',
-  userDataDirPath: '',
-  strategy: "xpath",
-  callbacks: {
-    step: {
-      preExecutionCallbacks: [ 'startLastStepInstance' ],
-      executionCallback: 'run',
-      successCallbacks: [ 'completeLastStepInstance' ],
-      failureCallbacks: [ 'failLastStepInstance' ]
-    },
-    process: {
-      preExecutionCallbacks: [ 'startLastProcessInstance' ],
-      executionCallback: 'run',
-      successCallbacks: [ 'completeLastProcessInstance' ],
-      failureCallbacks: [ 'failProcessInstance' ]
-    },
-    job: {
-      preExecutionCallbacks: [ 'startLastJobInstance' ],
-      executionCallback: 'run',
-      successCallbacks: [ 'completeLastJobInstance' ],
-      failureCallbacks: [ 'failLastJobInstance' ]
+function defaultConfiguration() {
+  return {
+    automationFrameworkName: 'puppeteer',
+    maxRetries: 3,
+    maxWaitTime: 10,
+    environment: 'desktop',
+    imagePath: 'imagePath',
+    userDataDirPath: '',
+    strategy: "xpath",
+    appDataDir: '',
+    appPath: '',
+    callbacks: {
+      step: {
+        preExecutionCallbacks: [ 'startLastStepInstance' ],
+        executionCallback: 'run',
+        successCallbacks: [ 'completeLastStepInstance' ],
+        failureCallbacks: [ 'failLastStepInstance' ]
+      },
+      process: {
+        preExecutionCallbacks: [ 'startLastProcessInstance' ],
+        executionCallback: 'run',
+        successCallbacks: [ 'completeLastProcessInstance' ],
+        failureCallbacks: [ 'failProcessInstance' ]
+      },
+      job: {
+        preExecutionCallbacks: [ 'startLastJobInstance' ],
+        executionCallback: 'run',
+        successCallbacks: [ 'completeLastJobInstance' ],
+        failureCallbacks: [ 'failLastJobInstance' ]
+      }
     }
   }
 }
 
-let runner
+function defaultSchema() {
+  return gql`
+    type Browser{
+      status: String
+    }
+    type Configuration{
+      maxRetries: Int
+      imagePath: String
+      userDataDirPath: String
+    }
+    type Mutation {
+      openBrowser: Browser
+      configuration(maxRetries: Int!, imagePath: String!, userDataDirPath: String!): Configuration
+    }
+    type Query {
+      browser: Browser 
+      configuration: Configuration
+    }
+    type Subscription {
+      browser: Browser
+    }
+  `
+}
 
-runner =  Runner.initialize(configuration)
-
-// Construct a schema, using GraphQL schema language
-var schema = buildSchema(`
-  type Browser{
-    status: String
-  }
-  type Mutation {
-    openBrowser: Browser
-  }
-  type Query {
-    browser: Browser 
-  }
-  type Subscription
-`);
- 
-// The root provides a resolver function for each API endpoint
-var root = {
-  openBrowser: async () => {
-    Runner.openBrowser(runner)
-    return { status: 'opening' }
-  },
-  browser: () => {  
-    if (runner.automationFramework.browser) return { status: 'open' }
-    else return { status: 'closed' }
-  }
-};
-
-
-var app = express();
-app.use('/graphql', graphqlHTTP({
-  schema: schema,
-  rootValue: root,
-  graphiql: ({ subscriptionEndpoint: `ws://localhost:${PORT}/subscriptions` } as any) // TODO: Figure out why I had to cast as any
-}));
-
-const ws = createServer(app)
-
-ws.listen(PORT, () => {
-  // Set up the WebSocket for handling GraphQL subscriptions.
-  new SubscriptionServer(
-    {
-      execute,
-      subscribe,
-      schema,
+function defaultResolvers(runner, store) {
+  return {
+    Query: {
+      browser: () => {  
+        if (runner.automationFramework.browser) return { status: 'open' }
+        else return { status: 'closed' }
+      },
+      configuration: () => { 
+        return store.store
+      }
     },
-    {
-      server: ws,
-      path: '/subscriptions',
-    },
-  );
-});
+    Mutation: {
+      openBrowser: async () => {
+        Runner.openBrowser(runner)
+        return { status: 'opening' }
+      },
+      configuration(_, {maxRetries, imagePath, userDataDirPath}) { 
+        console.log("COnfiguration Mutation")
+        store.set({maxRetries: maxRetries, imagePath: imagePath, userDataDirPath: userDataDirPath})
+        return store.store
+      }
+    }
+  };
+}
 
-console.log('Running a GraphQL API server at http://localhost:4100/graphql');
+function create(store) {
+  let runner =  Runner.initialize(defaultConfiguration())
+  var resolvers = defaultResolvers(runner, store)
+  var typeDefs = defaultSchema()
+  const server = new ApolloServer({ typeDefs, resolvers });
+  return {
+    server: server,
+    store: store,
+    runner: runner
+  }
+}
+
+function start(state, port) {
+  state.server.listen({port: port}).then(({ url }) => {
+    console.log(`🚀  Server ready at ${url}`);
+  });
+}
+
+function stop(state) {
+  state.server.stop()
+}
+
+export { create, start, stop }
