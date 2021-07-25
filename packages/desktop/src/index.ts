@@ -1,13 +1,16 @@
+import { create, start, stop } from '@userdocs/server'
+import * as Runner from '@userdocs/runner'
 import { app, ipcMain } from 'electron';
 import { 
   mainWindow, 
-  navigateToLoginPage, 
-  authenticateJohnDavenport, 
-  createMainWindow } from './main_window/navigation'
-import * as Runner from '@userdocs/runner'
+  checkCredentials,
+  createMainWindow,
+  addEventListeners } from './main_window/navigation'
 import { configSchema } from './configSchema'
 import { autoUpdater } from 'electron-updater'
 import * as fs from 'fs';
+import { loginAPI, loginUI } from './main_window/login'
+import * as keytar from 'keytar';
 
 const path = require('path')
 const isDev = require('electron-is-dev');
