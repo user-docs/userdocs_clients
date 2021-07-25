@@ -105,6 +105,7 @@ function main() {
   if (!fs.existsSync(defaultImagePath)) fs.mkdirSync(defaultImagePath)
   if (!fs.existsSync(defaultDataDirPath)) fs.mkdirSync(defaultDataDirPath)
 
+  start(server, 4001)
   userdocs.runner = Runner.initialize(userdocs.configuration)
 }
 
