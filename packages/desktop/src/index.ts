@@ -168,7 +168,6 @@ ipcMain.on('start', (event) => {
   userdocs.runState = 'running'
 })
 
-
 ipcMain.on('configure', async (event, message) => {
   if (message.image_path) {
     store.set('imagePath', message.image_path)
@@ -208,5 +207,6 @@ app.on("ready", () => {
 });
 
 app.on("before-quit", async () => {
+  stop(server)
   await Runner.closeBrowser(userdocs.runner, userdocs.configuration)
 })
