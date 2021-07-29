@@ -24,15 +24,19 @@ const isDev = require('electron-is-dev');
 const Store = require('electron-store');
 const PORT = Math.floor(Math.random() * (65535 - 49152) + 49152);
 
+var APPLICATION_URL
+
 if (isDev) {
   require('electron-reload')(__dirname, {
     electron: path.join(__dirname, '../', 'node_modules', '.bin', 'electron'),
     hardResetMethod: 'exit'
   });
+  APPLICATION_URL = "https://dev.user-docs.com:4002"
+} else {
+  APPLICATION_URL = "https://app.user-docs.com"
 }
 
 const store = new Store(configSchema)
-const server = create(store)
 
 const stepUpdated = function(step) { 
   mainWindow().webContents.send('stepStatusUpdated', step); 
