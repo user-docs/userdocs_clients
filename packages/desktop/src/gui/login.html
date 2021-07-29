@@ -53,16 +53,6 @@
         </form>
       </div>
     </div>
-    <script>
-      const login = document.getElementById('login-form')
-      login.addEventListener("submit", async (event) => {
-        event.preventDefault()
-      
-        const emailElement = document.getElementById('login-form_email')
-        const passwordElement = document.getElementById('login-form_password')
-        const credentials = { email: emailElement.value, password: passwordElement.value }
-        const result = window.userdocs.login(credentials)
-      })
-    </script>
+    <script src='./login.js'></script>
   </body>
 </html>
