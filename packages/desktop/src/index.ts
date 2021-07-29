@@ -3,8 +3,14 @@ import * as Runner from '@userdocs/runner'
 import { app, ipcMain } from 'electron';
 import { 
   mainWindow, 
-  checkCredentials,
-  createMainWindow } from './main_window/navigation'
+  createMainWindow,
+  getStoredCredentials,
+  getTokens,
+  getSession,
+  putSession,
+  navigate,
+  showMainWindow 
+} from './main_window/navigation'
 import { configSchema } from './configSchema'
 import { autoUpdater } from 'electron-updater'
 import * as fs from 'fs';
@@ -86,20 +92,6 @@ const userdocs = {
 }
 
 function main() {
-  if(isDev) {
-    userdocs.configuration.environment = 'development'
-    createMainWindow()
-      .then( mainWindow => checkCredentials(mainWindow) )
-      .then( mainWindow => addEventListeners(mainWindow) )
-      .then( mainWindow => mainWindow.show() )
-      .catch( e => console.log(e))
-  } else {
-    createMainWindow()
-      .then( mainWindow => checkCredentials(mainWindow) )
-      .then( mainWindow => addEventListeners(mainWindow) )
-      .then( mainWindow => mainWindow.show() )
-      .catch( e => console.log(e))
-  }
   const appPath = app.getPath("appData")
   const name = app.getName()
   const defaultImagePath = path.join(appPath, name, "images")
@@ -108,7 +100,37 @@ function main() {
   if (!fs.existsSync(defaultImagePath)) fs.mkdirSync(defaultImagePath)
   if (!fs.existsSync(defaultDataDirPath)) fs.mkdirSync(defaultDataDirPath)
 
-  start(server, PORT)
+  var state = {
+    email: null, password: null, token: null, 
+    window: null, url: APPLICATION_URL, cookie: null,
+    error: null
+  }
+
+  initialize(state)
+}
+
+async function initialize(state) {
+  var server
+  
+  state = await createMainWindow(state)
+  state = await getStoredCredentials(state)
+  state = await getTokens(state)
+  state = await getSession(state)
+  state = await putSession(state)
+  state = await navigate(state)
+  state = await showMainWindow(state)
+
+  server = await create({store: store, port: PORT, tokens: (state as any).tokens, url: (state as any).url})
+  server = initializeClient(server)
+  const result = await getConfiguration(server)
+  server = initializeServer(server)
+  server = await start(server)
+
+  if (result.user.configuration.css) store.set('css', result.user.configuration.css)
+  if (result.user.configuration.strategy) store.set('strategy', result.user.configuration.strategy)
+
+  server = initializeServer(server)
+  userdocs.server = server
   userdocs.runner = Runner.initialize(userdocs.configuration)
 }
 

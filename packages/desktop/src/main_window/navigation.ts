@@ -5,69 +5,93 @@ import * as keytar from 'keytar';
 const isDev = require('electron-is-dev');
 const path = require('path')
 
-var SESSION_URL
-var APPLICATION_URL
-
-if (isDev) {
-  APPLICATION_URL = "https://app.user-docs.com"
-  SESSION_URL = APPLICATION_URL + "/session/new"
-} else {
-  APPLICATION_URL = "https://app.user-docs.com"
-  SESSION_URL = APPLICATION_URL + "/session/new"
-}
-
-export async function createMainWindow () {  
+export async function createMainWindow (state) {  
   app.commandLine.appendSwitch('ignore-certificate-errors');
-  var win = await new BrowserWindow({
-    width: 1600,
-    height: 800,
-    show: false,
-    webPreferences: {
-      preload: require('path').join(__dirname, './preload.js'),
-      devTools: true
-    }
-  })
-  return win
-}
-
-export async function getCredentials() {
-  let email = ''
-  let password = ''
   try {
-    email = await keytar.getPassword('UserDocs', 'email')
-    password = await keytar.getPassword('UserDocs', 'password')
+    state.window = await new BrowserWindow({
+      width: 1600,
+      height: 800,
+      show: false,
+      webPreferences: {
+        preload: require('path').join(__dirname, './preload.js'),
+        devTools: true
+      }
+    })
   } catch(e) {
-    email = null
-    password = null
+    state.error = e
   }
-  return {email: email, password: password}
+  return state
 }
 
-export async function checkCredentials (mainWindow) {
-  const credentials = await getCredentials()
-  const email = credentials.email
-  const password = credentials.password
-  var navigateFunction
-  var response
+export async function getStoredCredentials(state) {
+  if (!state.window) { throw new Error("getStoredCredentials called with no window") }
+  if (state.error) { return state }
 
-  if (email && password && email != '' && password != '') {
-    try { 
-      const tokens = await loginAPI(email, password, isDev) 
-      response = await loginUI(tokens.access_token, isDev)
-      navigateFunction = navigateToApplication
-    }
-    catch(e) { 
-      navigateFunction = navigateToLoginPage
-    }
+  try {
+    state.email = await keytar.getPassword('UserDocs', 'email')
+    state.password = await keytar.getPassword('UserDocs', 'password')
+  } catch(e) {
+    state.error = e
   }
-  await navigateFunction(mainWindow, response.headers)
-  return mainWindow
+  return state
 }
 
-export async function navigateToLoginPage (mainWindow) {
-  return mainWindow.loadFile('./gui/login.html')
+export async function getTokens (state) {
+  if (!state.email || !state.password) { throw new Error("checkCredentials called with no email or password") }
+  if (state.email == '' || state.password == '') { throw new Error("checkCredentials called with blank email or password") }
+  if (state.error) { return state }
+
+  try {
+    state.tokens = await loginAPI(state.email, state.password, state.url) 
+  } catch (e) {
+    state.error = e
+  }
+  return state
 }
-  })
+
+export async function getSession(state) {
+  if (!state.tokens) { throw new Error("getSession called with no tokens") }
+  if (state.error) { return state }
+
+  try {
+    const response = await loginUI(state.tokens.access_token, state.url)
+    var cookie = parseCookies(response.headers)
+    cookie.url = state.url
+    cookie.name = '_userdocs_web_key'
+    cookie.value = cookie._userdocs_web_key
+    delete cookie._userdocs_web_key
+    state.cookie = cookie
+  } catch(e) {
+    state.error = e
+  }
+  return state
+}
+
+export async function putSession(state) {
+  if (!state.cookie) { throw new Error("putSession called with no cookie") }
+  if (state.error) { return state }
+  
+  try {
+    await session.defaultSession.cookies.set(state.cookie)
+  } catch(e) {
+    state.error = e
+  }
+  return state
+}
+
+export async function navigate (state) {
+  if (state.cookie.value) {
+    await state.window.loadURL(state.url)
+  } else {
+    await state.window.loadFile('./gui/login.html')
+  }
+  return state
+}
+
+export async function showMainWindow (state) {
+  state.window.show()
+  return state
+}
 
 function parseCookies(headers) {
   return headers['set-cookie'][0]
@@ -81,23 +105,6 @@ function parseCookies(headers) {
   }, {})
 }
 
-export async function navigateToApplication (mainWindow, headers) {
-  let url
-
-  if(isDev) url = "https://dev.user-docs.com:4002"
-  else url = "https://app.user-docs.com"
-
-  if (headers) {
-    const cookie = parseCookies(headers)
-    cookie.url = url
-    cookie.name = '_userdocs_web_key'
-    cookie.value = cookie._userdocs_web_key
-    delete cookie._userdocs_web_key
-    await session.defaultSession.cookies.set(cookie)
-  }
-
-  return mainWindow.loadURL(APPLICATION_URL)
-}
 export function mainWindow () {
   return BrowserWindow.getAllWindows()[0]
 }
