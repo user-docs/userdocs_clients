@@ -146,6 +146,7 @@ ipcMain.on('openBrowser', async (event) => {
 
 async function openBrowser() {
   if(!userdocs.runner) throw ("No RUnner")
+  configure()
   userdocs.runner = await Runner.openBrowser(userdocs.runner)
   userdocs.runner.automationFramework.browser.on('disconnected', () => browserClosed(null))
   mainWindow().webContents.send('browserOpened', { sessionId: 'id' })
@@ -154,6 +155,7 @@ async function openBrowser() {
 
 ipcMain.on('closeBrowser', async (event) => { 
   if(!userdocs.runner) throw ("No RUnner")
+  configure()
   userdocs.runner = await Runner.closeBrowser(userdocs.runner, userdocs.configuration)
   browserClosed('id')
   return true
@@ -180,42 +182,32 @@ ipcMain.handle('login', async (event, credentials) => {
 
 ipcMain.on('execute', async (event, step) => {
   if(!userdocs.runner) throw ("No RUnner")
+  configure()
   if(!userdocs.runner.automationFramework.browser) userdocs.runner = await openBrowser()
   await Runner.executeStep(step, userdocs.runner)
 })
 
 ipcMain.on('executeProcess', async (event, process) => {
+  configure()
   if(!userdocs.runner.automationFramework.browser) await openBrowser()
   await Runner.executeProcess(process, userdocs.runner)
 })
 
 ipcMain.on('executeJob', async (event, job) => {
+  configure()
   if(!userdocs.runner.automationFramework.browser) userdocs.runner = await openBrowser()
   await Runner.executeJob(job, userdocs.runner)
 })
 
-ipcMain.on('start', (event) => {
-  userdocs.runState = 'running'
-})
 
-ipcMain.on('configure', async (event, message) => {
-  if (message.image_path) {
-    store.set('imagePath', message.image_path)
-    userdocs.configuration.imagePath = message.image_path
-  }
-  if (message.user_data_dir_path) {
-    store.set('userDataDirPath', message.user_data_dir_path)
-    userdocs.configuration.userDataDirPath = message.user_data_dir_path
-  }
-  if (message.css) {
-    store.set('css', message.css)
-    userdocs.configuration.css = message.css
-  }
-  if (message.overrides) {
-    store.set('overrides', message.overrides)
-    userdocs.configuration.overrides = message.overrides
-  }
-  if (message.strategy) userdocs.configuration.strategy = message.strategy
+
+function configure () {
+  userdocs.configuration.imagePath = store.get('imagePath')
+  userdocs.configuration.userDataDirPath = store.get('userDataDirPath')
+  userdocs.configuration.css = store.get('css')
+  userdocs.configuration.overrides = store.get('overrides')
+  userdocs.configuration.strategy = store.get('strategy')
+  
   try {
     userdocs.runner = Runner.reconfigure(userdocs.runner, userdocs.configuration)
   } catch(e) {
@@ -236,6 +228,6 @@ app.on("ready", () => {
 });
 
 app.on("before-quit", async () => {
-  stop(server)
+  stop(userdocs.server)
   await Runner.closeBrowser(userdocs.runner, userdocs.configuration)
 })
