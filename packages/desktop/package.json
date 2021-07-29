@@ -12,12 +12,17 @@
     "productName": "UserDocs",
     "mac": {
       "target": "dmg",
-      "category": "public.app-category.developer-tools"
+      "category": "public.app-category.developer-tools",
+      "artifactName": "${productName} Setup.${ext}"
     },
     "linux": {
       "executableName": "user_docs",
       "target": "AppImage",
-      "category": "Office"
+      "category": "Office",
+      "artifactName": "${productName} Setup.${ext}"
+    },
+    "win": {
+      "artifactName": "${productName} Setup.${ext}"
     },
     "files": [
       "build/**/*"
@@ -63,5 +68,5 @@
   "optionalDependencies": {
     "win-node-env": "^0.4.0"
   },
-  "gitHead": "012c88af0fd9253965193cbe3464f175f81a60ef"
+  "gitHead": "111756509ecdd86a3a4485840a076455bebbe971"
 }
