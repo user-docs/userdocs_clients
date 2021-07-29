@@ -1,4 +1,4 @@
-import { create, start, stop } from '@userdocs/server'
+import { create, start, stop, initializeClient, initializeServer, getConfiguration } from '@userdocs/server'
 import * as Runner from '@userdocs/runner'
 import { app, ipcMain } from 'electron';
 import { 
@@ -55,6 +55,7 @@ const userdocs = {
   process: {},
   runState: 'stopped',
   runner: null,
+  server: null,
   configuration: {
     automationFrameworkName: store.get('automationFrameworkName', 'puppeteer'),
     maxRetries: store.get('maxRetries', 10),
@@ -216,6 +217,10 @@ ipcMain.on('configure', async (event, message) => {
   } catch(e) {
     userdocs.runner = Runner.initialize(userdocs.configuration)
   } 
+}
+
+ipcMain.on('start', (event) => {
+  userdocs.runState = 'running'
 })
 
 ipcMain.handle('port', async() => { return PORT })
