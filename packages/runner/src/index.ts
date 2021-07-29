@@ -5,7 +5,8 @@ import {
   executeStep,
   executeProcess,
   executeJob,
-  reconfigure
+  reconfigure,
+  Runner
 } from './runner/runner'
 
 import { allowedFields as allowedJobFields } from './domain/job'
@@ -18,5 +19,6 @@ export {
   executeProcess,
   executeJob,
   reconfigure,
-  allowedJobFields
+  allowedJobFields,
+  Runner
 } 
