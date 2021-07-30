@@ -13,7 +13,10 @@ contextBridge.exposeInMainWorld('userdocs', {
   executeJob: (job) => { ipcRenderer.send('executeJob', job)},
   start: () => { ipcRenderer.send('start')},
   testSelector: (message) => { ipcRenderer.send('testSelector', message)},
-  login: async (credentials) => { return await ipcRenderer.invoke('login', credentials) },
+  login: async (credentials) => { 
+    const result = await ipcRenderer.invoke('login', credentials) 
+    if (result) ipcRenderer.send('startServices')
+  },
   port: () => { return ipcRenderer.invoke('port') }
 })
 

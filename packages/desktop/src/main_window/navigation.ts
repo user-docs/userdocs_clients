@@ -24,34 +24,34 @@ export async function createMainWindow (state) {
 }
 
 export async function getStoredCredentials(state) {
-  if (!state.window) { throw new Error("getStoredCredentials called with no window") }
-  if (state.error) { return state }
+  if (state.status != 'ok') { return state }
 
   try {
     state.email = await keytar.getPassword('UserDocs', 'email')
     state.password = await keytar.getPassword('UserDocs', 'password')
   } catch(e) {
+    state.status = "noCredentials"
     state.error = e
   }
   return state
 }
 
 export async function getTokens (state) {
-  if (!state.email || !state.password) { throw new Error("checkCredentials called with no email or password") }
-  if (state.email == '' || state.password == '') { throw new Error("checkCredentials called with blank email or password") }
-  if (state.error) { return state }
+  if (state.status != 'ok') { return state }
 
   try {
     state.tokens = await loginAPI(state.email, state.password, state.url) 
+    await keytar.setPassword('UserDocs', 'accessToken', state.tokens.access_token)
+    await keytar.setPassword('UserDocs', 'renewalToken', state.tokens.renewal_token)
   } catch (e) {
+    state.status = "loginFailed"
     state.error = e
   }
   return state
 }
 
 export async function getSession(state) {
-  if (!state.tokens) { throw new Error("getSession called with no tokens") }
-  if (state.error) { return state }
+  if (state.status != 'ok') { return state }
 
   try {
     const response = await loginUI(state.tokens.access_token, state.url)
@@ -62,25 +62,26 @@ export async function getSession(state) {
     delete cookie._userdocs_web_key
     state.cookie = cookie
   } catch(e) {
+    state.status = "loginFailed"
     state.error = e
   }
   return state
 }
 
 export async function putSession(state) {
-  if (!state.cookie) { throw new Error("putSession called with no cookie") }
-  if (state.error) { return state }
+  if (state.status != 'ok') { return state }
   
   try {
     await session.defaultSession.cookies.set(state.cookie)
   } catch(e) {
+    state.status = "loginFailed"
     state.error = e
   }
   return state
 }
 
 export async function navigate (state) {
-  if (state.cookie.value) {
+  if (state.status == 'ok') {
     await state.window.loadURL(state.url)
   } else {
     await state.window.loadFile('./gui/login.html')

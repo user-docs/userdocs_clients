@@ -31,7 +31,7 @@ if (isDev) {
     electron: path.join(__dirname, '../', 'node_modules', '.bin', 'electron'),
     hardResetMethod: 'exit'
   });
-  APPLICATION_URL = "https://dev.user-docs.com:4002"
+  APPLICATION_URL = "https://app.user-docs.com"
 } else {
   APPLICATION_URL = "https://app.user-docs.com"
 }
@@ -106,17 +106,21 @@ function main() {
   if (!fs.existsSync(defaultDataDirPath)) fs.mkdirSync(defaultDataDirPath)
 
   var state = {
-    email: null, password: null, token: null, 
-    window: null, url: APPLICATION_URL, cookie: null,
-    error: null
+    email: null, password: null, token: null, window: null, 
+    url: APPLICATION_URL, cookie: null, error: null, status: 'ok'
   }
 
   initialize(state)
 }
 
 async function initialize(state) {
-  var server
-  
+  state = await initializeWindow(state)
+  if (state.status == "ok") {
+    await startServices()
+  }
+}
+
+async function initializeWindow(state) {
   state = await createMainWindow(state)
   state = await getStoredCredentials(state)
   state = await getTokens(state)
@@ -124,8 +128,15 @@ async function initialize(state) {
   state = await putSession(state)
   state = await navigate(state)
   state = await showMainWindow(state)
+  return state
+}
 
-  server = await create({store: store, port: PORT, tokens: (state as any).tokens, url: (state as any).url})
+ipcMain.on('startServices', () => startServices)
+async function startServices() {
+  const accessToken = await keytar.getPassword('UserDocs', 'accessToken')
+  const renewalToken = await keytar.getPassword('UserDocs', 'renewalToken')
+  const tokens = {renewal_token: renewalToken, access_token: accessToken}
+  var server = await create({store: store, port: PORT, tokens: tokens, url: APPLICATION_URL})
   server = initializeClient(server)
   const result = await getConfiguration(server)
   server = initializeServer(server)
@@ -168,11 +179,10 @@ function browserClosed(id) {
 
 ipcMain.handle('login', async (event, credentials) => {
 	try {
-    const apiResponse = await loginAPI(credentials.email, credentials.password, isDev)
-    await loginUI(apiResponse.access_token, isDev)
+    const apiResponse = await loginAPI(credentials.email, credentials.password, APPLICATION_URL)
+    await loginUI(apiResponse.access_token, APPLICATION_URL)
     keytar.setPassword('UserDocs', 'email', credentials.email)
     keytar.setPassword('UserDocs', 'password', credentials.password)
-    keytar.setPassword('UserDocs', 'renewal_token', apiResponse.data.renewal_token)
     return true
 	} catch (error) {
     console.log("Login failed")
