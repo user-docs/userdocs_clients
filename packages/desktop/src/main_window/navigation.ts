@@ -7,14 +7,25 @@ const path = require('path')
 
 export async function createMainWindow (state) {  
   app.commandLine.appendSwitch('ignore-certificate-errors');
+  var devTools = false
+  var contextIsolation = true
+  var enableRemoteModule = false
+  var nodeIntegration = false
+  if(process.env.NODE_ENV === 'test') {
+    devTools = false
+    contextIsolation = false
+    enableRemoteModule = true
+    nodeIntegration = true
+  }
   try {
     state.window = await new BrowserWindow({
       width: 1600,
       height: 800,
-      show: false,
       webPreferences: {
         preload: require('path').join(__dirname, './preload.js'),
-        devTools: true
+        contextIsolation: contextIsolation,
+        enableRemoteModule: enableRemoteModule,
+        nodeIntegration: nodeIntegration
       }
     })
   } catch(e) {

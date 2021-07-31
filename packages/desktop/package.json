@@ -42,11 +42,15 @@
     "publish": "yarn run build",
     "dev": "postcss src/gui/style.css -o build/gui/style.css && npm run copyHtml && tsc-watch --noClear -p ./tsconfig.build.json --onSuccess \"electron build/index.js\"",
     "start_linux": "./dist/linux-unpacked/user_docs",
-    "start_windows": "./dist/win-unpacked/UserDocs.exe"
+    "start_windows": "./dist/win-unpacked/UserDocs.exe",
+    "test-watch": "NODE_ENV=test jest --watchAll",
+    "test": "NODE_ENV=test jest",
+    "watch": "tsc-watch --noClear -p ./tsconfig.build.json"
   },
   "dependencies": {
     "@userdocs/runner": "^1.0.27",
     "@userdocs/server": "^0.0.21",
+    "axios": "^0.21.1",
     "electron-is-dev": "^2.0.0",
     "electron-store": "^8.0.0",
     "electron-updater": "^4.3.9",
@@ -57,13 +61,14 @@
     "autoprefixer": "^10.3.1",
     "concurrently": "^6.2.0",
     "cpx": "^1.5.0",
-    "electron": "12.0.9",
+    "electron": "13.1.7",
     "electron-builder": "^22.10.5",
     "electron-reload": "^1.5.0",
     "postcss": "^8.3.6",
     "postcss-cli": "^8.3.1",
     "postcss-import": "^14.0.2",
-    "postcss-loader": "^6.1.1"
+    "postcss-loader": "^6.1.1",
+    "spectron": "^15.0.0"
   },
   "optionalDependencies": {
     "win-node-env": "^0.4.0"
