@@ -18,5 +18,9 @@ export let configSchema = {
   userDataDirPath: {
     type: 'string',
     default: ''
+  },
+  applicationUrl: {
+    type: 'string',
+    default: 'https://app.user-docs.com'
   }
 }

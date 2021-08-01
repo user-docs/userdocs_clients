@@ -4,7 +4,6 @@ import { app, ipcMain } from 'electron';
 import { 
   mainWindow, 
   createMainWindow,
-  getStoredCredentials,
   getTokens,
   getSession,
   putSession,
@@ -31,12 +30,13 @@ if (isDev) {
     electron: path.join(__dirname, '../', 'node_modules', '.bin', 'electron'),
     hardResetMethod: 'exit'
   });
-  APPLICATION_URL = "https://app.user-docs.com"
+  APPLICATION_URL = "https://dev.user-docs.com:4002"
 } else {
   APPLICATION_URL = "https://app.user-docs.com"
 }
 
 const store = new Store(configSchema)
+store.set('applicationUrl', APPLICATION_URL)
 
 const stepUpdated = function(step) { 
   mainWindow().webContents.send('stepStatusUpdated', step); 
@@ -49,7 +49,6 @@ const processUpdated = function(process) {
 }
 
 const browserEventHandler = function(event) {
-  console.log('browserEventHandler')
   mainWindow().webContents.send('browserEvent', event);
 }
 
@@ -106,7 +105,7 @@ function main() {
   if (!fs.existsSync(defaultDataDirPath)) fs.mkdirSync(defaultDataDirPath)
 
   var state = {
-    email: null, password: null, token: null, window: null, 
+    tokens: {}, window: null, 
     url: APPLICATION_URL, cookie: null, error: null, status: 'ok'
   }
 
@@ -116,13 +115,15 @@ function main() {
 async function initialize(state) {
   state = await initializeWindow(state)
   if (state.status == "ok") {
-    await startServices()
+    const result = await startServices()
+    console.log("Sending status")
+    console.log(result)
+    mainWindow().webContents.send('serviceStatus', result)
   }
 }
 
 async function initializeWindow(state) {
   state = await createMainWindow(state)
-  state = await getStoredCredentials(state)
   state = await getTokens(state)
   state = await getSession(state)
   state = await putSession(state)
@@ -131,7 +132,7 @@ async function initializeWindow(state) {
   return state
 }
 
-ipcMain.on('startServices', () => startServices)
+ipcMain.handle('startServices', startServices)
 async function startServices() {
   const accessToken = await keytar.getPassword('UserDocs', 'accessToken')
   const renewalToken = await keytar.getPassword('UserDocs', 'renewalToken')
@@ -148,6 +149,27 @@ async function startServices() {
   server = initializeServer(server)
   userdocs.server = server
   userdocs.runner = Runner.initialize(userdocs.configuration)
+
+  return serviceStatus()
+}
+
+ipcMain.handle('serviceStatus', serviceStatus)
+function serviceStatus() {
+  var status = {server: null, client: null, runner: null}
+  if (userdocs.server == null) {
+    status.server = "not_running"
+    status.client = "not_running"
+  }
+  else if (userdocs.server) {
+    if (userdocs.server.server.state) status.server = userdocs.server.server.state.phase
+    if (userdocs.server.client == null) status.client = "not_running"
+    else if (userdocs.server.client) status.client = "running"
+  }
+
+  if (userdocs.runner == null) status.runner = "not_running"
+  else if (userdocs.runner) status.runner = "running"
+
+  return status
 }
 
 ipcMain.on('openBrowser', async (event) => { 
@@ -177,19 +199,6 @@ function browserClosed(id) {
   mainWindow().webContents.send('browserClosed', browserId)
 }
 
-ipcMain.handle('login', async (event, credentials) => {
-	try {
-    const apiResponse = await loginAPI(credentials.email, credentials.password, APPLICATION_URL)
-    await loginUI(apiResponse.access_token, APPLICATION_URL)
-    keytar.setPassword('UserDocs', 'email', credentials.email)
-    keytar.setPassword('UserDocs', 'password', credentials.password)
-    return true
-	} catch (error) {
-    console.log("Login failed")
-    return false
-	}
-})
-
 ipcMain.on('execute', async (event, step) => {
   if(!userdocs.runner) throw ("No RUnner")
   configure()
@@ -209,8 +218,6 @@ ipcMain.on('executeJob', async (event, job) => {
   await Runner.executeJob(job, userdocs.runner)
 })
 
-
-
 function configure () {
   userdocs.configuration.imagePath = store.get('imagePath')
   userdocs.configuration.userDataDirPath = store.get('userDataDirPath')
@@ -223,6 +230,27 @@ function configure () {
   } catch(e) {
     userdocs.runner = Runner.initialize(userdocs.configuration)
   } 
+}
+
+ipcMain.on('clearCredentials', async () => {clearCredentials()})
+async function clearCredentials() {
+  await keytar.deletePassword('UserDocs', 'email')
+  await keytar.deletePassword('UserDocs', 'password')
+  await keytar.deletePassword('UserDocs', 'accessToken')
+  await keytar.deletePassword('UserDocs', 'renewalToken')
+}
+
+ipcMain.handle('putTokens', putTokens)
+async function putTokens(event, tokens) {
+  if(!tokens.access_token) throw new Error("No access token found")
+  if(!tokens.renewal_token) throw new Error("No renewal token found")
+  try {
+    await keytar.setPassword('UserDocs', 'accessToken', tokens.access_token)
+    await keytar.setPassword('UserDocs', 'renewalToken', tokens.renewal_token)
+    return {status: "ok"}
+  } catch(e) {
+    return {status: "nok", error: e}
+  }
 }
 
 ipcMain.on('start', (event) => {

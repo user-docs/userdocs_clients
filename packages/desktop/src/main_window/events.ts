@@ -53,3 +53,16 @@ export function processUpdated(process) {
     console.log("Failed to send update to process-" + process.id + "-runner")
   }
 }
+
+export function serviceStatus(status) {
+  try {
+    document
+      .getElementById("services-status-hook")
+      .dispatchEvent(new CustomEvent("put-services-status", {
+        bubbles: false,
+        detail: status
+      }))
+  } catch (e) {
+    console.log("Failed to send services status")
+  }
+}

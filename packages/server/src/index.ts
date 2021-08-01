@@ -125,8 +125,15 @@ function createRunner(state) {
 export function initializeClient(state) {
   const url = state.url
   const headers = {authorization: state.tokens.access_token}
-  state.client = new GraphQLClient(url + "/api", { headers: headers })
-  return state
+  if (state.tokens.access_token && state.tokens.renewal_token) {
+    state.client = new GraphQLClient(url + "/api", { headers: headers })
+    return state
+  } else {
+    throw new Error("No authentication headers found")
+    state.status = "error"
+    state.error = "No authentication headers found"
+    return state
+  }
 }
 
 export function initializeServer(state) {

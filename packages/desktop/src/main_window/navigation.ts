@@ -7,41 +7,15 @@ const path = require('path')
 
 export async function createMainWindow (state) {  
   app.commandLine.appendSwitch('ignore-certificate-errors');
-  var devTools = false
-  var contextIsolation = true
-  var enableRemoteModule = false
-  var nodeIntegration = false
-  if(process.env.NODE_ENV === 'test') {
-    devTools = false
-    contextIsolation = false
-    enableRemoteModule = true
-    nodeIntegration = true
-  }
   try {
     state.window = await new BrowserWindow({
       width: 1600,
       height: 800,
       webPreferences: {
-        preload: require('path').join(__dirname, './preload.js'),
-        contextIsolation: contextIsolation,
-        enableRemoteModule: enableRemoteModule,
-        nodeIntegration: nodeIntegration
+        preload: require('path').join(__dirname, './preload.js')
       }
     })
   } catch(e) {
-    state.error = e
-  }
-  return state
-}
-
-export async function getStoredCredentials(state) {
-  if (state.status != 'ok') { return state }
-
-  try {
-    state.email = await keytar.getPassword('UserDocs', 'email')
-    state.password = await keytar.getPassword('UserDocs', 'password')
-  } catch(e) {
-    state.status = "noCredentials"
     state.error = e
   }
   return state
@@ -51,11 +25,10 @@ export async function getTokens (state) {
   if (state.status != 'ok') { return state }
 
   try {
-    state.tokens = await loginAPI(state.email, state.password, state.url) 
-    await keytar.setPassword('UserDocs', 'accessToken', state.tokens.access_token)
-    await keytar.setPassword('UserDocs', 'renewalToken', state.tokens.renewal_token)
+    state.tokens.access_token = await keytar.getPassword('UserDocs', 'accessToken')
+    state.tokens.renewal_token = await keytar.getPassword('UserDocs', 'renewalToken')
   } catch (e) {
-    state.status = "loginFailed"
+    state.status = "tokenFetchFailed"
     state.error = e
   }
   return state
@@ -95,7 +68,7 @@ export async function navigate (state) {
   if (state.status == 'ok') {
     await state.window.loadURL(state.url)
   } else {
-    await state.window.loadFile('./gui/login.html')
+    await state.window.loadURL(state.url + "/session/new")
   }
   return state
 }

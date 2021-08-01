@@ -16,7 +16,6 @@ export async function loginAPI(email, password, url) {
 }
 
 export async function loginUI(token, url) {
-  console.log(token)
   let convertUrl = url + "/api/session/convert"
   const response = await axios.post(convertUrl, null, {headers: {'authorization': token}})
   return response
