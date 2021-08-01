@@ -33,14 +33,14 @@
   },
   "scripts": {
     "copyHtml": "cpx ./src/gui ./build",
-    "build": "postcss src/gui/style.css -o build/gui/style.css && yarn run clean && yarn run compile && npm run copyHtml",
+    "build": "postcss src/gui/style.css -o build/gui/style.css && yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./dist",
     "compile": "tsc -p tsconfig.build.json",
     "dist": "yarn run build && electron-builder",
     "pack": "electron-builder --dir",
     "prepublishOnly": "yarn run build",
     "publish": "yarn run build",
-    "dev": "postcss src/gui/style.css -o build/gui/style.css && npm run copyHtml && tsc-watch --noClear -p ./tsconfig.build.json --onSuccess \"electron build/index.js\"",
+    "dev": "tsc-watch --noClear -p ./tsconfig.build.json --onSuccess \"electron build/index.js\"",
     "start_linux": "./dist/linux-unpacked/user_docs",
     "start_windows": "./dist/win-unpacked/UserDocs.exe",
     "test-watch": "NODE_ENV=test jest --watchAll",
@@ -73,5 +73,5 @@
   "optionalDependencies": {
     "win-node-env": "^0.4.0"
   },
-  "gitHead": "111756509ecdd86a3a4485840a076455bebbe971"
+  "gitHead": "793ad8a78ba5c917268e12329c0bd79e163a745e"
 }

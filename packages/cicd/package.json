@@ -32,11 +32,8 @@
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.13.0",
-    "@types/jest": "^26.0.23",
     "dotenv": "^8.2.0",
-    "jest": "^27.0.4",
-    "ts-jest": "^27.0.1",
     "ts-node": "^9.1.1"
   },
-  "gitHead": "111756509ecdd86a3a4485840a076455bebbe971"
+  "gitHead": "793ad8a78ba5c917268e12329c0bd79e163a745e"
 }
