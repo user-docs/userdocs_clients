@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/cicd",
-  "version": "1.0.30",
+  "version": "1.0.31",
   "description": "CICD Runner for the UserDocs Screenshot collection app",
   "main": "dist/index",
   "repository": "https://github.com/johns10/userdocs_clients",
@@ -19,9 +19,9 @@
     "test": "jest"
   },
   "dependencies": {
-    "@userdocs/extension": "^1.0.8",
-    "@userdocs/runner": "^1.0.30",
-    "@userdocs/server": "^1.0.2",
+    "@userdocs/extension": "^1.0.9",
+    "@userdocs/runner": "^1.0.31",
+    "@userdocs/server": "^1.0.3",
     "axios": "^0.21.1",
     "electron-is-dev": "^2.0.0",
     "global": "^4.4.0",
