@@ -6,7 +6,7 @@ const isDev = require('electron-is-dev');
 const path = require('path')
 
 export async function createMainWindow (state) {  
-  app.commandLine.appendSwitch('ignore-certificate-errors');
+  //app.commandLine.appendSwitch('ignore-certificate-errors');
   try {
     state.window = await new BrowserWindow({
       width: 1600,
