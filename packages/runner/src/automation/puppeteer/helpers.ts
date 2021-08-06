@@ -23,3 +23,15 @@ export async function getElementHandle(browser: Browser, selector: string, strat
     return handles[0]
   }
 }
+
+export async function getElementsHandle(browser: Browser, selector: string, strategy: string) {
+  const page: Page | undefined = await currentPage(browser)
+  if(!page) { throw new Error("Page not retreived from browser") }
+  if (strategy === 'css') {
+    const handle: any = await page.$$(selector)
+    return handle
+  } else if (strategy === 'xpath') {
+    const handles = await page.$x(selector)
+    return handles[0]
+  }
+}
