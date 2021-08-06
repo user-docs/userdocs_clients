@@ -21,7 +21,7 @@
     {
       "js": ["dist/content.js"],
       "css": ["dist/content.css"],
-      "matches": ["https://*/*"]
+      "matches": ["<all_urls>"]
     }
   ],
   "background": {
@@ -32,6 +32,8 @@
     "open_in_tab": false
   },
   "web_accessible_resources": [
-    "dist/page.js"
+    "dist/page.js",
+    "dist/content.css",
+    "dist/fonts/sui.woff"
   ]
 }
