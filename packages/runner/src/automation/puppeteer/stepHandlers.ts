@@ -1,5 +1,5 @@
 import { Step } from '../../domain/step'
-import { currentPage, getElementHandle } from './helpers'
+import { currentPage, getElementHandle, getElementsHandle } from './helpers'
 import { Page, ElementHandle, Browser } from 'puppeteer'
 import { StyleFunctionsText } from '../../annotation/style'
 import { annotationHandlers } from '../../annotation/annotation'
@@ -233,6 +233,24 @@ export const stepHandlers: StepHandler = {
     const page: Page | undefined = await currentPage(browser)
     if (!page) { throw new Error("Page not retreived from browser")}
     await page.type(selector, String.fromCharCode(13))
+    return step
+  },
+  "Convert to SUI":async(browser: Browser, step: Step, configuration: Configuration) => {
+    const selector = step.element.selector
+    const strategy = step.element.strategy.name
+    const page: Page | undefined = await currentPage(browser)
+    if (!page) { throw new Error("Page not retreived from browser")}
+    const handles: Array<ElementHandle> = await getElementsHandle(browser, selector, strategy)
+    for (const handle of handles) {
+      console.log(handle)
+      await page.evaluate(element => {
+        element.style.fontFamily = 'sui'
+      }, handle)  //TODO: NO ANY'S
+    }
+    try {
+    } catch (error) {
+      throw error
+    }
     return step
   }
 }
