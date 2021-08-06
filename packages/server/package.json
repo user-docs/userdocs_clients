@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/server",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Automation server",
   "main": "dist/index",
   "types": "dist/index",
@@ -21,8 +21,8 @@
   },
   "dependencies": {
     "@types/node": "^16.4.0",
-    "@userdocs/extension": "^1.0.9",
-    "@userdocs/runner": "^1.0.31",
+    "@userdocs/extension": "^1.0.10",
+    "@userdocs/runner": "^1.0.32",
     "apollo-server": "^3.0.2",
     "graphql": "^15.5.1",
     "graphql-request": "^3.5.0"
