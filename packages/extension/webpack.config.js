@@ -58,6 +58,10 @@ let ExtensionConfig = Object.assign({}, config, {
       }),
       new CopyPlugin([
         {
+          from: './fonts/*',
+          to: __dirname + '/extension/dist/',
+        },
+        {
           from: './icons/*',
           to: __dirname + '/extension/dist/',
         },
