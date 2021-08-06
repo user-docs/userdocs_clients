@@ -21,7 +21,9 @@ import * as keytar from 'keytar';
 const path = require('path')
 const isDev = require('electron-is-dev');
 const Store = require('electron-store');
+
 const PORT = Math.floor(Math.random() * (65535 - 49152) + 49152);
+const store = new Store(configSchema)
 
 var APPLICATION_URL
 
@@ -30,12 +32,12 @@ if (isDev) {
     electron: path.join(__dirname, '../', 'node_modules', '.bin', 'electron'),
     hardResetMethod: 'exit'
   });
+  store.set('environment', 'development')
   APPLICATION_URL = "https://dev.user-docs.com:4002"
 } else {
   APPLICATION_URL = "https://app.user-docs.com"
 }
 
-const store = new Store(configSchema)
 store.set('applicationUrl', APPLICATION_URL)
 
 const stepUpdated = function(step) { 
@@ -149,6 +151,7 @@ async function startServices() {
   server = initializeServer(server)
   userdocs.server = server
   userdocs.runner = Runner.initialize(userdocs.configuration)
+  console.log(userdocs.runner)
 
   return serviceStatus()
 }
