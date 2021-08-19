@@ -1,5 +1,6 @@
 import { create, start, stop, initializeClient, initializeServer, getConfiguration } from '@userdocs/server'
 import * as Runner from '@userdocs/runner'
+import * as Client from '@userdocs/client'
 import { app, ipcMain } from 'electron';
 import { 
   mainWindow, 
@@ -26,6 +27,7 @@ const PORT = Math.floor(Math.random() * (65535 - 49152) + 49152);
 const store = new Store(configSchema)
 
 var APPLICATION_URL
+var WS_URL
 
 if (isDev) {
   require('electron-reload')(__dirname, {
@@ -34,8 +36,10 @@ if (isDev) {
   });
   store.set('environment', 'development')
   APPLICATION_URL = "https://dev.user-docs.com:4002"
+  WS_URL = "ws://localhost:4000/socket"
 } else {
   APPLICATION_URL = "https://app.user-docs.com"
+  WS_URL = "https://app.user-docs.com/socket"
 }
 
 store.set('applicationUrl', APPLICATION_URL)
@@ -54,48 +58,6 @@ const browserEventHandler = function(event) {
   mainWindow().webContents.send('browserEvent', event);
 }
 
-const userdocs = {
-  browser: null,
-  browserExecutionQueue: [],
-  process: {},
-  runState: 'stopped',
-  runner: null,
-  server: null,
-  configuration: {
-    automationFrameworkName: store.get('automationFrameworkName', 'puppeteer'),
-    maxRetries: store.get('maxRetries', 10),
-    maxWaitTime: store.get('maxWaitTime', 10),
-    environment: store.get('environment', 'desktop'),
-    imagePath: store.get('imagePath', ''),
-    css: store.get('css', ''),
-    overrides: store.get('overrides', ''),
-    userDataDirPath: store.get('userDataDirPath', ''),
-    strategy: "xpath",
-    appDataDir: app.getPath("appData"),
-    appPath: app.getAppPath(),
-    callbacks: {
-      step: {
-        preExecutionCallbacks: [ 'startLastStepInstance', stepUpdated ],
-        executionCallback: 'run',
-        successCallbacks: [ 'completeLastStepInstance', stepUpdated ],
-        failureCallbacks: [ 'failLastStepInstance', stepUpdated ]
-      },
-      process: {
-        preExecutionCallbacks: [ 'startLastProcessInstance', processUpdated ],
-        executionCallback: 'run',
-        successCallbacks: [ 'completeLastProcessInstance', processUpdated ],
-        failureCallbacks: [ 'failProcessInstance', processUpdated ]
-      },
-      job: {
-        preExecutionCallbacks: [ 'startLastJobInstance' ],
-        executionCallback: 'run',
-        successCallbacks: [ 'completeLastJobInstance' ],
-        failureCallbacks: [ 'failLastJobInstance' ]
-      },
-      browserEvent: browserEventHandler
-    }
-  }
-}
 
 function main() {
   const appPath = app.getPath("appData")
@@ -118,8 +80,6 @@ async function initialize(state) {
   state = await initializeWindow(state)
   if (state.status == "ok") {
     const result = await startServices()
-    console.log("Sending status")
-    console.log(result)
     mainWindow().webContents.send('serviceStatus', result)
   }
 }
@@ -138,102 +98,13 @@ ipcMain.handle('startServices', startServices)
 async function startServices() {
   const accessToken = await keytar.getPassword('UserDocs', 'accessToken')
   const renewalToken = await keytar.getPassword('UserDocs', 'renewalToken')
+  const userId = parseInt(await keytar.getPassword('UserDocs', 'userId'))
   const tokens = {renewal_token: renewalToken, access_token: accessToken}
-  var server = await create({store: store, port: PORT, tokens: tokens, url: APPLICATION_URL})
-  server = initializeClient(server)
-  const result = await getConfiguration(server)
-  server = initializeServer(server)
-  server = await start(server)
-
-  if (result.user.configuration.css) store.set('css', result.user.configuration.css)
-  if (result.user.configuration.strategy) store.set('strategy', result.user.configuration.strategy)
-
-  server = initializeServer(server)
-  userdocs.server = server
-  userdocs.runner = Runner.initialize(userdocs.configuration)
-  console.log(userdocs.runner)
-
-  return serviceStatus()
+  var client = Client.create(accessToken, userId, WS_URL, APPLICATION_URL, "electron", store)
+  client = await Client.connectSocket(client)
+  client = await Client.joinUserChannel(client)
 }
 
-ipcMain.handle('serviceStatus', serviceStatus)
-function serviceStatus() {
-  var status = {server: null, client: null, runner: null}
-  if (userdocs.server == null) {
-    status.server = "not_running"
-    status.client = "not_running"
-  }
-  else if (userdocs.server) {
-    if (userdocs.server.server.state) status.server = userdocs.server.server.state.phase
-    if (userdocs.server.client == null) status.client = "not_running"
-    else if (userdocs.server.client) status.client = "running"
-  }
-
-  if (userdocs.runner == null) status.runner = "not_running"
-  else if (userdocs.runner) status.runner = "running"
-
-  return status
-}
-
-ipcMain.on('openBrowser', async (event) => { 
-  if(!userdocs.runner.automationFramework.browser) userdocs.runner = await openBrowser()
-  return true
- })
-
-async function openBrowser() {
-  if(!userdocs.runner) throw ("No RUnner")
-  configure()
-  userdocs.runner = await Runner.openBrowser(userdocs.runner)
-  userdocs.runner.automationFramework.browser.on('disconnected', () => browserClosed(null))
-  mainWindow().webContents.send('browserOpened', { sessionId: 'id' })
-  return userdocs.runner
-}
-
-ipcMain.on('closeBrowser', async (event) => { 
-  if(!userdocs.runner) throw ("No RUnner")
-  configure()
-  userdocs.runner = await Runner.closeBrowser(userdocs.runner, userdocs.configuration)
-  browserClosed('id')
-  return true
-})
-
-function browserClosed(id) { 
-  const browserId = id ? id : null
-  mainWindow().webContents.send('browserClosed', browserId)
-}
-
-ipcMain.on('execute', async (event, step) => {
-  if(!userdocs.runner) throw ("No RUnner")
-  configure()
-  if(!userdocs.runner.automationFramework.browser) userdocs.runner = await openBrowser()
-  await Runner.executeStep(step, userdocs.runner)
-})
-
-ipcMain.on('executeProcess', async (event, process) => {
-  configure()
-  if(!userdocs.runner.automationFramework.browser) await openBrowser()
-  await Runner.executeProcess(process, userdocs.runner)
-})
-
-ipcMain.on('executeJob', async (event, job) => {
-  configure()
-  if(!userdocs.runner.automationFramework.browser) userdocs.runner = await openBrowser()
-  await Runner.executeJob(job, userdocs.runner)
-})
-
-function configure () {
-  userdocs.configuration.imagePath = store.get('imagePath')
-  userdocs.configuration.userDataDirPath = store.get('userDataDirPath')
-  userdocs.configuration.css = store.get('css')
-  userdocs.configuration.overrides = store.get('overrides')
-  userdocs.configuration.strategy = store.get('strategy')
-  
-  try {
-    userdocs.runner = Runner.reconfigure(userdocs.runner, userdocs.configuration)
-  } catch(e) {
-    userdocs.runner = Runner.initialize(userdocs.configuration)
-  } 
-}
 
 ipcMain.on('clearCredentials', async () => {clearCredentials()})
 async function clearCredentials() {
@@ -247,20 +118,16 @@ ipcMain.handle('putTokens', putTokens)
 async function putTokens(event, tokens) {
   if(!tokens.access_token) throw new Error("No access token found")
   if(!tokens.renewal_token) throw new Error("No renewal token found")
+  if(!tokens.user_id) throw new Error("No renewal token found")
   try {
     await keytar.setPassword('UserDocs', 'accessToken', tokens.access_token)
     await keytar.setPassword('UserDocs', 'renewalToken', tokens.renewal_token)
+    await store.set('userId', tokens.user_id.toString())
     return {status: "ok"}
   } catch(e) {
     return {status: "nok", error: e}
   }
 }
-
-ipcMain.on('start', (event) => {
-  userdocs.runState = 'running'
-})
-
-ipcMain.handle('port', async() => { return PORT })
 
 app.whenReady().then(main)
 
@@ -269,6 +136,10 @@ app.on("ready", () => {
 });
 
 app.on("before-quit", async () => {
-  stop(userdocs.server)
-  await Runner.closeBrowser(userdocs.runner, userdocs.configuration)
+  //await Runner.closeBrowser(userdocs.runner)
 })
+
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', (reason as any).stack);
+  // application specific logging, throwing an error, or other logic here
+});
