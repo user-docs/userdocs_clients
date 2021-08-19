@@ -62,11 +62,11 @@ export const handlers = {
     for (var item of executableItems) {
       if(item.type == 'jobProcess') {
         var process = (item as JobProcess.JobProcess).process
-        process = await Process.execute(process, runner)
+        //process = await Process.execute(process, runner)
       }
       else if(item.type == 'jobStep') {
         var step = (item as JobStep.JobStep).step
-        step = await Step.execute(step, runner)
+        //step = await Step.execute(step, runner)
       } else {
         throw new Error("Item not executed because it is not of type jobProcess or jobStep")
       }
