@@ -1,0 +1,50 @@
+{
+  "name": "@userdocs/client",
+  "version": "0.0.1",
+  "description": "Automation client",
+  "main": "dist/index",
+  "types": "dist/index",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johns10/userdocs_clients.git"
+  },
+  "author": "John Davenport",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "private": false,
+  "scripts": {
+    "build": "yarn run clean && yarn run compile",
+    "clean": "rimraf -rf ./dist",
+    "compile": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "yarn run build",
+    "watch": "tsc-watch --noClear -p ./tsconfig.build.json",
+    "start": "yarn run build && tsc-watch --noClear -p ./tsconfig.build.json --onSuccess \"node dist/index.js\"",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@types/node": "^16.6.1",
+    "@types/phoenix": "^1.5.2",
+    "@userdocs/extension": "^1.0.11",
+    "@userdocs/runner": "^1.0.33",
+    "axios": "^0.21.1",
+    "electron-store": "^8.0.0",
+    "graphql-request": "^3.5.0",
+    "node-localstorage": "^2.2.1",
+    "phoenix": "^1.5.10",
+    "phoenix-channels": "^1.0.0",
+    "storejs": "^1.1.0"
+  },
+  "bugs": {
+    "url": "https://github.com/johns10/userdocs_clients/issues"
+  },
+  "homepage": "https://github.com/johns10/userdocs_clients#readme",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ]
+}

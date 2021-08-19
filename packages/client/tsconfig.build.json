@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.build.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "lib": [ "DOM", "ES2017" ],
+    "typeRoots": [ "../node_modules/@types" ],
+    "types": ["node"]
+  },
+  "include": [
+    "src/**/*"
+  ]
+}
