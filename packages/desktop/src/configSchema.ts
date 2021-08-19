@@ -22,5 +22,8 @@ export let configSchema = {
   applicationUrl: {
     type: 'string',
     default: 'https://app.user-docs.com'
+  },
+  userId: {
+    type: 'number'
   }
 }
