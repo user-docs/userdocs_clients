@@ -3,10 +3,12 @@ import {
   openBrowser,
   closeBrowser,
   executeStep,
+  executeStepInstance,
   executeProcess,
+  executeProcessInstance,
   executeJob,
-  reconfigure,
-  Runner
+  Runner,
+  Configuration
 } from './runner/runner'
 
 import { allowedFields as allowedJobFields } from './domain/job'
@@ -16,9 +18,11 @@ export {
   openBrowser,
   closeBrowser,
   executeStep,
+  executeStepInstance,
   executeProcess,
+  executeProcessInstance,
   executeJob,
-  reconfigure,
   allowedJobFields,
-  Runner
+  Runner,
+  Configuration
 } 
