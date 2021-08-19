@@ -23,6 +23,7 @@ export const stepHandlers: StepHandler = {
     var finalUrl = ""
 
     const filteredOverrides = overrides.filter(o => o.project_id == project_id)
+
     if (filteredOverrides.length > 0) {
       const override = filteredOverrides[0]
       console.log(`Overriding base url ${override.url}`)
@@ -93,26 +94,8 @@ export const stepHandlers: StepHandler = {
     if (!handle) { throw new ElementNotFound(strategy, selector) }
     let base64 = await handle.screenshot({ encoding: "base64"});
 
-    if (step.screenshot) {
-      fileName = step.screenshot.name 
-        ? step.screenshot.name + ".png"
-        : step.process.name + " " + step.order + ".png"
-    }
+    handleScreenshot(step, base64, configuration)
 
-    if(configuration.imagePath != '') {
-      filePath = path.join(configuration.imagePath, fileName)
-    } else {
-      filePath = path.join(configuration.appDataDir, "UserDocs", "images", fileName)
-    }
-
-    await writeFile(filePath, base64);
-
-    if (step.screenshot === null) { 
-      step.screenshot = { base64: base64, stepId: step.id }
-    } else {
-      step.screenshot.base64 = base64
-      step.screenshot.stepId = step.id
-    } 
     await new Promise(resolve => setTimeout(resolve, 250));
     return step
   },
@@ -126,26 +109,8 @@ export const stepHandlers: StepHandler = {
     if (!page) { throw new Error("Page not retreived from browser") }
     let base64: any = await page.screenshot({ encoding: "base64" });  
 
-    if (step.screenshot) {
-      fileName = step.screenshot.name 
-        ? step.screenshot.name + ".png"
-        : step.process.name + " " + step.order + ".png"
-    }
+    handleScreenshot(step, base64, configuration)
     
-    if(configuration.imagePath != '') {
-      filePath = path.join(configuration.imagePath, fileName)
-    } else {
-      filePath = path.join(configuration.appDataDir, "UserDocs", "images", fileName)
-    }
-    
-    await writeFile(filePath, base64);
-
-    if (step.screenshot === null) { 
-      step.screenshot = { base64: base64, stepId: step.id }
-    } else {
-      step.screenshot.base64 = base64
-      step.screenshot.stepId = step.id
-    }
     await new Promise(resolve => setTimeout(resolve, 250));
     return step
   },
@@ -153,9 +118,12 @@ export const stepHandlers: StepHandler = {
     const page: Page | undefined = await currentPage(browser)
     if (!page) { throw new Error("Page not retreived from browser") }
     page.evaluate(() => {
-      for (let i = 0; i < (window as any).active_annotations.length; i++) {
-        const element = (window as any).active_annotations[i];
-        element.parentNode.removeChild(element);
+      const active_annotations = (window as any).active_annotations
+      if (active_annotations) {
+        for (let i = 0; i < active_annotations.length; i++) {
+          const element = (window as any).active_annotations[i];
+          element.parentNode.removeChild(element);
+        }
       }
       (window as any).active_annotations = []
     })
@@ -235,14 +203,13 @@ export const stepHandlers: StepHandler = {
     await page.type(selector, String.fromCharCode(13))
     return step
   },
-  "Convert to SUI":async(browser: Browser, step: Step, configuration: Configuration) => {
+  "Convert to SUI": async(browser: Browser, step: Step, configuration: Configuration) => {
     const selector = step.element.selector
     const strategy = step.element.strategy.name
     const page: Page | undefined = await currentPage(browser)
     if (!page) { throw new Error("Page not retreived from browser")}
     const handles: Array<ElementHandle> = await getElementsHandle(browser, selector, strategy)
     for (const handle of handles) {
-      console.log(handle)
       await page.evaluate(element => {
         element.style.fontFamily = 'sui'
       }, handle)  //TODO: NO ANY'S
@@ -252,6 +219,35 @@ export const stepHandlers: StepHandler = {
       throw error
     }
     return step
+  }
+}
+
+async function handleScreenshot(step: Step, base64: string, configuration: Configuration) {
+  var fileName = step.process.name + " " + step.order + ".png"
+  var filePath = ""
+
+  if (step.screenshot) {
+    fileName = step.screenshot.name 
+      ? step.screenshot.name + ".png"
+      : step.process.name + " " + step.order + ".png"
+  } 
+  
+  if(configuration.imagePath != '') {
+    filePath = path.join(configuration.imagePath, fileName)
+  } else {
+    filePath = path.join(configuration.appDataDir, "UserDocs", "images", fileName)
+  }
+  
+  await writeFile(filePath, base64);
+
+  if (step.screenshot === null || step.screenshot.id == null) { 
+    const screenshot = { base64: base64, stepId: step.id }
+    configuration.callbacks.createScreenshot(screenshot)
+  } else {
+    
+    step.screenshot.base64 = base64
+    step.screenshot.stepId = step.id
+    configuration.callbacks.updateScreenshot(step.screenshot)
   }
 }
 
