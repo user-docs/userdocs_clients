@@ -1,6 +1,6 @@
-import { Process } from './process'
+import * as Process from './process'
+import { Runner, Configuration } from '../runner/runner'
 import * as StepInstance from './stepInstance'
-import { Configuration } from '../automation/automation'
 
 export interface ProcessInstance {
   uuid: string,
@@ -9,7 +9,7 @@ export interface ProcessInstance {
   status: string,
   name: string,
   type: string,
-  process?: Process,
+  process?: Process.Process,
   processId: string,
   stepInstances?: Array<StepInstance.StepInstance>,
   errors?: Array<Error>,
@@ -18,22 +18,32 @@ export interface ProcessInstance {
   finishedAt?: Date
 }
 
-export async function execute(processInstance: ProcessInstance, handlerName: string, configuration: Configuration) {
-  const handler = async(processInstance: ProcessInstance, handlerName: string, configuration: Configuration) => { 
-    start(processInstance)
-    return ( await run(processInstance, handlerName, configuration) )
+export async function execute(processInstance: ProcessInstance, runner: Runner, configuration: Configuration) {
+  processInstance.status = 'started'
+  console.log("Executing ProcessInstance")
+  if(configuration.callbacks.updateProcessInstance) configuration.callbacks.updateProcessInstance(processInstance)
+  for(var stepInstance of processInstance.stepInstances) {
+    await StepInstance.execute(stepInstance, runner, configuration)
+    if(stepInstance.status == "failed") {
+      processInstance.status = "failed"
+      processInstance.errors = stepInstance.errors
+      if(configuration.callbacks.updateProcessInstance) configuration.callbacks.updateProcessInstance(processInstance)
+      return processInstance
+    }
   }
-
-  try {
-    return ( await handler(processInstance, handlerName, configuration) )
-  } catch (error) {
-    processInstance.status = 'failed'
-    processInstance.errors.push(error)
-    return processInstance
-  }
+  processInstance.status = "complete"
+  if(configuration.callbacks.updateProcessInstance) configuration.callbacks.updateProcessInstance(processInstance)
+  return processInstance
 }
 
 
+export function allowedFields(processInstance: ProcessInstance) {
+  return {
+    id: processInstance.id,
+    status: processInstance.status
+  }
+}
+/*
 function start(processInstance: ProcessInstance) {
   //console.log(`Starting Process Instance ${processInstance.name}`) 
 }
@@ -68,13 +78,6 @@ export function stepFailedError(processInstance: ProcessInstance, stepInstance: 
   return error
 }
 
-export function allowedFields(processInstance: ProcessInstance) {
-  return {
-    id: processInstance.id,
-    status: processInstance.status
-  }
-}
-/*
 export const UPDATE_PROCESS_INSTANCE = gql `
   mutation UpdateProcessInstance($id: ID!, $status: String!, $stepInstances: [ StepInstanceInput ] ) {
     updateProcessInstance(id: $id, status: $status, stepInstances: $stepInstances) {

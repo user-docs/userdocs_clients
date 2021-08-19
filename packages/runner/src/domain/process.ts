@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import * as ProcessInstance from './processInstance'
 import * as Step from './step'
-import { Runner } from '../runner/runner'
+import { Runner, Configuration } from '../runner/runner'
 export interface Process {
   id: string,
   order: number,
@@ -11,25 +11,14 @@ export interface Process {
   steps: Array<Step.Step>
 }
 
-export async function execute(process: Process, runner: Runner) {
+export async function execute(process: Process, runner: Runner, configuration: Configuration) {
   console.group(`Starting execution of process ${process.id}, ${process.name}.`)
   console.time("Process Timer")
-  if(!runner.callbacks) throw new Error(`Callbacks not passed properly.  An object of the shape { calbacks: { process: { ... }}} is required.  Got ${runner.callbacks}`)
-  for(const callback of runner.callbacks.process.preExecutionCallbacks) { 
-    if(typeof callback != 'function') throw new Error(`Received ${callback}.  Expected function. The callbacks object is probably wrong ${runner.callbacks}`)
-    process = await callback(process, runner) 
-  }
   try {
-    process = await runner.callbacks.process.executionCallback(process, runner)
-    for(const callback of runner.callbacks.process.successCallbacks) { 
-      process = await callback(process, runner) 
-    }
+    // process = await runner.callbacks.process.executionCallback(process, runner)
     console.debug(`Execution of process ${process.id}, ${process.name} completed successfully`)
   } catch(error) {
     console.log("Caught Process Error")
-    for(const callback of runner.callbacks.process.failureCallbacks) { 
-      process = await callback(process, runner, error) 
-    }
     console.debug(`Execution of process ${process.id}, ${process.name} failed because ${error}`)
     console.debug(error.stack)
   }
@@ -60,7 +49,7 @@ export const handlers = {
   },
   run: async(process: Process, runner: Runner) => {  
     for(var step of process.steps) {
-      step = await Step.execute(step, runner)
+      //step = await Step.execute(step, runner)
       if (process.lastProcessInstance.id) step.lastStepInstance.processInstanceId = process.lastProcessInstance.id
       if (step.lastStepInstance.status == 'failed') throw new Error(`Step ${step.id}, ${step.name} failed to execute`)
     }

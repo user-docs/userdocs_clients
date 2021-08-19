@@ -1,5 +1,7 @@
 import * as Puppet from '../automation/puppet'
 import * as Step from '../domain/step'
+import * as StepInstance from '../domain/stepInstance'
+import * as ProcessInstance from '../domain/processInstance'
 import * as Process from '../domain/process'
 import * as Helpers from '../domain/helpers'
 import * as Job from '../domain/job'
@@ -13,29 +15,12 @@ export interface Runner {
   automationFramework: any,
   maxRetries: number,
   maxWaitTime: number,
-  userDataDirPath?: string,
-  imagePath?: string,
   environment: string,
-  callbacks: RunnerCallbacks,
   strategy?: string,
   css?: string,
   overrides?: Array<Override>,
   appDataDir: string,
   appPath: string
-}
-
-export interface RunnerCallbacks {
-  step: Callbacks,
-  process: Callbacks,
-  job: Callbacks,
-  browserEvent?: Function
-}
-
-export interface Callbacks {
-  preExecutionCallbacks: Array<Function>,
-  executionCallback: Function,
-  successCallbacks: Array<Function>,
-  failureCallbacks: Array<Function>
 }
 
 export interface Configuration {
@@ -47,24 +32,12 @@ export interface Configuration {
   imagePath?: string,
   environment: string,
   strategy?: string,
-  callbacks: {
-    step: CallbackConfiguration,
-    process: CallbackConfiguration,
-    job: CallbackConfiguration,
-    browserEvent?: Function
-  },
   css?: string,
   overrides?: Array<Override>,
   appDataDir: string,
   appPath: string,
-  lib?: { [ key: string ]: Function } // need?
-}
-
-export interface CallbackConfiguration {
-  preExecutionCallbacks: Array<string | Function>,
-  executionCallback: string,
-  successCallbacks: Array<string | Function>,
-  failureCallbacks: Array<string | Function>
+  lib?: { [ key: string ]: Function } // need?,
+  callbacks: any
 }
 
 const automationFrameworks = {
@@ -77,100 +50,42 @@ export function initialize(configuration: Configuration) {
     maxRetries: configuration.maxRetries,
     maxWaitTime: configuration.maxWaitTime,
     environment: configuration.environment,
-    imagePath: configuration.imagePath,
     css: configuration.css,
     overrides: configuration.overrides,
     appDataDir: configuration.appDataDir,
-    appPath: configuration.appPath,
-    callbacks: {
-      step: {
-        preExecutionCallbacks: [],
-        executionCallback: Step.handlers.run,
-        successCallbacks: [],
-        failureCallbacks: []
-      },
-      process: {
-        preExecutionCallbacks: [],
-        executionCallback: () => {},
-        successCallbacks: [],
-        failureCallbacks: []
-      },
-      job: {
-        preExecutionCallbacks: [],
-        executionCallback: () => {},
-        successCallbacks: [],
-        failureCallbacks: []
-      },
-      browserEvent: null
-    }
+    appPath: configuration.appPath
   }
-  runner = configureCallbacks(runner, configuration)
   return runner
 }
 
-export function reconfigure(runner: Runner, configuration: Configuration) {
-  runner.maxRetries = configuration.maxRetries
-  runner.environment = configuration.environment
-  runner.imagePath = configuration.imagePath
-  runner.userDataDirPath = configuration.userDataDirPath
-  runner.css = configuration.css
-  runner = configureCallbacks(runner, configuration)
-  return runner
-}
-
-export function configureCallbacks(runner: Runner, configuration: Configuration) {
-  const stepExecutionCallback: Function = Step.handlers[configuration.callbacks.step.executionCallback]
-  if (!stepExecutionCallback) throw new Error(`Step Execution callback ${configuration.callbacks.step.executionCallback} not implemented`)
-
-  const processExecutionCallback: Function = Process.handlers[configuration.callbacks.process.executionCallback]
-  if (!processExecutionCallback) throw new Error(`Process Execution callback ${configuration.callbacks.process.executionCallback} not implemented`)
-
-  const jobExecutionCallback: Function = Job.handlers[configuration.callbacks.job.executionCallback]
-  if (!jobExecutionCallback) throw new Error(`Job Execution callback ${configuration.callbacks.job.executionCallback} not implemented`)
-
-  const browserEventCallback: Function = configuration.callbacks.browserEvent
-
-  runner.callbacks.step = {
-    preExecutionCallbacks: Helpers.fetchCallbacks(configuration.callbacks.step.preExecutionCallbacks, Step.handlers),
-    executionCallback: stepExecutionCallback,
-    successCallbacks: Helpers.fetchCallbacks(configuration.callbacks.step.successCallbacks, Step.handlers),
-    failureCallbacks: Helpers.fetchCallbacks(configuration.callbacks.step.failureCallbacks, Step.handlers)
-  }
-  runner.callbacks.process = {
-    preExecutionCallbacks: Helpers.fetchCallbacks(configuration.callbacks.process.preExecutionCallbacks, Process.handlers),
-    executionCallback: processExecutionCallback,
-    successCallbacks: Helpers.fetchCallbacks(configuration.callbacks.process.successCallbacks, Process.handlers),
-    failureCallbacks: Helpers.fetchCallbacks(configuration.callbacks.process.failureCallbacks, Process.handlers)
-  }
-  runner.callbacks.job = {
-    preExecutionCallbacks: Helpers.fetchCallbacks(configuration.callbacks.job.preExecutionCallbacks, Job.handlers),
-    executionCallback: jobExecutionCallback,
-    successCallbacks: Helpers.fetchCallbacks(configuration.callbacks.job.successCallbacks, Job.handlers),
-    failureCallbacks: Helpers.fetchCallbacks(configuration.callbacks.job.failureCallbacks, Job.handlers)
-  }
-  runner.callbacks.browserEvent = browserEventCallback
-  return runner
-}
-
-export async function openBrowser(runner: Runner) {
-  const browser = await runner.automationFramework.openBrowser(runner)
+export async function openBrowser(runner: Runner, configuration: Configuration) {
+  const browser = await runner.automationFramework.openBrowser(runner, configuration)
   runner.automationFramework.browser = browser
   return runner
 }
 
-export async function closeBrowser(runner: Runner, configuration: Configuration) {
-  await runner.automationFramework.closeBrowser(runner.automationFramework.browser, configuration)
-  runner.automationFramework.browser = null
+export async function closeBrowser(runner: Runner) {
+  await runner.automationFramework.closeBrowser(runner.automationFramework.browser)
   return runner
 }
 
-export async function executeStep(step: Step.Step, runner: Runner) {
-  const completedStep = await Step.execute(step, runner)
+export async function executeStep(step: Step.Step, runner: Runner, configuration: Configuration) {
+  const completedStep = await Step.execute(step, runner, configuration)
   return completedStep
 }
 
-export async function executeProcess(process: Process.Process, runner: Runner) {
-  const completedProcess = await Process.execute(process, runner)
+export async function executeStepInstance(stepInstance: StepInstance.StepInstance, runner: Runner, configuration: Configuration) {
+  const completedStepInstance = await StepInstance.execute(stepInstance, runner, configuration)
+  return completedStepInstance
+}
+
+export async function executeProcess(process: Process.Process, runner: Runner, configuration: Configuration) {
+  const completedProcess = await Process.execute(process, runner, configuration)
+  return completedProcess
+}
+
+export async function executeProcessInstance(processInstance: ProcessInstance.ProcessInstance, runner: Runner, configuration: Configuration) {
+  const completedProcess = await ProcessInstance.execute(processInstance, runner, configuration)
   return completedProcess
 }
 
