@@ -27,6 +27,7 @@ export async function getTokens (state) {
   try {
     state.tokens.access_token = await keytar.getPassword('UserDocs', 'accessToken')
     state.tokens.renewal_token = await keytar.getPassword('UserDocs', 'renewalToken')
+    state.tokens.renewal_token = await keytar.getPassword('UserDocs', 'userId')
   } catch (e) {
     state.status = "tokenFetchFailed"
     state.error = e
@@ -40,11 +41,13 @@ export async function getSession(state) {
   try {
     const response = await loginUI(state.tokens.access_token, state.url)
     var cookie = parseCookies(response.headers)
+    const userId = response.data.user_id
     cookie.url = state.url
     cookie.name = '_userdocs_web_key'
     cookie.value = cookie._userdocs_web_key
     delete cookie._userdocs_web_key
     state.cookie = cookie
+    state.userId = userId
   } catch(e) {
     state.status = "loginFailed"
     state.error = e
