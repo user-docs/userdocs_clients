@@ -21,7 +21,6 @@ const path = require('path')
 const isDev = require('electron-is-dev');
 const Store = require('electron-store');
 
-const PORT = Math.floor(Math.random() * (65535 - 49152) + 49152);
 const store = new Store(configSchema)
 
 var APPLICATION_URL
