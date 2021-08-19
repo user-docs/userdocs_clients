@@ -20,7 +20,8 @@ export interface Runner {
   css?: string,
   overrides?: Array<Override>,
   appDataDir: string,
-  appPath: string
+  appPath: string,
+  callbacks?: any
 }
 
 export interface Configuration {
