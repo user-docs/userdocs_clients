@@ -17,29 +17,62 @@ export const Puppet = {
     if (handler) return handler
     else throw new Error(`Handler not found for ${step.stepType.name}`)
   },
-  openBrowser: async(runner: Runner) => {
-    var executablePath = puppeteer.executablePath()
+  openBrowser: async(runner: Runner, configuration: Configuration) => {
+    var executablePath
+    const extensionPathNew = extensionPathHelper(runner)
     var extensionPath
     var args
 
-    if(runner.environment == 'development') {
+    if(configuration.environment == 'development') {
       executablePath = puppeteer.executablePath() 
-      extensionPath =  require.resolve('@userdocs/extension')
-      extensionPath = path.join(extensionPath, '/..', '/..')
       args = puppeteer.defaultArgs()
         .filter(arg => String(arg).toLowerCase() !== '--disable-extensions')
         .filter(arg => String(arg).toLowerCase() !== '--headless')
+        .concat('--no-zygote')
+        .concat('--no-sandbox')
         .concat("--proxy-server='direct://'")
         .concat('--proxy-bypass-list=*')
         .concat('--hide-scrollbars')
-        .concat(`--load-extension=${extensionPath}`)
-        //.concat("--disable-extensions-except=/home/johns10/Documents/userdocs_clients/packages/extension/extension")
-      if (runner.userDataDirPath) {
-        args.push('--user-data-dir=' + runner.userDataDirPath);
+        .concat('--autoplay-policy=user-gesture-required')
+        .concat('--disable-background-networking')
+        .concat('--disable-background-timer-throttling')
+        .concat('--disable-backgrounding-occluded-windows')
+        .concat('--disable-breakpad')
+        .concat('--disable-client-side-phishing-detection')
+        .concat('--disable-component-update')
+        .concat('--disable-default-apps')
+        .concat('--disable-dev-shm-usage')
+        .concat('--disable-domain-reliability')
+        .concat('--disable-features=AudioServiceOutOfProcess')
+        .concat('--disable-hang-monitor')
+        .concat('--disable-ipc-flooding-protection')
+        .concat('--disable-notifications')
+        .concat('--disable-offer-store-unmasked-wallet-cards')
+        .concat('--disable-popup-blocking')
+        .concat('--disable-print-preview')
+        .concat('--disable-prompt-on-repost')
+        .concat('--disable-renderer-backgrounding')
+        .concat('--disable-setuid-sandbox')
+        .concat('--disable-speech-api')
+        .concat('--disable-sync')
+        .concat('--hide-scrollbars')
+        .concat('--ignore-gpu-blacklist')
+        .concat('--metrics-recording-only')
+        .concat('--mute-audio')
+        .concat('--no-default-browser-check')
+        .concat('--no-first-run')
+        .concat('--no-pings')
+        .concat('--password-store=basic')
+        .concat('--use-gl=swiftshader')
+        .concat('--use-mock-keychain')
+        .concat('--disable-software-rasterizer')
+        .concat(`--load-extension=${extensionPathNew}`)
+      if (configuration.userDataDirPath) {
+        args.push('--user-data-dir=' + configuration.userDataDirPath);
       }
-    } else if(runner.environment == 'desktop') {
+    } else if(configuration.environment == 'desktop') {
       executablePath = puppeteer.executablePath().replace("app.asar", "app.asar.unpacked")
-      extensionPath = runner.appPath
+      extensionPath = configuration.appPath
       extensionPath = path.join(extensionPath, '/..', '/..')
       extensionPath = path.join(extensionPath, "resources", "app.asar.unpacked", "node_modules", "@userdocs", "extension", "extension")
       args = puppeteer.defaultArgs()
@@ -50,10 +83,10 @@ export const Puppet = {
         .concat('--hide-scrollbars')
         .concat(`--load-extension=${extensionPath}`)
         //.concat("--disable-extensions-except=/home/johns10/Documents/userdocs_clients/packages/extension/extension")
-      if (runner.userDataDirPath) {
-        args.push('--user-data-dir=' + runner.userDataDirPath);
+      if (configuration.userDataDirPath) {
+        args.push('--user-data-dir=' + configuration.userDataDirPath);
       }
-    } else if(runner.environment == 'cicd') {
+    } else if(configuration.environment == 'cicd') {
       const isPkg = typeof (process as any).pkg !== 'undefined';
 
       executablePath = '/usr/bin/chromium-browser'
@@ -63,7 +96,7 @@ export const Puppet = {
         .concat('--no-zygote')
         .concat('--no-sandbox')
         .concat('--hide-scrollbars')
-    } else if (runner.environment == 'test') {
+    } else if (configuration.environment == 'test') {
       args = puppeteer.defaultArgs()
         .concat('--single-process')
         .concat('--no-zygote')
@@ -79,7 +112,7 @@ export const Puppet = {
 
     const pages = await browser.pages()
     for (var page of pages) {
-      if (runner.css) {
+      if (configuration.css) {
         await page.evaluateOnNewDocument((css)=>{
           var style = document.createElement('style');
           style.type = 'text/css';
@@ -87,14 +120,41 @@ export const Puppet = {
           document.addEventListener('DOMContentLoaded', () => { 
             document.getElementsByTagName('head')[0].appendChild(style); 
           }, false); 
-        }, `${runner.css}`);
+        }, `${configuration.css}`);
       }
-      page.exposeFunction('sendEvent', runner.callbacks.browserEvent)
+      //page.exposeFunction('sendEvent', configuration.browserEvent)
     }
 
     return browser
   },
-  closeBrowser: async(browser: Browser, configuration: Configuration) => {
+  closeBrowser: async(browser: Browser) => {
+    browser.removeAllListeners()
+    browser = await removeListenersFromDocuments(browser)
     await browser.close()
+    return
   }
+}
+
+async function removeListenersFromDocuments(browser) {
+  const pages = await browser.pages()
+  for (var page of pages) {
+    await page.removeAllListeners()
+    await page.evaluate(() => {
+      (document as any).outerHTML = (document as any).outerHTML
+    })
+  }
+  return browser
+}
+
+export function extensionPathHelper(runner) {
+  var extensionPath
+  switch(runner.environment) {
+    case 'development':
+      extensionPath = path.join(require.resolve('@userdocs/extension'), '/..', '/..')
+      break
+    case 'desktop':
+      break
+  }
+  console.log(`Calculated extension path as ${extensionPath}`)
+  return extensionPath
 }
