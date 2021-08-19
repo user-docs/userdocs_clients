@@ -12,7 +12,8 @@
     "compile": "lerna run compile fa-edit",
     "dist": "lerna run dist",
     "test": "lerna run test",
-    "dev": "lerna run compile && lerna-watch @userdocs/desktop",
+    "watch": "lerna run watch",
+    "dev": "lerna-watch @userdocs/desktop",
     "start_linux": "lerna run start_linux",
     "start_windows": "lerna run start_windows",
     "lint": "eslint --ext js,ts ."

@@ -48,6 +48,7 @@
     "watch": "tsc-watch --noClear -p ./tsconfig.build.json"
   },
   "dependencies": {
+    "@userdocs/client": "^0.0.1",
     "@userdocs/runner": "^1.0.33",
     "@userdocs/server": "^1.0.5",
     "axios": "^0.21.1",
@@ -73,5 +74,5 @@
   "optionalDependencies": {
     "win-node-env": "^0.4.0"
   },
-  "gitHead": "a576cb14369c83b71d1826dc7411ed1959a1360c"
+  "gitHead": "7caac49a931df40add45075b06adf9d231e91105"
 }

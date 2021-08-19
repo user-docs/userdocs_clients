@@ -19,6 +19,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@userdocs/client": "^0.0.1",
     "@userdocs/extension": "^1.0.11",
     "@userdocs/runner": "^1.0.33",
     "@userdocs/server": "^1.0.5",
@@ -35,5 +36,5 @@
     "dotenv": "^8.2.0",
     "ts-node": "^9.1.1"
   },
-  "gitHead": "a576cb14369c83b71d1826dc7411ed1959a1360c"
+  "gitHead": "7caac49a931df40add45075b06adf9d231e91105"
 }
