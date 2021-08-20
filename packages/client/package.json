@@ -1,7 +1,7 @@
 {
   "name": "@userdocs/client",
   "version": "0.0.2",
-  "description": "Automation client",
+  "description": "Automation client ",
   "main": "dist/index",
   "types": "dist/index",
   "repository": {
