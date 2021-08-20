@@ -19,6 +19,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@userdocs/client": "^0.0.9",
     "@userdocs/extension": "^1.0.12",
     "find-yarn-workspace-root": "^2.0.0",
     "fs": "^0.0.1-security",
