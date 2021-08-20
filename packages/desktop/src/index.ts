@@ -97,7 +97,7 @@ async function startServices() {
   const renewalToken = await keytar.getPassword('UserDocs', 'renewalToken')
   const userId = parseInt(await keytar.getPassword('UserDocs', 'userId'))
   const tokens = {renewal_token: renewalToken, access_token: accessToken}
-  var client = Client.create(accessToken, userId, WS_URL, APPLICATION_URL, "electron", store)
+  var client = Client.create(accessToken, userId, WS_URL, APPLICATION_URL, "electron", store, app.getAppPath(), app.getPath("appData"), )
   client = await Client.connectSocket(client)
   client = await Client.joinUserChannel(client)
 }
