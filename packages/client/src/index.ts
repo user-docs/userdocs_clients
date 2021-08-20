@@ -87,6 +87,7 @@ export async function joinUserChannel(client: Client) {
   client.userChannel.on("command:close_browser", () => {closeBrowser(client)})
   client.userChannel.on("command:execute_step", (payload) => {executeStepInstance(client, payload.step_id)})
   client.userChannel.on("command:execute_process", (payload) => {executeProcess(client, payload.process_id)})
+  client.userChannel.on("serviceStatus", (payload) => {console.log(payload)})
   while(client.userChannel.state != "joined") { await new Promise(resolve => setTimeout(resolve, 100)) }
   return client
 }

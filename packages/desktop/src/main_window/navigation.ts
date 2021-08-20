@@ -27,7 +27,7 @@ export async function getTokens (state) {
   try {
     state.tokens.access_token = await keytar.getPassword('UserDocs', 'accessToken')
     state.tokens.renewal_token = await keytar.getPassword('UserDocs', 'renewalToken')
-    state.tokens.renewal_token = await keytar.getPassword('UserDocs', 'userId')
+    state.tokens.user_id = await keytar.getPassword('UserDocs', 'userId')
   } catch (e) {
     state.status = "tokenFetchFailed"
     state.error = e

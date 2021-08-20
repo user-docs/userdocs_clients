@@ -114,13 +114,14 @@ async function clearCredentials() {
 
 ipcMain.handle('putTokens', putTokens)
 async function putTokens(event, tokens) {
+  console.log(`Got Tokens ${JSON.stringify(tokens)}`)
   if(!tokens.access_token) throw new Error("No access token found")
   if(!tokens.renewal_token) throw new Error("No renewal token found")
   if(!tokens.user_id) throw new Error("No renewal token found")
   try {
     await keytar.setPassword('UserDocs', 'accessToken', tokens.access_token)
     await keytar.setPassword('UserDocs', 'renewalToken', tokens.renewal_token)
-    await store.set('userId', tokens.user_id.toString())
+    await keytar.setPassword('UserDocs', 'userId', tokens.user_id.toString())
     return {status: "ok"}
   } catch(e) {
     return {status: "nok", error: e}
