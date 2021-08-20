@@ -1,7 +1,7 @@
 {
   "name": "@userdocs/client",
   "version": "0.0.7",
-  "description": "Automation client ",
+  "description": "Automation client",
   "main": "dist/index",
   "types": "dist/index",
   "repository": {
@@ -48,5 +48,5 @@
   "files": [
     "lib"
   ],
-  "gitHead": "20cb916ad51393057e9ce6b8ef19a962f31720cf"
+  "gitHead": "122bc2469f8ae924b2b62de5bc7409f400f48e11"
 }
