@@ -51,10 +51,12 @@ export async function configure(client, userId) {
   return configuration
 }
 
-export function create(token: string, userId: number, ws_url: string, http_url: string, app: string, store: any) {
+export function create(token: string, userId: number, ws_url: string, http_url: string, app: string, store: any, appPath: any, appDataPath: any) {
   const headers = {authorization: token}
   const socket = new Socket(ws_url, {params: {token: token}})
   const channel = socket.channel("user:" + userId, {app: app})
+  CONFIGURATION.appPath = appPath
+  CONFIGURATION.appDataPath = appDataPath
   const client: Client = {
     runner: Runner.initialize(CONFIGURATION),
     socket: socket,
