@@ -63,6 +63,7 @@ export const createProcessInstance = gql `
               project {
                 id
                 name
+                baseUrl
               }
             }
           }
@@ -154,6 +155,7 @@ export const createStepInstance = gql `
             project {
               id
               name
+              baseUrl
             }
           }
         }
