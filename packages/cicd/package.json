@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/cicd",
-  "version": "1.0.35",
+  "version": "1.0.36",
   "description": "CICD Runner for the UserDocs Screenshot collection app",
   "main": "dist/index",
   "repository": "https://github.com/johns10/userdocs_clients",
@@ -19,7 +19,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@userdocs/client": "^0.0.3",
+    "@userdocs/client": "^0.0.4",
     "@userdocs/extension": "^1.0.12",
     "@userdocs/runner": "^1.0.34",
     "@userdocs/server": "^1.0.5",
