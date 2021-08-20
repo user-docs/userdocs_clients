@@ -18,6 +18,7 @@ export const Puppet = {
     else throw new Error(`Handler not found for ${step.stepType.name}`)
   },
   openBrowser: async(runner: Runner, configuration: Configuration) => {
+    console.log("Starting Open Browser")
     var executablePath
     const extensionPathNew = extensionPathHelper(runner)
     var args
@@ -56,8 +57,6 @@ export const Puppet = {
         .concat('--no-sandbox')
         .concat('--hide-scrollbars')
     } else args = puppeteer.defaultArgs() 
-
-    console.log(args)
 
     const browser = await puppeteer.launch({ 
       executablePath: executablePath,
