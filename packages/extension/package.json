@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/extension",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Assists with authoring steps and processes in the UserDocs Application Suite",
   "main": "extension/dist/background",
   "license": "MIT",
@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@medv/finder": "^1.1.2",
-    "@userdocs/client": "^0.0.9",
+    "@userdocs/client": "^0.0.10",
     "events": "^3.2.0"
   },
   "devDependencies": {

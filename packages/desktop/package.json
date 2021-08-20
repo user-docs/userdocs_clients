@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/desktop",
-  "version": "0.0.68",
+  "version": "0.0.69",
   "description": "Authors steps and processes for collection of screenshots.",
   "repository": "https://github.com/johns10/userdocs_clients",
   "main": "build/index.js",
@@ -48,8 +48,8 @@
     "watch": "tsc-watch --noClear -p ./tsconfig.build.json"
   },
   "dependencies": {
-    "@userdocs/client": "^0.0.9",
-    "@userdocs/runner": "^1.0.39",
+    "@userdocs/client": "^0.0.10",
+    "@userdocs/runner": "^1.0.40",
     "@userdocs/server": "^1.0.5",
     "axios": "^0.21.1",
     "electron-is-dev": "^2.0.0",
