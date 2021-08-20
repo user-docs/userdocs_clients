@@ -31,10 +31,11 @@ if (isDev) {
     electron: path.join(__dirname, '../', 'node_modules', '.bin', 'electron'),
     hardResetMethod: 'exit'
   });
-  store.set('environment', 'development')
-  APPLICATION_URL = "https://dev.user-docs.com:4002"
-  WS_URL = "ws://localhost:4000/socket"
+  store.set('environment', 'desktop')
+  APPLICATION_URL = "https://app.user-docs.com"
+  WS_URL = "https://app.user-docs.com/socket"
 } else {
+  store.set('environment', 'desktop')
   APPLICATION_URL = "https://app.user-docs.com"
   WS_URL = "https://app.user-docs.com/socket"
 }
@@ -54,7 +55,6 @@ const processUpdated = function(process) {
 const browserEventHandler = function(event) {
   mainWindow().webContents.send('browserEvent', event);
 }
-
 
 function main() {
   const appPath = app.getPath("appData")
@@ -93,6 +93,7 @@ async function initializeWindow(state) {
 
 ipcMain.handle('startServices', startServices)
 async function startServices() {
+  console.log("Starting Services")
   const accessToken = await keytar.getPassword('UserDocs', 'accessToken')
   const renewalToken = await keytar.getPassword('UserDocs', 'renewalToken')
   const userId = parseInt(await keytar.getPassword('UserDocs', 'userId'))
