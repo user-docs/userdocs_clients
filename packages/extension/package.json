@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/extension",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "Assists with authoring steps and processes in the UserDocs Application Suite",
   "main": "extension/dist/background",
   "license": "MIT",
