@@ -18,9 +18,9 @@ export const Puppet = {
     else throw new Error(`Handler not found for ${step.stepType.name}`)
   },
   openBrowser: async(runner: Runner, configuration: Configuration) => {
-    console.log("Starting Open Browser")
+    console.log(`Starting Open Browser ${configuration.environment}`)
+    const extensionPathNew = extensionPathHelper(configuration)
     var executablePath
-    const extensionPathNew = extensionPathHelper(runner)
     var args
 
     if(configuration.environment == 'development') {
