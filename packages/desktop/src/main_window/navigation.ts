@@ -55,20 +55,23 @@ export async function validate (state) {
 export async function getSession(state) {
   if (state.status != 'ok') { return state }
 
+  var response
   try {
-    const response = await loginUI(state.tokens.access_token, state.url)
+    response = await loginUI(state.tokens.access_token, state.url)
     var cookie = parseCookies(response.headers)
-    const userId = response.data.user_id
-    cookie.url = state.url
-    cookie.name = '_userdocs_web_key'
-    cookie.value = cookie._userdocs_web_key
-    delete cookie._userdocs_web_key
-    state.cookie = cookie
-    state.userId = userId
   } catch(e) {
     state.status = "loginFailed"
     state.error = e
+    return state
   }
+  const userId = response.data.user_id
+  await keytar.setPassword('UserDocs', 'userId', userId.toString())
+  cookie.url = state.url
+  cookie.name = '_userdocs_web_key'
+  cookie.value = cookie._userdocs_web_key
+  delete cookie._userdocs_web_key
+  state.cookie = cookie
+  state.userId = userId
   return state
 }
 
