@@ -120,6 +120,7 @@ export function standardArgs(args) {
   return args
     .filter(arg => String(arg).toLowerCase() !== '--disable-extensions')
     .filter(arg => String(arg).toLowerCase() !== '--headless')
+    .filter(arg => String(arg).toLowerCase() !== 'about:blank')
     .concat('--no-zygote')
     .concat('--no-sandbox')
     .concat("--proxy-server='direct://'")
@@ -158,4 +159,5 @@ export function standardArgs(args) {
     .concat('--use-gl=swiftshader')
     .concat('--use-mock-keychain')
     .concat('--disable-software-rasterizer')
+    .concat('https://www.user-docs.com')
 }
