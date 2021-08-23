@@ -8,7 +8,7 @@ import {
   updateScreenshot as updateScreenshotQuery,
   createScreenshot as createScreenshotQuery
 } from './query'
-import { isObject } from 'util'
+import * as keytar from 'keytar';
 
 interface Client {
   runner: Runner.Runner,
@@ -73,20 +73,22 @@ export async function configure(client) {
   return configuration
 }
 
-export function create(token: string, userId: number, ws_url: string, http_url: string, app: string, store: any, appPath: any, appDataPath: any) {
+export function create(token: string, userId: number, ws_url: string, http_url: string, app: string, store: any, appPath: any, appDataPath: any, environment: string) {
   console.log("Creating Client")
-  const headers = {authorization: token}
   const socket = new Socket(ws_url, {params: {token: token}})
   const channel = socket.channel("user:" + userId, {app: app})
+  CONFIGURATION.wsUrl = ws_url
   CONFIGURATION.appPath = appPath
   CONFIGURATION.appDataPath = appDataPath
+  CONFIGURATION.environment = environment
   const client: Client = {
     runner: Runner.initialize(CONFIGURATION),
     socket: socket,
     userChannel: channel,
-    graphQLClient: new GraphQLClient(http_url + "/api", { headers: headers }),
+    graphQLClient: new GraphQLClient(http_url + "/api"),
     store: store
   }
+  STATE = client
   return client
 }
 
