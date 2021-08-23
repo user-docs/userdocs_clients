@@ -40,7 +40,7 @@ if (isDev) {
 }
 
 store.set('applicationUrl', APPLICATION_URL)
-
+/* Might do this again someday
 const stepUpdated = function(step) { 
   mainWindow().webContents.send('stepStatusUpdated', step); 
   return step 
@@ -54,7 +54,7 @@ const processUpdated = function(process) {
 const browserEventHandler = function(event) {
   mainWindow().webContents.send('browserEvent', event);
 }
-
+*/
 function main() {
   const appPath = app.getPath("appData")
   const name = app.getName()
