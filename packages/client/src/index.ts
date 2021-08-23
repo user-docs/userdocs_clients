@@ -120,13 +120,8 @@ export async function leaveUserChannel(client: Client) {
   return client
 }
 
-export function status() {
-  return state.userChannel.state
-}
-
 export async function openBrowser(client: Client) {
-  const userId = client.store.get('userId')
-  const configuration: Runner.Configuration = await configure(client, userId)
+  const configuration: Runner.Configuration = await configure(client)
   try {
     client.runner = await Runner.openBrowser(client.runner, configuration)
     client.userChannel.push("event:browser_opened", {})
