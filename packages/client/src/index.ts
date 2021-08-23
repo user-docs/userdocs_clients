@@ -18,11 +18,22 @@ interface Client {
   store: any
 }
 
-let state = {
-  runner: null,
-  socket: null,
-  userChannel: null,
-  callbacks: {}
+async function browserEventHandler(event) {
+  if (event.action == 'getAuth') {
+    let page
+    let browser = STATE.runner.automationFramework.browser
+    const pages: Array<any> = await browser.pages()
+    for (let i = 0; i < pages.length && !page; i++) {
+      let page = pages[i]
+      let payload = {
+        auth: CONFIGURATION.auth,
+        wsUrl: CONFIGURATION.wsUrl
+      }
+      page.evaluate((data) => {
+        window.postMessage({action: 'sendAuth', data: data}, "*") // Bad for security, it will be sent to anyone
+      }, payload)
+    }
+  }
 }
 
 const CONFIGURATION: any = {
