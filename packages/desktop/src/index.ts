@@ -7,6 +7,7 @@ import {
   validate,
   getSession,
   putSession,
+  startTokenRefresh,
   navigate,
   showMainWindow 
 } from './main_window/navigation'
@@ -87,6 +88,7 @@ async function initializeWindow(state) {
   state = await validate(state)
   state = await getSession(state)
   state = await putSession(state)
+  state = await startTokenRefresh(state)
   state = await navigate(state)
   state = await showMainWindow(state)
   return state
