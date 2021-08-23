@@ -45,6 +45,10 @@ function boot() {
   let state: State = { badgeState: 'none', authoring: false }
   chrome.storage.local.set(state)
   chrome.runtime.onMessage.addListener(message => {
+    console.log(message)
+    if(message.action == actions.GET_AUTH) {
+      sendToFirstTab({action: actions.GET_AUTH})
+    }
     if(message.action == "sendAuth") {
       const token = message.data.auth.accessToken
       const userId = message.data.auth.userId
@@ -74,8 +78,6 @@ function boot() {
       }
     })
   })
-
-  sendToFirstTab({action: actions.GET_AUTH})
 }
 
 function sendToFirstTab(message) {

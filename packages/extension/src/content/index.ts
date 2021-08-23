@@ -21,6 +21,7 @@ function boot() {
       (this as any).remove();
   };
   (document.head || document.documentElement).appendChild(s);
+  chrome.runtime.sendMessage({action: actions.GET_AUTH})
 }
 
 window.generateSelector = Recorder.generateSelector 
@@ -30,17 +31,11 @@ window.addEventListener("message", (event) => {
   if (event.data.type) {port.postMessage(event.data.text);}
   if (event.data.action == "sendAuth") {chrome.runtime.sendMessage(event.data)}
 }, false);
+
 chrome.runtime.onMessage.addListener(msg => { 
   let logString = "Content Script received a message."
-  console.log(logString, msg.action)
   if (msg.action) {
-    if (msg.action === actions.CREATE_ANNOTATION) window.postMessage(msg, "*");
-    if (msg.action === actions.ELEMENT_SCREENSHOT) window.postMessage(msg, "*");
-    if (msg.action == actions.ITEM_SELECTED) window.postMessage(msg, "*");
-    if (msg.action == actions.TEST_SELECTOR) window.postMessage(msg, "*");
-    if (msg.action == actions.click) window.postMessage(msg, "*");
-    if (msg.action == actions.load) window.postMessage(msg, "*");
-    if (msg.action == actions.GET_AUTH) window.postMessage(msg, "*");
+    if (msg.action === actions.GET_AUTH) window.postMessage(msg, "*");
   }
 })
 
