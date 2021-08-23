@@ -1,5 +1,5 @@
 import { app, BrowserWindow, session } from 'electron'
-import { loginAPI, loginUI } from './login'
+import { validateTokens, loginUI, renewSession } from './login'
 import * as keytar from 'keytar';
 
 const isDev = require('electron-is-dev');
@@ -31,6 +31,23 @@ export async function getTokens (state) {
   } catch (e) {
     state.status = "tokenFetchFailed"
     state.error = e
+  }
+  return state
+}
+
+export async function putTokens(tokens) {
+  await keytar.setPassword('UserDocs', 'accessToken', tokens.access_token)
+  await keytar.setPassword('UserDocs', 'renewalToken', tokens.renewal_token)
+}
+
+export async function validate (state) {
+  if (state.status != 'ok') { return state }
+  console.debug("validate")
+
+  const status = await validateTokens(state.url, state.tokens)
+  if (status.status === "update") {
+    putTokens(status.tokens)
+    state.tokens = status.tokens
   }
   return state
 }

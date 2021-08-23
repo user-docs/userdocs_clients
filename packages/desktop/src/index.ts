@@ -4,6 +4,7 @@ import {
   mainWindow, 
   createMainWindow,
   getTokens,
+  validate,
   getSession,
   putSession,
   navigate,
@@ -83,6 +84,7 @@ async function initialize(state) {
 async function initializeWindow(state) {
   state = await createMainWindow(state)
   state = await getTokens(state)
+  state = await validate(state)
   state = await getSession(state)
   state = await putSession(state)
   state = await navigate(state)

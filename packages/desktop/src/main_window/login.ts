@@ -1,18 +1,33 @@
 import axios from 'axios';
 
-export async function loginAPI(email, password, url) {
-  const sessionUrl = url + "/api/session"
-	const params = {
-    'user[email]': email,
-    'user[password]': password
-	}
+async function fetchCurrentUser(url, access_token) {
+  try {
+    const response = await axios({
+      url: url + "/api/graphql",
+      method: 'post',
+      data: {query: `query currentUser { user { id } }`},
+      headers: {authorization: access_token}
+    })
+    return response
+  } catch(e) {
+    console.log("Fetch failed, status:", e.response.status)
+    return e.response
+  }
+}
 
 	try {
-		const response = await axios.post(sessionUrl, null, { params: params })
-		return response.data.data
-	} catch (error) {
-    throw error
+
+export async function validateTokens(url, tokens) {
+  console.log("validateTokens")
+  const response = await fetchCurrentUser(url, tokens.access_token)
+  if (response.status === 200) return {status: "ok"}
+  else if (response.status === 401) {
+    const response = await renewSession(url, tokens.renewal_token)
+    if (response.status === 200) return {status: "update", tokens: response.data.data}
+    else if (response.status === 401) return {status: "error"}
+  } 
 	}
+  } 
 }
 
 export async function loginUI(token, url) {
