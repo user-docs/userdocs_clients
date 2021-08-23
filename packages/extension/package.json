@@ -25,7 +25,8 @@
   },
   "dependencies": {
     "@medv/finder": "^1.1.2",
-    "events": "^3.2.0"
+    "events": "^3.2.0",
+    "phoenix": "^1.5.10"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.145",
@@ -42,5 +43,5 @@
     "webpack-cli": "^4.7.2",
     "webpack-extension-reloader": "^1.1.4"
   },
-  "gitHead": "78e3463a4d10263397f35f20e9a7a97d6037a178"
+  "gitHead": "75373c4f070255bb46a2c0274aa3573a899b2e36"
 }

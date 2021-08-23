@@ -20,9 +20,7 @@
   },
   "dependencies": {
     "@userdocs/client": "^0.0.12",
-    "@userdocs/extension": "^1.0.15",
     "@userdocs/runner": "^1.0.42",
-    "@userdocs/server": "^1.0.5",
     "axios": "^0.21.1",
     "electron-is-dev": "^2.0.0",
     "global": "^4.4.0",
@@ -36,5 +34,5 @@
     "dotenv": "^8.2.0",
     "ts-node": "^9.1.1"
   },
-  "gitHead": "78e3463a4d10263397f35f20e9a7a97d6037a178"
+  "gitHead": "75373c4f070255bb46a2c0274aa3573a899b2e36"
 }
