@@ -52,7 +52,7 @@ function boot() {
       chrome.storage.local.set({accessToken: token, userId: userId, url: url}, () => {
         console.log("Auth Info stored")
         SOCKET = new Socket(url, {params: {token: token}})
-        CHANNEL = SOCKET.channel("user:" + userId, {app: "extension:background_script"})
+        CHANNEL = SOCKET.channel("user:" + userId, {app: "extension"})
         SOCKET.connect()
         CHANNEL.join()
       })
