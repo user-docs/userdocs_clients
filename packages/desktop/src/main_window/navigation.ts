@@ -5,6 +5,8 @@ import * as keytar from 'keytar';
 const isDev = require('electron-is-dev');
 const path = require('path')
 
+const TOKEN_REFRESH_INTERVAL = 25 * 60 * 1000
+
 export async function createMainWindow (state) {  
   //app.commandLine.appendSwitch('ignore-certificate-errors');
   try {
@@ -84,6 +86,15 @@ export async function putSession(state) {
     state.status = "loginFailed"
     state.error = e
   }
+  return state
+}
+
+export async function startTokenRefresh(state) {
+  const interval = setInterval(async () => {
+    keytar.getPassword('UserDocs', 'renewalToken')
+      .then((renewal_token) => renewSession(state.url, renewal_token))
+      .then((response => putTokens(response.data.data)))
+  }, TOKEN_REFRESH_INTERVAL);
   return state
 }
 
