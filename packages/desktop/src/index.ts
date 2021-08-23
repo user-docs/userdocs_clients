@@ -98,10 +98,9 @@ ipcMain.handle('startServices', startServices)
 async function startServices() {
   console.log("Starting Services")
   const accessToken = await keytar.getPassword('UserDocs', 'accessToken')
-  const renewalToken = await keytar.getPassword('UserDocs', 'renewalToken')
   const userId = parseInt(await keytar.getPassword('UserDocs', 'userId'))
-  const tokens = {renewal_token: renewalToken, access_token: accessToken}
-  var client = Client.create(accessToken, userId, WS_URL, APPLICATION_URL, "electron", store, app.getAppPath(), app.getPath("appData"), )
+  const environment = await store.get('environment')
+  var client = Client.create(accessToken, userId, WS_URL, APPLICATION_URL, "electron", store, app.getAppPath(), app.getPath("appData"), environment)
   client = await Client.connectSocket(client)
   client = await Client.joinUserChannel(client)
 }
