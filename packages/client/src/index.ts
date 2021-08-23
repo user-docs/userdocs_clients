@@ -23,10 +23,12 @@ async function browserEventHandler(event) {
     let page
     let browser = STATE.runner.automationFramework.browser
     const pages: Array<any> = await browser.pages()
+    const accessToken = await keytar.getPassword('UserDocs', 'accessToken')
+    const userId = parseInt(await keytar.getPassword('UserDocs', 'userId'))
     for (let i = 0; i < pages.length && !page; i++) {
       let page = pages[i]
       let payload = {
-        auth: CONFIGURATION.auth,
+        auth: {userId: userId, accessToken: accessToken},
         wsUrl: CONFIGURATION.wsUrl
       }
       page.evaluate((data) => {
