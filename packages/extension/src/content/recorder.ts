@@ -10,10 +10,8 @@ declare global {
 }
 
 export function initialize () {
-  console.log("Initializing")
   const events = Object.values(Recordable.events)
   if (!window.pptRecorderAddedControlListeners) {
-    console.log("adding listeners")
     addAllListeners(events)
     window.pptRecorderAddedControlListeners = true
   }

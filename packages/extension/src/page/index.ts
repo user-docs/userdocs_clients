@@ -6,7 +6,7 @@ const STATE = {
   highlightedElement: null
 }
 
-const SENDABLE_ACTIONS = [ actions.CREATE_ANNOTATION, actions.click, actions.load, actions.ITEM_SELECTED, actions.ELEMENT_SCREENSHOT ]
+const SENDABLE_ACTIONS = [ actions.GET_AUTH, actions.CREATE_ANNOTATION, actions.click, actions.load, actions.ITEM_SELECTED, actions.ELEMENT_SCREENSHOT ]
 
 window.addEventListener('message', function (message: MessageEvent) {
   if(SENDABLE_ACTIONS.includes(message.data.action)) {

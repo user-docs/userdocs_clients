@@ -1,4 +1,5 @@
 import { actions } from '../actions'
+import {Socket, Channel} from 'phoenix'
   
 export interface State {
   badgeState: string,
@@ -9,6 +10,8 @@ const MENU_ID = 'USERDOCS_ASSISTANT_CONTEXT_MENU'
 const SCREENSHOT_ID = 'SCREENSHOT'
 const ELEMENT_SCREENSHOT_ID = 'ELEMENT_SCREENSHOT'
 const ANNOTATE_ID = 'ANNOTATE'
+var SOCKET
+var CHANNEL
 
 const SENDABLE_ACTIONS = [ actions.CREATE_ANNOTATION, actions.TEST_SELECTOR, actions.ELEMENT_SCREENSHOT ]
 
@@ -20,7 +23,7 @@ chrome.runtime.onConnect.addListener(function(port) {
     PANEL_PORT = port
     port.onMessage.addListener(function(message) {
       console.log(`Background received devtools panel ${message.action} message`)
-      if(SENDABLE_ACTIONS.includes(message.action)) sendToFirstTab(message)
+      if(SENDABLE_ACTIONS.includes(message.action)) CHANNEL.push("event:browser_event", message)
     })
   }
   if (port.name === 'devtools') {
@@ -41,26 +44,38 @@ function boot() {
   console.debug("Booting Background Script")
   let state: State = { badgeState: 'none', authoring: false }
   chrome.storage.local.set(state)
-
   chrome.runtime.onMessage.addListener(message => {
+    if(message.action == "sendAuth") {
+      const token = message.data.auth.accessToken
+      const userId = message.data.auth.userId
+      const url = message.data.wsUrl
+      chrome.storage.local.set({accessToken: token, userId: userId, url: url}, () => {
+        console.log("Auth Info stored")
+        SOCKET = new Socket(url, {params: {token: token}})
+        CHANNEL = SOCKET.channel("user:" + userId, {app: "extension:background_script"})
+        SOCKET.connect()
+        CHANNEL.join()
+      })
+    }
     chrome.storage.local.get([ 'authoring' ], (result) => {
       const authoring  = result.authoring
       if (message.action) {
         if (message.action === actions.START) start()
         if (message.action === actions.STOP) stop()
         if (message.action === actions.click) {
-          console.log("Background page, click message")
+          console.log("Pushing message")
           if (DEVTOOLS_PORT) DEVTOOLS_PORT.postMessage(message)
           if (PANEL_PORT) PANEL_PORT.postMessage({ selector: message.selector }) 
-          if (authoring) sendToFirstTab(message)
+          if (authoring) CHANNEL.push("event:browser_event", message)
         }
         if (message.action === actions.load) {
-          console.log("Background page, navigate message")
-          if (authoring) sendToFirstTab(message)
+          if (authoring) CHANNEL.push("event:browser_event", message)
         }
       }
     })
   })
+
+  sendToFirstTab({action: actions.GET_AUTH})
 }
 
 function sendToFirstTab(message) {
