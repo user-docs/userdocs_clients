@@ -36,23 +36,32 @@ async function browserEventHandler(event) {
   }
 }
 
+let STATE
 const CONFIGURATION: any = {
   automationFrameworkName: 'puppeteer',
-  maxRetries: 3,
-  environment: 'development',
-  callbacks: {}
+  maxRetries: 10,
+  callbacks: { browserEvent: browserEventHandler },
+  auth: {}
 }
 
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
+async function authHeaders() {
+  const accessToken = await keytar.getPassword('UserDocs', 'accessToken')
+  return {authorization: accessToken}
+}
+
 function updater(client, query) {
   return function(stepInstance) {
-    client.graphQLClient.request(query, stepInstance)
+    authHeaders()
+      .then((headers) => {client.graphQLClient.request(query, stepInstance, headers)})
   } 
 }
 
-export async function configure(client, userId) {
-  const serverConfiguration = (await client.graphQLClient.request(getConfiguration, {id: userId})).user.configuration
+export async function configure(client) {
+  const headers = await authHeaders()
+  const serverConfigurationResponse = await client.graphQLClient.request(getConfiguration, {}, headers)
+  const serverConfiguration = serverConfigurationResponse.user.configuration
   const storedConfiguration = client.store.store
   const configuration: Runner.Configuration = {...CONFIGURATION, ...serverConfiguration, ...storedConfiguration}
   configuration.callbacks.updateStepInstance = updater(client, updateStepInstanceQuery)
@@ -135,18 +144,20 @@ export async function closeBrowser(client: Client) {
 }
 
 export async function executeStepInstance(client: Client, stepId: number) {
-  const userId = client.store.get('userId')
-  const stepInstance = (await client.graphQLClient.request(createStepInstance, {stepId: stepId, status: "not_started"})).createStepInstance
-  const configuration = await configure(client, userId)
+  const headers = await authHeaders()
+  const variables = {stepId: stepId, status: "not_started"}
+  const response = await client.graphQLClient.request(createStepInstance, variables, headers)
+  const stepInstance = response.createStepInstance
+  const configuration = await configure(client)
   return await Runner.executeStepInstance(stepInstance, client.runner, configuration)
 }
 
 export async function executeProcess(client: Client, processId: number) {
-  const userId = client.store.get('userId')
+  const headers = await authHeaders()
   const params = {processId: processId, status: "not_started"}
-  const response = (await client.graphQLClient.request(createProcessInstance, params))
+  const response = await client.graphQLClient.request(createProcessInstance, params, headers)
   const processInstance = response.createProcessInstance
-  const configuration = await configure(client, userId)
+  const configuration = await configure(client)
   return await Runner.executeProcessInstance(processInstance, client.runner, configuration)
 }
 
