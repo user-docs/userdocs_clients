@@ -12,7 +12,6 @@ import {
 import { configSchema } from './configSchema'
 import { autoUpdater } from 'electron-updater'
 import * as fs from 'fs';
-import { loginAPI, loginUI } from './main_window/login'
 import * as keytar from 'keytar';
 
 //process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
