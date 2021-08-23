@@ -76,7 +76,7 @@ export const Puppet = {
           }, false); 
         }, `${configuration.css}`);
       }
-      //page.exposeFunction('sendEvent', configuration.browserEvent)
+      page.exposeFunction('sendEvent', configuration.callbacks.browserEvent)
     }
 
     return browser
