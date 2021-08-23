@@ -1,8 +1,8 @@
 import {gql} from 'graphql-request'
 
 export const getConfiguration = gql`  
-query getUser($id: ID!) {
-  user(id: $id) {
+query getUser {
+  user {
     configuration {
       strategy
       css
