@@ -7,5 +7,6 @@ export const actions = {
   CREATE_ANNOTATION: 'Apply Annotation',
   TEST_SELECTOR: 'TEST_SELECTOR',
   ITEM_SELECTED: 'ITEM_SELECTED',
-  ELEMENT_SCREENSHOT: 'Element Screenshot'
+  ELEMENT_SCREENSHOT: 'Element Screenshot',
+  GET_AUTH: 'getAuth'
 }
