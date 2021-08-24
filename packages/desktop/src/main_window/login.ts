@@ -10,14 +10,16 @@ async function fetchCurrentUser(url, access_token) {
     })
     return response
   } catch(e) {
-    console.log("Fetch failed, status:", e.response.status)
+    if(e.response) console.log("fetchCurrentUser failed, status:", e.response.status)
+    else console.log("Renew Failed, error:", e)
     return e.response
   }
 }
 
 export async function renewSession(url, renewal_token) {
-  console.log(url)
-  console.log(renewal_token)
+  //console.log("Renewing token")
+  //console.log(url)
+  //console.log(renewal_token)
   try {
     const response = await axios({
       url: url + "/api/session/renew",
@@ -26,13 +28,13 @@ export async function renewSession(url, renewal_token) {
     })
     return response
   } catch(e) {
-    console.log("Renew failed, status:", e.response.status)
+    if(e.response) console.log("Renew failed, status:", e.response.status)
+    else console.log("Renew Failed, error:", e)
     return e.response
   }
 }
 
 export async function validateTokens(url, tokens) {
-  console.log("validateTokens")
   const response = await fetchCurrentUser(url, tokens.access_token)
   if (response.status === 200) return {status: "ok"}
   else if (response.status === 401) {
