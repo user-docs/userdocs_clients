@@ -26,6 +26,9 @@ const store = new Store(configSchema)
 
 var APPLICATION_URL
 var WS_URL
+var STATE = {
+  client: null
+}
 
 if (isDev) {
   require('electron-reload')(__dirname, {
@@ -33,12 +36,14 @@ if (isDev) {
     hardResetMethod: 'exit'
   });
   store.set('environment', 'desktop')
-  APPLICATION_URL = "https://app.user-docs.com"
-  WS_URL = "https://app.user-docs.com/socket"
+  //APPLICATION_URL = "https://app.user-docs.com"
+  //WS_URL = "https://app.user-docs.com/socket"
+  APPLICATION_URL = "https://dev.user-docs.com:4002"
+  WS_URL = "wss://dev.user-docs.com:4002/socket"
 } else {
   store.set('environment', 'desktop')
   APPLICATION_URL = "https://app.user-docs.com"
-  WS_URL = "https://app.user-docs.com/socket"
+  WS_URL = "wss://app.user-docs.com/socket"
 }
 
 store.set('applicationUrl', APPLICATION_URL)
@@ -100,9 +105,9 @@ async function startServices() {
   const accessToken = await keytar.getPassword('UserDocs', 'accessToken')
   const userId = parseInt(await keytar.getPassword('UserDocs', 'userId'))
   const environment = await store.get('environment')
-  var client = Client.create(accessToken, userId, WS_URL, APPLICATION_URL, "electron", store, app.getAppPath(), app.getPath("appData"), environment)
-  client = await Client.connectSocket(client)
-  client = await Client.joinUserChannel(client)
+  if (STATE.client === null) STATE.client = Client.create(accessToken, userId, WS_URL, APPLICATION_URL, "electron", store, app.getAppPath(), app.getPath("appData"), environment)
+  if (STATE.client.socket.connectionState() != "open") STATE.client = await Client.connectSocket(STATE.client)
+  if (STATE.client.userChannel.state != "joined") STATE.client = await Client.joinUserChannel(STATE.client)
 }
 
 
