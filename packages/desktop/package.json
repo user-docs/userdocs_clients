@@ -14,7 +14,7 @@
       "category": "public.app-category.developer-tools",
       "artifactName": "${productName} Setup.${ext}",
       "cscLink": "https://drive.google.com/uc?export=download&id=1XiMXBdeYAZE6-WTgWsxzeAKBt_QC4GLj",
-      "cscKeyPassword": "kAm5EQSdjiOoAGhKSYMC1GQz1b8O2bz"
+      "cscKeyPassword": "U4cZEQ3UN1F33ZL7yhfYBHMCDTvYJ6x"
     },
     "linux": {
       "executableName": "user_docs",
@@ -75,5 +75,5 @@
   "optionalDependencies": {
     "win-node-env": "^0.4.0"
   },
-  "gitHead": "8101956185762fc4a5d2fad1b036d30b42aef011"
+  "gitHead": "80d6bca3b0f63a59e8fab28eabb76158ae6da808"
 }
