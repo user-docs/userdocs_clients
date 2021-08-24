@@ -18,6 +18,8 @@ interface Client {
   store: any
 }
 
+//process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+
 async function browserEventHandler(event) {
   if (event.action == 'getAuth') {
     let page
@@ -46,8 +48,6 @@ const CONFIGURATION: any = {
   auth: {}
 }
 
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
-
 async function authHeaders() {
   const accessToken = await keytar.getPassword('UserDocs', 'accessToken')
   return {authorization: accessToken}
@@ -74,7 +74,6 @@ export async function configure(client) {
 }
 
 export function create(token: string, userId: number, ws_url: string, http_url: string, app: string, store: any, appPath: any, appDataPath: any, environment: string) {
-  console.log("Creating Client")
   const socket = new Socket(ws_url, {params: {token: token}})
   const channel = socket.channel("user:" + userId, {app: app})
   CONFIGURATION.wsUrl = ws_url
@@ -95,7 +94,7 @@ export function create(token: string, userId: number, ws_url: string, http_url: 
 export async function connectSocket(client: Client) {
   await client.socket.connect()
   return client
-}
+} 
 
 export async function disconnectSocket(client: Client) {
   clearInterval(client.socket.heartbeatTimer)
