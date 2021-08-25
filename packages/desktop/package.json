@@ -10,11 +10,16 @@
   "build": {
     "appId": "johns10@gmail.com",
     "productName": "UserDocs",
+    "afterSign": "src/notarize.js",
     "mac": {
       "category": "public.app-category.developer-tools",
       "artifactName": "${productName} Setup.${ext}",
       "cscLink": "https://drive.google.com/uc?export=download&id=1OUnorDzPaV6Ir8I7riejQqAWYszDPjIL",
-      "cscKeyPassword": "A9G0dWiLnDL1rHnob2wfvSEz7kFs9OP"
+      "cscKeyPassword": "A9G0dWiLnDL1rHnob2wfvSEz7kFs9OP",
+      "entitlements": "src/entitlements.mac.plist",
+      "entitlementsInherit": "src/entitlements.mac.plist",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false
     },
     "linux": {
       "executableName": "user_docs",
@@ -65,6 +70,7 @@
     "cpx": "^1.5.0",
     "electron": "13.1.7",
     "electron-builder": "^22.10.5",
+    "electron-notarize": "^1.1.0",
     "electron-reload": "^1.5.0",
     "postcss": "^8.3.6",
     "postcss-cli": "^8.3.1",
@@ -75,5 +81,5 @@
   "optionalDependencies": {
     "win-node-env": "^0.4.0"
   },
-  "gitHead": "98f22a62132d25977c9d61d977c62e3906e0c556"
+  "gitHead": "ea72cda672dea65fd5e5e8d39ae17b5506772a1d"
 }
