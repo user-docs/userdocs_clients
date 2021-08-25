@@ -17,8 +17,8 @@
       "cscLink": "https://drive.google.com/uc?export=download&id=1OUnorDzPaV6Ir8I7riejQqAWYszDPjIL",
       "icon": "build/icon.icns",
       "cscKeyPassword": "A9G0dWiLnDL1rHnob2wfvSEz7kFs9OP",
-      "entitlements": "src/entitlements.mac.plist",
-      "entitlementsInherit": "src/entitlements.mac.plist",
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
       "hardenedRuntime": true,
       "gatekeeperAssess": false
     },
