@@ -14,7 +14,7 @@
       "category": "public.app-category.developer-tools",
       "artifactName": "${productName} Setup.${ext}",
       "cscLink": "https://drive.google.com/uc?export=download&id=1OUnorDzPaV6Ir8I7riejQqAWYszDPjIL",
-      "cscKeyPassword": "ssGYp7KInzzbvnLuQgDZGlCoeDFuJbH"
+      "cscKeyPassword": "A9G0dWiLnDL1rHnob2wfvSEz7kFs9OP"
     },
     "linux": {
       "executableName": "user_docs",
