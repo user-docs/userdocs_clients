@@ -43,5 +43,5 @@
     "webpack-cli": "^4.7.2",
     "webpack-extension-reloader": "^1.1.4"
   },
-  "gitHead": "35c135281cdd68b79a1733eec2c817e80bec5fea"
+  "gitHead": "16de70a69819fbc94f17bd3d46c3a254fbb8d56e"
 }
