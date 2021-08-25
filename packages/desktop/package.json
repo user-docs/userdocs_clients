@@ -9,6 +9,10 @@
   "homepage": "https://user-docs.com",
   "build": {
     "extraResources": "node_modules",
+    "files": [
+      "build/**/*",
+      "!node_modules"
+    ],
     "appId": "johns10@gmail.com",
     "productName": "UserDocs",
     "afterSign": "build/notarize.js",
@@ -22,7 +26,20 @@
       "entitlementsInherit": "build/entitlements.mac.plist",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
-      "binaries": []
+      "binaries": [
+        "Resources/app.asar.unpacked/node_modules/puppeteer/.local-chromium/mac-869685/chrome-mac/Chromium.app/Contents/Frameworks/Chromium Framework.framework/Versions/91.0.4469.0/Libraries/libEGL.dylib",
+        "Resources/app.asar.unpacked/node_modules/puppeteer/.local-chromium/mac-869685/chrome-mac/Chromium.app/Contents/Frameworks/Chromium Framework.framework/Versions/91.0.4469.0/Libraries/libswiftshader_libEGL.dylib",
+        "Resources/app.asar.unpacked/node_modules/puppeteer/.local-chromium/mac-869685/chrome-mac/Chromium.app/Contents/Frameworks/Chromium Framework.framework/Versions/91.0.4469.0/Libraries/libGLESv2.dylib",
+        "Resources/app.asar.unpacked/node_modules/puppeteer/.local-chromium/mac-869685/chrome-mac/Chromium.app/Contents/Frameworks/Chromium Framework.framework/Versions/91.0.4469.0/Libraries/libswiftshader_libGLESv2.dylib",
+        "Resources/app.asar.unpacked/node_modules/puppeteer/.local-chromium/mac-869685/chrome-mac/Chromium.app/Contents/Frameworks/Chromium Framework.framework/Versions/91.0.4469.0/XPCServices/AlertNotificationService.xpc/Contents/MacOS/AlertNotificationService",
+        "Resources/app.asar.unpacked/node_modules/puppeteer/.local-chromium/mac-869685/chrome-mac/Chromium.app/Contents/Frameworks/Chromium Framework.framework/Versions/91.0.4469.0/Helpers/chrome_crashpad_handler",
+        "Resources/app.asar.unpacked/node_modules/puppeteer/.local-chromium/mac-869685/chrome-mac/Chromium.app/Contents/Frameworks/Chromium Framework.framework/Versions/91.0.4469.0/Helpers/app_mode_loader",
+        "Resources/app.asar.unpacked/node_modules/puppeteer/.local-chromium/mac-869685/chrome-mac/Chromium.app/Contents/Frameworks/Chromium Framework.framework/Versions/91.0.4469.0/Helpers/Chromium Helper (Alerts).app/Contents/MacOS/Chromium Helper (Alerts)",
+        "Resources/app.asar.unpacked/node_modules/puppeteer/.local-chromium/mac-869685/chrome-mac/Chromium.app/Contents/Frameworks/Chromium Framework.framework/Versions/91.0.4469.0/Helpers/Chromium Helper (Plugin).app/Contents/MacOS/Chromium Helper (Plugin)",
+        "Resources/app.asar.unpacked/node_modules/puppeteer/.local-chromium/mac-869685/chrome-mac/Chromium.app/Contents/Frameworks/Chromium Framework.framework/Versions/91.0.4469.0/Helpers/Chromium Helper (Renderer).app/Contents/MacOS/Chromium Helper (Renderer)",
+        "Resources/app.asar.unpacked/node_modules/puppeteer/.local-chromium/mac-869685/chrome-mac/Chromium.app/Contents/Frameworks/Chromium Framework.framework/Versions/91.0.4469.0/Helpers/Chromium Helper.app/Contents/MacOS/Chromium Helper",
+        "Resources/app.asar.unpacked/node_modules/puppeteer/.local-chromium/mac-869685/chrome-mac/Chromium.app/Contents/Frameworks/Chromium Framework.framework/Versions/91.0.4469.0/Helpers/Chromium Helper (GPU).app/Contents/MacOS/Chromium Helper (GPU)"
+      ]
     },
     "linux": {
       "executableName": "user_docs",
@@ -33,10 +50,6 @@
     "win": {
       "artifactName": "${productName} Setup.${ext}"
     },
-    "files": [
-      "build/**/*",
-      "!node_modules"
-    ],
     "asarUnpack": [
       "node_modules/@userdocs/extension/extension"
     ]
