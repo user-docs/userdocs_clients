@@ -13,8 +13,8 @@
     "mac": {
       "category": "public.app-category.developer-tools",
       "artifactName": "${productName} Setup.${ext}",
-      "cscLink": "https://drive.google.com/uc?export=download&id=1XiMXBdeYAZE6-WTgWsxzeAKBt_QC4GLj",
-      "cscKeyPassword": "U4cZEQ3UN1F33ZL7yhfYBHMCDTvYJ6x"
+      "cscLink": "https://drive.google.com/uc?export=download&id=1OUnorDzPaV6Ir8I7riejQqAWYszDPjIL",
+      "cscKeyPassword": "ssGYp7KInzzbvnLuQgDZGlCoeDFuJbH"
     },
     "linux": {
       "executableName": "user_docs",
@@ -75,5 +75,5 @@
   "optionalDependencies": {
     "win-node-env": "^0.4.0"
   },
-  "gitHead": "b0abfafc6eb7985226f01b38c381a96403a62cf2"
+  "gitHead": "7750a7757650758ee496c402c6b4dfefc9b86ecb"
 }
