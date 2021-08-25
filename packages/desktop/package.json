@@ -10,7 +10,7 @@
   "build": {
     "appId": "johns10@gmail.com",
     "productName": "UserDocs",
-    "afterSign": "src/notarize.js",
+    "afterSign": "build/notarize.js",
     "mac": {
       "category": "public.app-category.developer-tools",
       "artifactName": "${productName} Setup.${ext}",
