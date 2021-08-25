@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/desktop",
-  "version": "0.0.94",
+  "version": "0.0.95",
   "description": "Authors steps and processes for collection of screenshots.",
   "repository": "https://github.com/johns10/userdocs_clients",
   "main": "build/index.js",
@@ -70,7 +70,7 @@
   },
   "dependencies": {
     "@userdocs/client": "^0.0.34",
-    "@userdocs/runner": "^1.0.66",
+    "@userdocs/runner": "^1.0.67",
     "@userdocs/server": "^1.0.5",
     "axios": "^0.21.1",
     "electron-is-dev": "^2.0.0",
