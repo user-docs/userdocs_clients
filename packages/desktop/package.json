@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/desktop",
-  "version": "0.0.100",
+  "version": "0.0.98",
   "description": "Authors steps and processes for collection of screenshots.",
   "repository": "https://github.com/johns10/userdocs_clients",
   "main": "build/index.js",
@@ -9,9 +9,6 @@
   "homepage": "https://user-docs.com",
   "build": {
     "extraResources": "node_modules",
-    "files": [
-      "!node_modules"
-    ],
     "appId": "johns10@gmail.com",
     "productName": "UserDocs",
     "afterSign": "build/notarize.js",
@@ -25,9 +22,7 @@
       "entitlementsInherit": "build/entitlements.mac.plist",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
-      "binaries": [
-        "Resources/app.asar.unpacked/node_modules/puppeteer/*"
-      ]
+      "binaries": []
     },
     "linux": {
       "executableName": "user_docs",
@@ -39,7 +34,8 @@
       "artifactName": "${productName} Setup.${ext}"
     },
     "files": [
-      "build/**/*"
+      "build/**/*",
+      "!node_modules"
     ],
     "asarUnpack": [
       "node_modules/@userdocs/extension/extension"
@@ -62,8 +58,8 @@
     "watch": "tsc-watch --noClear -p ./tsconfig.build.json"
   },
   "dependencies": {
-    "@userdocs/client": "^0.0.42",
-    "@userdocs/runner": "^1.0.72",
+    "@userdocs/client": "^0.0.40",
+    "@userdocs/runner": "^1.0.70",
     "@userdocs/server": "^1.0.5",
     "axios": "^0.21.1",
     "electron-is-dev": "^2.0.0",
@@ -89,5 +85,5 @@
   "optionalDependencies": {
     "win-node-env": "^0.4.0"
   },
-  "gitHead": "9366b4fe973bcbb4badc49724272ed49af11e3d2"
+  "gitHead": "fff72181ea0667cffaa89edf3f142396c7bf9012"
 }
