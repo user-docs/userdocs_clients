@@ -15,6 +15,7 @@
       "category": "public.app-category.developer-tools",
       "artifactName": "${productName} Setup.${ext}",
       "cscLink": "https://drive.google.com/uc?export=download&id=1OUnorDzPaV6Ir8I7riejQqAWYszDPjIL",
+      "icon": "build/icon.icns",
       "cscKeyPassword": "A9G0dWiLnDL1rHnob2wfvSEz7kFs9OP",
       "entitlements": "src/entitlements.mac.plist",
       "entitlementsInherit": "src/entitlements.mac.plist",
