@@ -9,6 +9,7 @@ import {
   createScreenshot as createScreenshotQuery
 } from './query'
 import * as keytar from 'keytar';
+const findChrome = require('chrome-finder');
 
 interface Client {
   runner: Runner.Runner,
@@ -110,6 +111,9 @@ export async function joinUserChannel(client: Client) {
   client.userChannel.on("command:close_browser", () => {closeBrowser(client)})
   client.userChannel.on("command:execute_step", (payload) => {executeStepInstance(client, payload.step_id)})
   client.userChannel.on("command:execute_process", (payload) => {executeProcess(client, payload.process_id)})
+  client.userChannel.on("command:get_configuration", (payload) => {getLocalConfiguration(client)})
+  client.userChannel.on("command:put_configuration", (payload) => {putLocalConfiguration(client, payload)})
+  client.userChannel.on("command:find_chrome", (payload) => {sendChromePath(client)})
   client.userChannel.on("serviceStatus", (payload) => {console.log(payload)})
   while(client.userChannel.state != "joined") { await new Promise(resolve => setTimeout(resolve, 100)) }
   return client
@@ -157,6 +161,37 @@ export async function executeProcess(client: Client, processId: number) {
   const processInstance = response.createProcessInstance
   const configuration = await configure(client)
   return await Runner.executeProcessInstance(processInstance, client.runner, configuration)
+}
+
+async function getLocalConfiguration(client: Client) {
+  client.userChannel.push("event:configuration_fetched", client.store.store)
+  return client
+}
+
+async function putLocalConfiguration(client: Client, payload) {
+  client.store.set(payload)
+  client.userChannel.push("event:configuration_saved", {})
+  return client
+}
+
+function sendChromePath(client: Client) {
+  try {
+    const path = findChrome()
+    client.userChannel.push("event:chrome_found", {path: path})
+  } catch(e) {
+    client.userChannel.push("event:chrome_not_found", {})
+  }
+}
+
+function initializeChromePath(store: any) {
+  if(store.get('chromePath') == "") {
+    var path
+    try {path = findChrome()} 
+    catch(e) {path = ""}
+    console.log(`Chrome Path is nothing, locating chrome ${path}`)
+    store.set('chromePath', path)
+  }
+  return store
 }
 
 function browserClosed(client: Client) { 
