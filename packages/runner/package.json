@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/runner",
-  "version": "1.0.75",
+  "version": "1.0.76",
   "description": "Runs steps authored in the userdocs screenshot collection tool",
   "main": "dist/index",
   "types": "dist/index",
