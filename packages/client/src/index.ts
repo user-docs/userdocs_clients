@@ -2,7 +2,8 @@ import * as Runner from '@userdocs/runner'
 import {Socket, Channel} from "phoenix-channels"
 import {GraphQLClient} from 'graphql-request'
 import {
-  createStepInstance, getConfiguration, createProcessInstance, 
+  createStepInstance, createProcessInstance, 
+  getConfiguration as getConfigurationQuery,
   updateStepInstance as updateStepInstanceQuery,
   updateProcessInstance as updateProcessInstanceQuery,
   updateScreenshot as updateScreenshotQuery,
@@ -28,11 +29,12 @@ async function browserEventHandler(event) {
     const pages: Array<any> = await browser.pages()
     const accessToken = await keytar.getPassword('UserDocs', 'accessToken')
     const userId = parseInt(await keytar.getPassword('UserDocs', 'userId'))
+    const wsUrl = STATE.store.get('wsUrl')
     for (let i = 0; i < pages.length && !page; i++) {
       let page = pages[i]
       let payload = {
         auth: {userId: userId, accessToken: accessToken},
-        wsUrl: CONFIGURATION.wsUrl
+        wsUrl: wsUrl
       }
       page.evaluate((data) => {
         window.postMessage({action: 'sendAuth', data: data}, "*") // Bad for security, it will be sent to anyone
@@ -63,7 +65,7 @@ function updater(client, query) {
 
 export async function configure(client) {
   const headers = await authHeaders()
-  const serverConfigurationResponse = await client.graphQLClient.request(getConfiguration, {}, headers)
+  const serverConfigurationResponse = await client.graphQLClient.request(getConfigurationQuery, {}, headers)
   const serverConfiguration = serverConfigurationResponse.user.configuration
   const storedConfiguration = client.store.store
   const configuration: Runner.Configuration = {...CONFIGURATION, ...serverConfiguration, ...storedConfiguration}
@@ -71,16 +73,17 @@ export async function configure(client) {
   configuration.callbacks.updateProcessInstance = updater(client, updateProcessInstanceQuery)
   configuration.callbacks.updateScreenshot = updater(client, updateScreenshotQuery)
   configuration.callbacks.createScreenshot = updater(client, createScreenshotQuery)
+  console.log(configuration)
   return configuration
 }
 
 export function create(token: string, userId: number, ws_url: string, http_url: string, app: string, store: any, appPath: any, appDataPath: any, environment: string) {
+  console.log("Creating Client")
+  store.set('chromePath', '')
   const socket = new Socket(ws_url, {params: {token: token}})
   const channel = socket.channel("user:" + userId, {app: app})
-  CONFIGURATION.wsUrl = ws_url
-  CONFIGURATION.appPath = appPath
+  store = initializeChromePath(store)
   CONFIGURATION.appDataPath = appDataPath
-  CONFIGURATION.environment = environment
   const client: Client = {
     runner: Runner.initialize(CONFIGURATION),
     socket: socket,
