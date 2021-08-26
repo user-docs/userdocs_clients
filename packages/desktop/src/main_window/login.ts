@@ -1,44 +1,45 @@
 import axios from 'axios';
 
 async function fetchCurrentUser(url, access_token) {
-  try {
-    const response = await axios({
-      url: url + "/api/graphql",
-      method: 'post',
-      data: {query: `query currentUser { user { id } }`},
-      headers: {authorization: access_token}
-    })
-    return response
-  } catch(e) {
-    if(e.response) console.log("fetchCurrentUser failed, status:", e.response.status)
-    else console.log("Renew Failed, error:", e)
-    return e.response
-  }
+  const response = await axios({
+    url: url + "/api/graphql",
+    method: 'post',
+    data: {query: `query currentUser { user { id } }`},
+    headers: {authorization: access_token}
+  })
+  return response
 }
 
 export async function renewSession(url, renewal_token) {
   //console.log("Renewing token")
   //console.log(url)
   //console.log(renewal_token)
-  try {
-    const response = await axios({
-      url: url + "/api/session/renew",
-      method: 'post',
-      headers: {authorization: renewal_token}
-    })
-    return response
-  } catch(e) {
-    if(e.response) console.log("Renew failed, status:", e.response.status)
-    else console.log("Renew Failed, error:", e)
-    return e.response
-  }
+  const response = await axios({
+    url: url + "/api/session/renew",
+    method: 'post',
+    headers: {authorization: renewal_token}
+  })
+  return response
 }
 
 export async function validateTokens(url, tokens) {
-  const response = await fetchCurrentUser(url, tokens.access_token)
+  var response
+  try {
+    response = await fetchCurrentUser(url, tokens.access_token)
+  } catch(e) {
+    console.log("fetchcurrentuser failed")
+    if(e.response) response = e.response
+    else throw e
+  }
   if (response.status === 200) return {status: "ok"}
   else if (response.status === 401) {
-    const response = await renewSession(url, tokens.renewal_token)
+    var response
+    try {
+      response = await renewSession(url, tokens.renewal_token)
+    } catch(e) {
+      if(e.response) response = e.response
+      else throw e
+    }
     if (response.status === 200) return {status: "update", tokens: response.data.data}
     else if (response.status === 401) return {status: "error"}
   } 
