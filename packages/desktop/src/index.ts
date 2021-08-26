@@ -26,6 +26,7 @@ const store = new Store(configSchema)
 
 var APPLICATION_URL
 var WS_URL
+var ENVIRONMENT
 var STATE = {
   client: null
 }
@@ -35,18 +36,25 @@ if (isDev) {
     electron: path.join(__dirname, '../', 'node_modules', '.bin', 'electron'),
     hardResetMethod: 'exit'
   });
-  store.set('environment', 'desktop')
-  //APPLICATION_URL = "https://app.user-docs.com"
-  //WS_URL = "https://app.user-docs.com/socket"
+  ENVIRONMENT = "development"
+  APPLICATION_URL = "https://app.user-docs.com"
+  WS_URL = "wss://app.user-docs.com/socket"
+  /*
+  ENVIRONMENT = "development"
   APPLICATION_URL = "https://dev.user-docs.com:4002"
   WS_URL = "wss://dev.user-docs.com:4002/socket"
+  */
 } else {
-  store.set('environment', 'desktop')
+  ENVIRONMENT = "desktop"
   APPLICATION_URL = "https://app.user-docs.com"
   WS_URL = "wss://app.user-docs.com/socket"
 }
 
+
+store.set('environment', ENVIRONMENT)
+store.set('wsUrl', WS_URL)
 store.set('applicationUrl', APPLICATION_URL)
+
 /* Might do this again someday
 const stepUpdated = function(step) { 
   mainWindow().webContents.send('stepStatusUpdated', step); 
@@ -62,6 +70,7 @@ const browserEventHandler = function(event) {
   mainWindow().webContents.send('browserEvent', event);
 }
 */
+
 function main() {
   const appPath = app.getPath("appData")
   const name = app.getName()
@@ -105,7 +114,11 @@ async function startServices() {
   const accessToken = await keytar.getPassword('UserDocs', 'accessToken')
   const userId = parseInt(await keytar.getPassword('UserDocs', 'userId'))
   const environment = await store.get('environment')
-  if (STATE.client === null) STATE.client = Client.create(accessToken, userId, WS_URL, APPLICATION_URL, "electron", store, app.getAppPath(), app.getPath("appData"), environment)
+  const appPath = app.getAppPath()
+  store.set('appPath', appPath)
+  const appDataPath = app.getPath("appData")
+  store.set('appPath', appPath)
+  if (STATE.client === null) STATE.client = Client.create(accessToken, userId, WS_URL, APPLICATION_URL, "electron", store, appPath, appDataPath, environment)
   if (STATE.client.socket.connectionState() != "open") STATE.client = await Client.connectSocket(STATE.client)
   if (STATE.client.userChannel.state != "joined") STATE.client = await Client.joinUserChannel(STATE.client)
 }
