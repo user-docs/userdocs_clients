@@ -79,7 +79,6 @@ export async function configure(client) {
 
 export function create(token: string, userId: number, ws_url: string, http_url: string, app: string, store: any, appPath: any, appDataPath: any, environment: string) {
   console.log("Creating Client")
-  store.set('chromePath', '')
   const socket = new Socket(ws_url, {params: {token: token}})
   const channel = socket.channel("user:" + userId, {app: app})
   store = initializeChromePath(store)
