@@ -69,7 +69,7 @@
     "watch": "tsc-watch --noClear -p ./tsconfig.build.json"
   },
   "dependencies": {
-    "@userdocs/client": "^0.0.40",
+    "@userdocs/client": "^0.0.42",
     "@userdocs/runner": "^1.0.70",
     "@userdocs/server": "^1.0.5",
     "axios": "^0.21.1",

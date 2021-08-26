@@ -29,6 +29,7 @@
     "@userdocs/extension": "^1.0.45",
     "@userdocs/runner": "^1.0.72",
     "axios": "^0.21.1",
+    "chrome-finder": "^1.0.7",
     "electron-store": "^8.0.0",
     "graphql": "^15.5.1",
     "graphql-request": "^3.5.0",
