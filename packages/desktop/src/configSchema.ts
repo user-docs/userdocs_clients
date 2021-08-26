@@ -19,6 +19,10 @@ export let configSchema = {
     type: 'string',
     default: ''
   },
+  chromePath: {
+    type: 'string',
+    default: ''
+  },
   applicationUrl: {
     type: 'string',
     default: 'https://app.user-docs.com'
