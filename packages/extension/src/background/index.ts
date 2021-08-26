@@ -6,8 +6,6 @@ export interface State {
   authoring: boolean
 }
 
-(window as any).location = "https://app.user-docs.com"
-
 const MENU_ID = 'USERDOCS_ASSISTANT_CONTEXT_MENU'
 const SCREENSHOT_ID = 'SCREENSHOT'
 const ELEMENT_SCREENSHOT_ID = 'ELEMENT_SCREENSHOT'
