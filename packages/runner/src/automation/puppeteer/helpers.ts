@@ -1,4 +1,4 @@
-import { Page, Browser } from 'puppeteer'
+import { Page, Browser } from 'puppeteer-core'
 
 export async function currentPage(browser: Browser) {
   let page
