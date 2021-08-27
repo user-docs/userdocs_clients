@@ -38,7 +38,8 @@ export interface Configuration {
   appDataDir: string,
   appPath: string,
   lib?: { [ key: string ]: Function } // need?,
-  callbacks: any
+  callbacks: any,
+  chromePath: string
 }
 
 const automationFrameworks = {
