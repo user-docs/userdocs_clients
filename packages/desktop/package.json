@@ -13,6 +13,7 @@
     ],
     "appId": "johns10@gmail.com",
     "productName": "UserDocs",
+    "afterSign": "build/notarize.js",
     "mac": {
       "category": "public.app-category.developer-tools",
       "artifactName": "${productName} Setup.${ext}",
@@ -81,5 +82,5 @@
   "optionalDependencies": {
     "win-node-env": "^0.4.0"
   },
-  "gitHead": "50107efd1d073f4ffec7148e82e685aef68c2825"
+  "gitHead": "cbfe6d39ee5668318a9cbee2aba743e6e110be38"
 }

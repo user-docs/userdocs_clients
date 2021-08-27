@@ -22,7 +22,6 @@
     "@userdocs/extension": "^1.0.46",
     "find-yarn-workspace-root": "^2.0.0",
     "fs": "^0.0.1-security",
-    "puppeteer": "^9.1.1",
     "puppeteer-core": "^10.2.0",
     "uuid": "^8.3.2"
   },
@@ -40,5 +39,5 @@
     "webpack": "4.41.5",
     "webpack-cli": "^3.3.12"
   },
-  "gitHead": "50107efd1d073f4ffec7148e82e685aef68c2825"
+  "gitHead": "cbfe6d39ee5668318a9cbee2aba743e6e110be38"
 }
