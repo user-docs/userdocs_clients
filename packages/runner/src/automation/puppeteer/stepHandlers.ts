@@ -1,6 +1,6 @@
 import { Step } from '../../domain/step'
 import { currentPage, getElementHandle, getElementsHandle } from './helpers'
-import { Page, ElementHandle, Browser } from 'puppeteer'
+import { Page, ElementHandle, Browser } from 'puppeteer-core'
 import { StyleFunctionsText } from '../../annotation/style'
 import { annotationHandlers } from '../../annotation/annotation'
 import { Configuration } from '../../runner/runner'
@@ -193,7 +193,7 @@ export const stepHandlers: StepHandler = {
     const page: Page | undefined = await currentPage(browser)
     if (!page) { throw new Error("Page not retreived from browser")}
     const handle: ElementHandle = await getElementHandle(browser, selector, strategy)
-    await handle.evaluate(handle => handle.submit())
+    await handle.evaluate(handle => (handle as any).submit())
     return step
   },
   "Send Enter Key": async(browser: Browser, step: Step, configuration: Configuration) => {
