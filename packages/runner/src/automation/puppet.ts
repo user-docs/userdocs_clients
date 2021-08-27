@@ -1,9 +1,9 @@
 import { Step } from '../domain/step'
 import { stepHandlers } from './puppeteer/stepHandlers'
 import { Runner, Configuration } from '../runner/runner'
-import { Browser, Page } from 'puppeteer'
+import { Browser } from 'puppeteer-core'
+const puppeteer = require('puppeteer-core')
 const path = require('path')
-const puppeteer = require('puppeteer')
 
 export const Puppet = {
   stepHandler: (step: Step) => {
@@ -19,12 +19,13 @@ export const Puppet = {
   },
   openBrowser: async(runner: Runner, configuration: Configuration) => {
     console.log(`Starting Open Browser ${configuration.environment}`)
+    console.log(configuration.chromePath)
     const extensionPathNew = extensionPathHelper(configuration)
     var executablePath
     var args
-
+    
     if(configuration.environment == 'development') {
-      executablePath = puppeteer.executablePath() 
+      executablePath = configuration.chromePath
       args = puppeteer.defaultArgs()
       args = standardArgs(args)
       args = args.concat(`--load-extension=${extensionPathNew}`)
@@ -32,7 +33,8 @@ export const Puppet = {
         args.push('--user-data-dir=' + configuration.userDataDirPath);
       }
     } else if(configuration.environment == 'desktop') {
-      executablePath = puppeteer.executablePath().replace("app.asar", "app.asar.unpacked")
+      executablePath = configuration.chromePath
+      console.log(executablePath)
       args = puppeteer.defaultArgs()
       args = standardArgs(args)
       args = args.concat(`--load-extension=${extensionPathNew}`)
