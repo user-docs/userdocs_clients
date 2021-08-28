@@ -5,9 +5,18 @@ export async function executeQuery(client, query, variables, headers) {
     const response = await client.graphQLClient.request(query, variables, headers)
     return response
   } catch (e) {
-    console.log(e)
+    console.log("Trapped error")
+    if(e.response.error.code == 401) {
+      console.log(`Trapped 401, with headers ${JSON.stringify(headers)}`)
+    }
     if(e.response) return e.response
   }
+}
+
+export function updater(client, query, headers) {
+  return function(stepInstance) {
+    client.graphQLClient.request(query, stepInstance, headers)
+  } 
 }
 
 export const getConfiguration = gql`  

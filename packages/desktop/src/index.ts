@@ -35,14 +35,14 @@ if (isDev) {
     electron: path.join(__dirname, '../', 'node_modules', '.bin', 'electron'),
     hardResetMethod: 'exit'
   });
+  /*
   ENVIRONMENT = "development"
   APPLICATION_URL = "https://app.user-docs.com"
   WS_URL = "wss://app.user-docs.com/socket"
-  /*
+  */
   ENVIRONMENT = "development"
   APPLICATION_URL = "https://dev.user-docs.com:4002"
-  WS_URL = "wss://dev.user-docs.com:4002/socket"
-  */
+  WS_URL = "ws://localhost:4000/socket"
 } else {
   ENVIRONMENT = "desktop"
   APPLICATION_URL = "https://app.user-docs.com"
@@ -110,14 +110,10 @@ async function initializeWindow(state) {
 ipcMain.handle('startServices', startServices)
 async function startServices() {
   console.log("Starting Services")
-  const accessToken = await keytar.getPassword('UserDocs', 'accessToken')
-  const userId = parseInt(await keytar.getPassword('UserDocs', 'userId'))
   const environment = await store.get('environment')
-  const appPath = app.getAppPath()
-  store.set('appPath', appPath)
-  const appDataPath = app.getPath("appData")
-  store.set('appPath', appPath)
-  if (STATE.client === null) STATE.client = Client.create(accessToken, userId, WS_URL, APPLICATION_URL, "electron", store, appPath, appDataPath, environment)
+  store.set('appPath', app.getAppPath())
+  store.set('appDataPath', app.getPath("appData"))
+  if (STATE.client === null) STATE.client = await Client.create(store, "electron")
   if (STATE.client.socket.connectionState() != "open") STATE.client = await Client.connectSocket(STATE.client)
   if (STATE.client.userChannel.state != "joined") STATE.client = await Client.joinUserChannel(STATE.client)
 }
@@ -133,7 +129,6 @@ async function clearCredentials() {
 
 ipcMain.handle('putTokens', putTokens)
 async function putTokens(event, tokens) {
-  console.log(`Got Tokens ${JSON.stringify(tokens)}`)
   if(!tokens.access_token) throw new Error("No access token found")
   if(!tokens.renewal_token) throw new Error("No renewal token found")
   if(!tokens.user_id) throw new Error("No renewal token found")

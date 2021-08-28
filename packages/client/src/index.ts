@@ -1,13 +1,10 @@
 import * as Runner from '@userdocs/runner'
 import {Socket, Channel} from "phoenix-channels"
 import {GraphQLClient} from 'graphql-request'
+import {Configuration} from './configuration'
 import {
-  executeQuery, createStepInstance, createProcessInstance, 
-  getConfiguration as getConfigurationQuery,
-  updateStepInstance as updateStepInstanceQuery,
-  updateProcessInstance as updateProcessInstanceQuery,
-  updateScreenshot as updateScreenshotQuery,
-  createScreenshot as createScreenshotQuery
+  executeQuery, createStepInstance, createProcessInstance, updater,
+  getConfiguration as getConfigurationQuery
 } from './query'
 import * as keytar from 'keytar';
 const findChrome = require('chrome-finder');
@@ -43,50 +40,35 @@ async function browserEventHandler(event) {
   }
 }
 
-let STATE
-const CONFIGURATION: any = {
-  automationFrameworkName: 'puppeteer',
-  maxRetries: 10,
-  callbacks: { browserEvent: browserEventHandler },
-  auth: {}
-}
-
 async function authHeaders() {
   const accessToken = await keytar.getPassword('UserDocs', 'accessToken')
   return {authorization: accessToken}
 }
 
-function updater(client, query) {
-  return function(stepInstance) {
-    authHeaders()
-      .then((headers) => {client.graphQLClient.request(query, stepInstance, headers)})
-  } 
-}
+let STATE
 
-export async function configure(client) {
-  const headers = await authHeaders()
-  const serverConfigurationResponse = await client.graphQLClient.request(getConfigurationQuery, {}, headers)
-  const serverConfiguration = serverConfigurationResponse.user.configuration
-  const storedConfiguration = client.store.store
-  const configuration: Runner.Configuration = {...CONFIGURATION, ...serverConfiguration, ...storedConfiguration}
-  configuration.callbacks.updateStepInstance = updater(client, updateStepInstanceQuery)
-  configuration.callbacks.updateProcessInstance = updater(client, updateProcessInstanceQuery)
-  configuration.callbacks.updateScreenshot = updater(client, updateScreenshotQuery)
-  configuration.callbacks.createScreenshot = updater(client, createScreenshotQuery)
-  return configuration
-}
-
-export function create(token: string, userId: number, ws_url: string, http_url: string, app: string, store: any, appPath: any, appDataPath: any, environment: string) {
+export async function create(store: any, app: string) {
   console.log("Creating Client")
-  const socket = new Socket(ws_url, {params: {token: token}})
+  const token = await keytar.getPassword('UserDocs', 'accessToken')
+  const userId = parseInt(await keytar.getPassword('UserDocs', 'userId'))
+  const wsUrl = await store.get('wsUrl')
+  const applicationUrl = await store.get('applicationUrl')
+  
+  const socket = new Socket(wsUrl, {params: {token: token}})
   const channel = socket.channel("user:" + userId, {app: app})
+
   store = initializeChromePath(store)
-  CONFIGURATION.appDataPath = appDataPath
+  const configuration = 
+    Configuration
+      .initialize()
+      .includeRunner(browserEventHandler)
+      .include(store.store)
+
   const client: Client = {
-    runner: Runner.initialize(CONFIGURATION),
+    runner: Runner.initialize(configuration.state),
     socket: socket,
     userChannel: channel,
-    graphQLClient: new GraphQLClient(http_url + "/api"),
+    graphQLClient: new GraphQLClient(applicationUrl + "/api"),
     store: store
   }
   STATE = client
@@ -108,6 +90,7 @@ export async function joinUserChannel(client: Client) {
   client.userChannel.join()  
     .receive("error", resp => { throw new Error("Error while connecting to User Socket") })
     .receive("timeout", () => { throw new Error("Timeout while connecting to User Socket") })
+
   client.userChannel.on("command:open_browser", () => {openBrowser(client)})
   client.userChannel.on("command:close_browser", () => {closeBrowser(client)})
   client.userChannel.on("command:execute_step", (payload) => {executeStepInstance(client, payload.step_id)})
@@ -116,6 +99,7 @@ export async function joinUserChannel(client: Client) {
   client.userChannel.on("command:put_configuration", (payload) => {putLocalConfiguration(client, payload)})
   client.userChannel.on("command:find_chrome", (payload) => {sendChromePath(client)})
   client.userChannel.on("serviceStatus", (payload) => {console.log(payload)})
+
   while(client.userChannel.state != "joined") { await new Promise(resolve => setTimeout(resolve, 100)) }
   return client
 }
@@ -124,14 +108,20 @@ export async function leaveUserChannel(client: Client) {
   client.userChannel.leave()  
     .receive("error", resp => { throw new Error("Error while Leaving User Channel") })
     .receive("timeout", () => { throw new Error("Timeout while Leaving User Channel") })
+
   while(client.userChannel.state != "closed") { await new Promise(resolve => setTimeout(resolve, 100)) }
+  
   return client
 }
 
 export async function openBrowser(client: Client) {
-  const configuration: Runner.Configuration = await configure(client)
+  const configuration = 
+    Configuration
+      .initialize()
+      .include(client.store.store)
+
   try {
-    client.runner = await Runner.openBrowser(client.runner, configuration)
+    client.runner = await Runner.openBrowser(client.runner, configuration.state)
     client.userChannel.push("event:browser_opened", {})
   } catch(e) {
     console.log(e)
@@ -148,20 +138,30 @@ export async function closeBrowser(client: Client) {
 
 export async function executeStepInstance(client: Client, stepId: number) {
   const headers = await authHeaders()
+  const configuration = 
+    Configuration
+      .initialize()
+      .include(client.store.store)
+      .includeCallbacks(client, headers)
+      
   const variables = {stepId: stepId, status: "not_started"}
   const response = await executeQuery(client, createStepInstance, variables, headers)
   const stepInstance = response.createStepInstance
-  const configuration = await configure(client)
-  return await Runner.executeStepInstance(stepInstance, client.runner, configuration)
+  return await Runner.executeStepInstance(stepInstance, client.runner, configuration.state)
 }
 
 export async function executeProcess(client: Client, processId: number) {
   const headers = await authHeaders()
+  const configuration = 
+    Configuration
+      .initialize()
+      .include(client.store.store)
+      .includeCallbacks(client, headers)
+
   const params = {processId: processId, status: "not_started"}
   const response = await client.graphQLClient.request(createProcessInstance, params, headers)
   const processInstance = response.createProcessInstance
-  const configuration = await configure(client)
-  return await Runner.executeProcessInstance(processInstance, client.runner, configuration)
+  return await Runner.executeProcessInstance(processInstance, client.runner, configuration.state)
 }
 
 async function getLocalConfiguration(client: Client) {
