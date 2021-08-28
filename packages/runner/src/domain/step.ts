@@ -31,10 +31,12 @@ export async function execute(step: Step, runner: Runner, configuration: Configu
   return completedStep
 }
 
-async function runWithRetries(step: Step, runner: Runner, configuration: Configuration, retry: number, error: Error | null) {
-  const maxRetries = runner.maxRetries
+async function runWithRetries(step: Step, runner: Runner, configuration, retry: number, error: Error | null) {
+  const stepConfiguration = overrideConfiguration(configuration, step)
+  const maxRetries = stepConfiguration.maxRetries
   const browser = runner.automationFramework.browser
   const handler = runner.automationFramework.stepHandler(step)
+
   if(!handler) throw new Error(`Handler for ${step.stepType.name} not implemented`)
   if (retry < maxRetries) {
     try {
@@ -44,12 +46,17 @@ async function runWithRetries(step: Step, runner: Runner, configuration: Configu
       const backoffTime = retry ** 3
       //console.warn(`Step ${step.id}, ${step.name} execution failed because ${error}. Waiting ${backoffTime}. On retry ${retry} of ${maxRetries}`)
       await new Promise(resolve => setTimeout(resolve, backoffTime));
-      const retryStep: Step = await runWithRetries(step, runner, configuration, retry + 1, error)
+      const retryStep: Step = await runWithRetries(step, runner, stepConfiguration, retry + 1, error)
       return retryStep
     }
   } else {
     throw error
   }
+}
+
+function overrideConfiguration(configuration: Configuration, step: Step) {
+  if(step.stepType.name === "Navigate") return {maxRetries: 1}
+  else return {maxRetries: configuration.maxRetries}
 }
 
 export function allowedFields(step: Step) {
