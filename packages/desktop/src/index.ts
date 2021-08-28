@@ -49,7 +49,6 @@ if (isDev) {
   WS_URL = "wss://app.user-docs.com/socket"
 }
 
-
 store.set('environment', ENVIRONMENT)
 store.set('wsUrl', WS_URL)
 store.set('applicationUrl', APPLICATION_URL)

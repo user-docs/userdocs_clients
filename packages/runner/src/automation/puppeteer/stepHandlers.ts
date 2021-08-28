@@ -4,6 +4,7 @@ import { Page, ElementHandle, Browser } from 'puppeteer-core'
 import { StyleFunctionsText } from '../../annotation/style'
 import { annotationHandlers } from '../../annotation/annotation'
 import { Configuration } from '../../runner/runner'
+import { timeoutPage } from '../../runner/static'
 import * as fs from 'fs/promises';
 
 const path = require('path')
@@ -37,10 +38,17 @@ export const stepHandlers: StepHandler = {
     }
 
     if (page) {
-      await page.goto(finalUrl) 
+      try {
+        await page.goto(finalUrl, {timeout: configuration.browserTimeout, waitUntil: "networkidle0"}) 
+      } catch(e) {
+        await page.goto('about:blank')
+        await page.setContent(timeoutPage)
+        throw e
+      }
     } else {
       throw new Error("Page not retreived from browser")
     }
+
 
     return step
   },

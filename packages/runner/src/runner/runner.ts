@@ -40,7 +40,8 @@ export interface Configuration {
   appPath: string,
   lib?: { [ key: string ]: Function } // need?,
   callbacks: any,
-  chromePath: string
+  chromePath: string,
+  browserTimeout: number
 }
 
 const automationFrameworks = {

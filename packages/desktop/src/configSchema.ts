@@ -29,5 +29,9 @@ export let configSchema = {
   },
   userId: {
     type: 'number'
+  },
+  browserTimeout: {
+    type: 'number',
+    default: 5000
   }
 }
