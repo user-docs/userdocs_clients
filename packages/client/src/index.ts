@@ -2,7 +2,7 @@ import * as Runner from '@userdocs/runner'
 import {Socket, Channel} from "phoenix-channels"
 import {GraphQLClient} from 'graphql-request'
 import {
-  createStepInstance, createProcessInstance, 
+  executeQuery, createStepInstance, createProcessInstance, 
   getConfiguration as getConfigurationQuery,
   updateStepInstance as updateStepInstanceQuery,
   updateProcessInstance as updateProcessInstanceQuery,
@@ -73,7 +73,6 @@ export async function configure(client) {
   configuration.callbacks.updateProcessInstance = updater(client, updateProcessInstanceQuery)
   configuration.callbacks.updateScreenshot = updater(client, updateScreenshotQuery)
   configuration.callbacks.createScreenshot = updater(client, createScreenshotQuery)
-  console.log(configuration)
   return configuration
 }
 
@@ -150,7 +149,7 @@ export async function closeBrowser(client: Client) {
 export async function executeStepInstance(client: Client, stepId: number) {
   const headers = await authHeaders()
   const variables = {stepId: stepId, status: "not_started"}
-  const response = await client.graphQLClient.request(createStepInstance, variables, headers)
+  const response = await executeQuery(client, createStepInstance, variables, headers)
   const stepInstance = response.createStepInstance
   const configuration = await configure(client)
   return await Runner.executeStepInstance(stepInstance, client.runner, configuration)

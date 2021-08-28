@@ -1,5 +1,15 @@
 import {gql} from 'graphql-request'
 
+export async function executeQuery(client, query, variables, headers) {
+  try {
+    const response = await client.graphQLClient.request(query, variables, headers)
+    return response
+  } catch (e) {
+    console.log(e)
+    if(e.response) return e.response
+  }
+}
+
 export const getConfiguration = gql`  
 query getUser {
   user {
