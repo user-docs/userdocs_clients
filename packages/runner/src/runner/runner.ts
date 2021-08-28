@@ -21,7 +21,8 @@ export interface Runner {
   overrides?: Array<Override>,
   appDataDir: string,
   appPath: string,
-  callbacks?: any
+  callbacks?: any,
+  continue: boolean
 }
 
 export interface Configuration {
@@ -55,7 +56,8 @@ export function initialize(configuration: Configuration) {
     css: configuration.css,
     overrides: configuration.overrides,
     appDataDir: configuration.appDataDir,
-    appPath: configuration.appPath
+    appPath: configuration.appPath,
+    continue: false
   }
   return runner
 }
@@ -77,7 +79,9 @@ export async function executeStep(step: Step.Step, runner: Runner, configuration
 }
 
 export async function executeStepInstance(stepInstance: StepInstance.StepInstance, runner: Runner, configuration: Configuration) {
+  runner.continue = true
   const completedStepInstance = await StepInstance.execute(stepInstance, runner, configuration)
+  runner.continue = false
   return completedStepInstance
 }
 
