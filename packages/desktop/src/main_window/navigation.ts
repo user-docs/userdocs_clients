@@ -3,12 +3,13 @@ import { validateTokens, loginUI, renewSession } from './login'
 import * as keytar from 'keytar';
 
 const isDev = require('electron-is-dev');
-const path = require('path')
 
 const TOKEN_REFRESH_INTERVAL = 25 * 60 * 1000
 
 export async function createMainWindow (state) {  
-  //app.commandLine.appendSwitch('ignore-certificate-errors');
+  if (isDev) {
+    app.commandLine.appendSwitch('ignore-certificate-errors');
+  }
   try {
     state.window = await new BrowserWindow({
       width: 1600,

@@ -16,8 +16,6 @@ import { autoUpdater } from 'electron-updater'
 import * as fs from 'fs';
 import * as keytar from 'keytar';
 
-//process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
-
 const path = require('path')
 const isDev = require('electron-is-dev');
 const Store = require('electron-store');
@@ -32,6 +30,7 @@ var STATE = {
 }
 
 if (isDev) {
+  process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'
   require('electron-reload')(__dirname, {
     electron: path.join(__dirname, '../', 'node_modules', '.bin', 'electron'),
     hardResetMethod: 'exit'
