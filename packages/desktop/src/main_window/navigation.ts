@@ -1,5 +1,5 @@
 import { app, BrowserWindow, session } from 'electron'
-import { validateTokens, loginUI, renewSession } from './login'
+import { validateTokens, putTokens, loginUI, renewSession } from './login'
 import * as keytar from 'keytar';
 
 const isDev = require('electron-is-dev');
@@ -38,18 +38,12 @@ export async function getTokens (state) {
   return state
 }
 
-export async function putTokens(tokens) {
-  await keytar.setPassword('UserDocs', 'accessToken', tokens.access_token)
-  await keytar.setPassword('UserDocs', 'renewalToken', tokens.renewal_token)
-}
-
 export async function validate (state) {
   if (state.status != 'ok') { return state }
   console.debug("validate")
 
   const status = await validateTokens(state.url, state.tokens)
   if (status.status === "update") {
-    putTokens(status.tokens)
     state.tokens = status.tokens
   }
   return state
@@ -92,6 +86,7 @@ export async function putSession(state) {
 
 export async function startTokenRefresh(state) {
   const interval = setInterval(async () => {
+    console.log("Starting Scheduled Token Refresh")
     keytar.getPassword('UserDocs', 'renewalToken')
       .then((renewal_token) => renewSession(state.url, renewal_token))
       .then((response => putTokens(response.data.data)))
