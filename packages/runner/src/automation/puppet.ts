@@ -19,7 +19,8 @@ export const Puppet = {
   },
   openBrowser: async(runner: Runner, configuration: Configuration) => {
     console.log(`Starting Open Browser ${configuration.environment}`)
-    console.log(configuration.chromePath)
+    if(!configuration.chromePath) throw new Error("Chrome path not included, browser cannot start")
+    if(!configuration.environment) throw new Error("Environment not included, browser cannot start")
     const extensionPathNew = extensionPathHelper(configuration)
     var executablePath
     var args
