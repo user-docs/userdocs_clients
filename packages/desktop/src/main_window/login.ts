@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as keytar from 'keytar';
 
 async function fetchCurrentUser(url, access_token) {
   const response = await axios({
@@ -36,6 +37,7 @@ export async function validateTokens(url, tokens) {
     var response
     try {
       response = await renewSession(url, tokens.renewal_token)
+      putTokens(response.data.data)
     } catch(e) {
       if(e.response) response = e.response
       else throw e
@@ -49,4 +51,10 @@ export async function loginUI(token, url) {
   let convertUrl = url + "/api/session/convert"
   const response = await axios.post(convertUrl, null, {headers: {'authorization': token}})
   return response
+}
+
+export async function putTokens(tokens) {
+  console.log(`Putting tokens ${JSON.stringify(tokens)}`)
+  await keytar.setPassword('UserDocs', 'accessToken', tokens.access_token)
+  await keytar.setPassword('UserDocs', 'renewalToken', tokens.renewal_token)
 }
