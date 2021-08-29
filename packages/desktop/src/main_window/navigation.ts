@@ -1,10 +1,8 @@
 import { app, BrowserWindow, session } from 'electron'
-import { validateTokens, putTokens, loginUI, renewSession } from './login'
+import { validateTokens, loginUI } from './login'
 import * as keytar from 'keytar';
 
 const isDev = require('electron-is-dev');
-
-const TOKEN_REFRESH_INTERVAL = 25 * 60 * 1000
 
 export async function createMainWindow (state) {  
   if (isDev) {
@@ -81,16 +79,6 @@ export async function putSession(state) {
     state.status = "loginFailed"
     state.error = e
   }
-  return state
-}
-
-export async function startTokenRefresh(state) {
-  const interval = setInterval(async () => {
-    console.log("Starting Scheduled Token Refresh")
-    keytar.getPassword('UserDocs', 'renewalToken')
-      .then((renewal_token) => renewSession(state.url, renewal_token))
-      .then((response => putTokens(response.data.data)))
-  }, TOKEN_REFRESH_INTERVAL);
   return state
 }
 

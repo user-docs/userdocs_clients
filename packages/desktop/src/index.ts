@@ -7,10 +7,10 @@ import {
   validate,
   getSession,
   putSession,
-  startTokenRefresh,
   navigate,
-  showMainWindow 
+  showMainWindow
 } from './main_window/navigation'
+import { putTokens, renewSession } from './main_window/login'
 import { configSchema } from './configSchema'
 import { autoUpdater } from 'electron-updater'
 import * as fs from 'fs';
@@ -53,21 +53,7 @@ store.set('environment', ENVIRONMENT)
 store.set('wsUrl', WS_URL)
 store.set('applicationUrl', APPLICATION_URL)
 
-/* Might do this again someday
-const stepUpdated = function(step) { 
-  mainWindow().webContents.send('stepStatusUpdated', step); 
-  return step 
-}
-
-const processUpdated = function(process) { 
-  mainWindow().webContents.send('processUpdated', process); 
-  return process 
-}
-
-const browserEventHandler = function(event) {
-  mainWindow().webContents.send('browserEvent', event);
-}
-*/
+const TOKEN_REFRESH_INTERVAL = 25 * 60 * 1000
 
 function main() {
   const appPath = app.getPath("appData")
@@ -92,6 +78,17 @@ async function initialize(state) {
     const result = await startServices()
     mainWindow().webContents.send('serviceStatus', result)
   }
+}
+
+export async function startTokenRefresh(state) {
+  const interval = setInterval(async () => {
+    console.log("Starting Scheduled Token Refresh")
+    keytar.getPassword('UserDocs', 'renewalToken')
+      .then((renewal_token) => renewSession(state.url, renewal_token))
+      .then((response => putTokens(response.data.data)))
+      .then(() => Client.onSessionRefreshed(STATE.client))
+  }, TOKEN_REFRESH_INTERVAL);
+  return state
 }
 
 async function initializeWindow(state) {
@@ -126,8 +123,8 @@ async function clearCredentials() {
   await keytar.deletePassword('UserDocs', 'renewalToken')
 }
 
-ipcMain.handle('putTokens', putTokens)
-async function putTokens(event, tokens) {
+ipcMain.handle('putTokens', putAuthInfo)
+async function putAuthInfo(event, tokens) {
   if(!tokens.access_token) throw new Error("No access token found")
   if(!tokens.renewal_token) throw new Error("No renewal token found")
   if(!tokens.user_id) throw new Error("No renewal token found")
