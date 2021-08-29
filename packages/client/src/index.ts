@@ -115,10 +115,12 @@ export async function leaveUserChannel(client: Client) {
 }
 
 export async function openBrowser(client: Client) {
+  const token = await keytar.getPassword('UserDocs', 'accessToken')
   const configuration = 
     Configuration
       .initialize()
       .include(client.store.store)
+      .include({token: token})
 
   try {
     client.runner = await Runner.openBrowser(client.runner, configuration.state)
@@ -197,4 +199,10 @@ function initializeChromePath(store: any) {
 
 function browserClosed(client: Client) { 
   client.userChannel.push("event:browser_closed", {})
+}
+
+export async function onSessionRefreshed(client: Client) {
+  console.log("Client session refreshed")
+  const token = await keytar.getPassword('UserDocs', 'accessToken')
+  Runner.refreshSession(client.runner, {token: token})
 }
