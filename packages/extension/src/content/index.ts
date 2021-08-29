@@ -11,10 +11,23 @@ declare global {
 
 var port = chrome.runtime.connect();
 
-function boot() {
-  console.log("Starting Content Script")
-  window.eventRecorder = Recorder
-  window.eventRecorder.initialize()
+window.eventRecorder = Recorder
+window.eventRecorder.initialize()
+window.generateSelector = Recorder.generateSelector 
+
+window.addEventListener('message', function (message: MessageEvent) {
+  if(message.data.action == 'putToken') {
+    chrome.storage.local.set({token: message.data.action.token})
+  }
+})
+
+
+chrome.storage.local.set({
+  userId: localStorage.userId,
+  token: localStorage.token,
+  wsUrl: localStorage.wsUrl,
+})
+
   var s = document.createElement('script');
   s.src = chrome.runtime.getURL('dist/page.js');
   s.onload = function() {
