@@ -44,6 +44,12 @@ function boot() {
   console.debug("Booting Background Script")
   let state: State = { badgeState: 'none', authoring: false }
   chrome.storage.local.set(state)
+  chrome.storage.local.get(['token', 'wsUrl', 'userId'], (result) => {
+    SOCKET = new Socket(result.wsUrl, {params: {token: result.token}})
+    CHANNEL = SOCKET.channel("user:" + result.userId, {app: "extension"})
+    SOCKET.connect()
+    CHANNEL.join()
+  })
   chrome.runtime.onMessage.addListener(message => {
     console.log(message)
     if(message.action == actions.GET_AUTH) {
@@ -53,13 +59,6 @@ function boot() {
       const token = message.data.auth.accessToken
       const userId = message.data.auth.userId
       const url = message.data.wsUrl
-      chrome.storage.local.set({accessToken: token, userId: userId, url: url}, () => {
-        console.log("Auth Info stored")
-        SOCKET = new Socket(url, {params: {token: token}})
-        CHANNEL = SOCKET.channel("user:" + userId, {app: "extension"})
-        SOCKET.connect()
-        CHANNEL.join()
-      })
     }
     chrome.storage.local.get([ 'authoring' ], (result) => {
       const authoring  = result.authoring
@@ -67,7 +66,7 @@ function boot() {
         if (message.action === actions.START) start()
         if (message.action === actions.STOP) stop()
         if (message.action === actions.click) {
-          console.log("Pushing message")
+          console.log(`Pushing Click message if ${authoring} is true`)
           if (DEVTOOLS_PORT) DEVTOOLS_PORT.postMessage(message)
           if (PANEL_PORT) PANEL_PORT.postMessage({ selector: message.selector }) 
           if (authoring) CHANNEL.push("event:browser_event", message)
