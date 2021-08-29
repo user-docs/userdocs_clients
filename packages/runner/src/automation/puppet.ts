@@ -94,6 +94,16 @@ export const Puppet = {
     browser = await removeListenersFromDocuments(browser)
     await browser.close()
     return
+  },
+  updateSession: async(browser: Browser, tokens) => {
+    const pages = await browser.pages()
+    for (var page of pages) {
+      page.evaluate((tokens) => {
+        localStorage.setItem('token', tokens.token)
+        window.postMessage({token: tokens.token, action: "putToken"}, '*')
+
+      }, tokens)
+    }
   }
 }
 
