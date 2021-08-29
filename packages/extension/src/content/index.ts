@@ -1,13 +1,15 @@
-import { actions } from '../actions';
 import * as Recorder from './recorder'
-import {Socket, Channel} from 'phoenix'
+import { actions } from '../actions'
 
 declare global {
   interface Window { 
     eventRecorder: any;
     generateSelector: Function;
+    highlightedElement: HTMLElement;
   }
 }
+
+console.log("Starting Content Script")
 
 var port = chrome.runtime.connect();
 
