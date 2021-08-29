@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/runner",
-  "version": "1.0.78",
+  "version": "1.0.79",
   "description": "Runs steps authored in the userdocs screenshot collection tool",
   "main": "dist/index",
   "types": "dist/index",
@@ -19,7 +19,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@userdocs/extension": "^1.0.46",
+    "@userdocs/extension": "^1.0.47",
     "find-yarn-workspace-root": "^2.0.0",
     "fs": "^0.0.1-security",
     "puppeteer-core": "^10.2.0",
