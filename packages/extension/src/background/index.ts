@@ -13,7 +13,7 @@ const ANNOTATE_ID = 'ANNOTATE'
 var SOCKET
 var CHANNEL
 
-const SENDABLE_ACTIONS = [ actions.CREATE_ANNOTATION, actions.TEST_SELECTOR, actions.ELEMENT_SCREENSHOT ]
+const SENDABLE_ACTIONS = [ actions.CREATE_ANNOTATION, actions.ELEMENT_SCREENSHOT ]
 
 var PANEL_PORT: chrome.runtime.Port
 var DEVTOOLS_PORT: chrome.runtime.Port
@@ -24,16 +24,17 @@ chrome.runtime.onConnect.addListener(function(port) {
     port.onMessage.addListener(function(message) {
       console.log(`Background received devtools panel ${message.action} message`)
       if(SENDABLE_ACTIONS.includes(message.action)) CHANNEL.push("event:browser_event", message)
+      if(message.action == actions.TEST_SELECTOR) sendToFirstTab(message)
     })
   }
   if (port.name === 'devtools') {
     DEVTOOLS_PORT = port
     port.onMessage.addListener(function(message) {
+      console.log(`Background received devtools ${message.action} message`)
       chrome.storage.local.get([ 'authoring' ], (result) => {
-        // const authoring  =result.authoring
         if (message.action === actions.ITEM_SELECTED) {
           if (PANEL_PORT) PANEL_PORT.postMessage({ selector: message.selector }) 
-          sendToFirstTab(message)
+          CHANNEL.push("event:browser_event", message)
         }
       })
     })
