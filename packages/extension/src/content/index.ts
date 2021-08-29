@@ -21,6 +21,19 @@ window.addEventListener('message', function (message: MessageEvent) {
   }
 })
 
+chrome.runtime.onMessage.addListener(message => { 
+  if (message.action && message.action == actions.TEST_SELECTOR) {
+    const element: HTMLElement = document.querySelector(message.selector)
+    if (window.highlightedElement){
+      console.log("There's a highlighted element")
+      window.highlightedElement.style.outline = ''
+      window.highlightedElement.style.outlineOffset = ''
+    }
+    element.setAttribute('style', 'outline: 2px orange dashed !important')
+    element.style.outlineOffset = '-1px !important'
+    window.highlightedElement = element
+  }
+})
 
 chrome.storage.local.set({
   userId: localStorage.userId,
