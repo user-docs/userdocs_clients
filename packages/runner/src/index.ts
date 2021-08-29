@@ -7,6 +7,7 @@ import {
   executeProcess,
   executeProcessInstance,
   executeJob,
+  refreshSession,
   Runner,
   Configuration
 } from './runner/runner'
@@ -23,6 +24,7 @@ export {
   executeProcessInstance,
   executeJob,
   allowedJobFields,
+  refreshSession,
   Runner,
   Configuration
 } 

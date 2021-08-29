@@ -103,3 +103,9 @@ export async function executeJob(job: Job.Job, runner: Runner) {
   const completedJob = await Job.execute(job, runner)
   return completedJob
 }
+
+export async function refreshSession(runner: Runner, tokens) {
+  console.log("Runner Refresh Session")
+  const browser = runner.automationFramework.browser
+  if(browser) runner.automationFramework.updateSession(browser, tokens)
+}
