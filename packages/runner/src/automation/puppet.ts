@@ -79,7 +79,12 @@ export const Puppet = {
           }, false); 
         }, `${configuration.css}`);
       }
-      page.exposeFunction('sendEvent', configuration.callbacks.browserEvent)
+      await page.goto('https://user-docs.com');
+      page.evaluate((configuration)  => {
+        localStorage.setItem('token', configuration.token)
+        localStorage.setItem('wsUrl', configuration.wsUrl)
+        localStorage.setItem('userId', configuration.userId.toString())
+      }, configuration)
     }
 
     return browser
