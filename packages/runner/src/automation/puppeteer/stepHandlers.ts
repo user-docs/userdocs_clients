@@ -227,20 +227,10 @@ export const stepHandlers: StepHandler = {
 }
 
 async function handleScreenshot(step: Step, base64: string, configuration: Configuration) {
-  var fileName = step.process.name + " " + step.order + ".png"
-  var filePath = ""
 
-  if (step.screenshot) {
-    fileName = step.screenshot.name 
-      ? step.screenshot.name + ".png"
-      : step.process.name + " " + step.order + ".png"
-  } 
-  
-  if(configuration.imagePath != '') {
-    filePath = path.join(configuration.imagePath, fileName)
-  } else {
-    filePath = path.join(configuration.appDataDir, "UserDocs", "images", fileName)
-  }
+  const fileName = buildFileName(step)
+  const filePath = buildFilePath(fileName, configuration)
+
   
   await writeFile(filePath, base64);
 
@@ -253,6 +243,26 @@ async function handleScreenshot(step: Step, base64: string, configuration: Confi
     step.screenshot.stepId = step.id
     configuration.callbacks.updateScreenshot(step.screenshot)
   }
+}
+
+function buildFileName(step) {
+  var fileName = step.process.name + " " + step.order + ".png"
+  if (step.screenshot) {
+    fileName = step.screenshot.name 
+      ? step.screenshot.name + ".png"
+      : step.process.name + " " + step.order + ".png"
+  } 
+  return fileName
+}
+
+function buildFilePath(fileName, configuration) {
+  var filePath = ""
+  if(configuration.imagePath != '') {
+    filePath = path.join(configuration.imagePath, fileName)
+  } else {
+    filePath = path.join(configuration.appDataDir, "UserDocs", "images", fileName)
+  }
+  return filePath
 }
 
 async function writeFile(path: string, base64: string) {
