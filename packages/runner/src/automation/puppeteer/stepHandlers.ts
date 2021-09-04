@@ -108,10 +108,6 @@ export const stepHandlers: StepHandler = {
     return step
   },
   "Full Screen Screenshot": async(browser: Browser, step: Step, configuration: Configuration) => {
-    const processName = step.process ? step.process.name : ""
-    const stepOrder = step.order
-    var fileName = step.process.name + " " + step.order + ".png"
-    var filePath = ""
     await new Promise(resolve => setTimeout(resolve, 250));  
     const page: Page | undefined = await currentPage(browser) 
     if (!page) { throw new Error("Page not retreived from browser") }
