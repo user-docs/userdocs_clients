@@ -22,7 +22,7 @@ export const Configuration = {
   },
   includeRunner: function(browserEventHandler) {
     this.state.automationFrameworkName = 'puppeteer'
-    this.state.callbacks.broserEvent = browserEventHandler
+    this.state.callbacks.browserEvent = browserEventHandler
     return this
   },
   includeServer: async function(client, headers) {
