@@ -19,27 +19,6 @@ interface Client {
 
 //process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
-async function browserEventHandler(event) {
-  if (event.action == 'getAuth') {
-    let page
-    let browser = STATE.runner.automationFramework.browser
-    const pages: Array<any> = await browser.pages()
-    const accessToken = await keytar.getPassword('UserDocs', 'accessToken')
-    const userId = parseInt(await keytar.getPassword('UserDocs', 'userId'))
-    const wsUrl = STATE.store.get('wsUrl')
-    for (let i = 0; i < pages.length && !page; i++) {
-      let page = pages[i]
-      let payload = {
-        auth: {userId: userId, accessToken: accessToken},
-        wsUrl: wsUrl
-      }
-      page.evaluate((data) => {
-        window.postMessage({action: 'sendAuth', data: data}, "*") // Bad for security, it will be sent to anyone
-      }, payload)
-    }
-  }
-}
-
 async function authHeaders() {
   const accessToken = await keytar.getPassword('UserDocs', 'accessToken')
   return {authorization: accessToken}
