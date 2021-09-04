@@ -40,7 +40,7 @@ export async function create(store: any, app: string) {
   const configuration = 
     Configuration
       .initialize()
-      .includeRunner(browserEventHandler)
+      .includeRunner()
       .include(store.store)
 
   const client: Client = {
@@ -170,7 +170,6 @@ function initializeChromePath(store: any) {
     var path
     try {path = findChrome()} 
     catch(e) {path = ""}
-    console.log(`Chrome Path is nothing, locating chrome ${path}`)
     store.set('chromePath', path)
   }
   return store
