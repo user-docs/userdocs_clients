@@ -73,6 +73,7 @@ export async function joinUserChannel(client: Client) {
   client.userChannel.on("command:close_browser", () => {closeBrowser(client)})
   client.userChannel.on("command:execute_step", (payload) => {executeStepInstance(client, payload.step_id)})
   client.userChannel.on("command:execute_process", (payload) => {executeProcess(client, payload.process_id)})
+  client.userChannel.on("command:execute_job", (payload) => {executeJob(client, payload.job_id)})
   client.userChannel.on("command:get_configuration", (payload) => {getLocalConfiguration(client)})
   client.userChannel.on("command:put_configuration", (payload) => {putLocalConfiguration(client, payload)})
   client.userChannel.on("command:find_chrome", (payload) => {sendChromePath(client)})
@@ -142,6 +143,19 @@ export async function executeProcess(client: Client, processId: number) {
   const response = await client.graphQLClient.request(createProcessInstance, params, headers)
   const processInstance = response.createProcessInstance
   return await Runner.executeProcessInstance(processInstance, client.runner, configuration.state)
+}
+
+export async function executeJob(client: Client, jobId: number) {
+  const headers = await authHeaders()
+  const configuration = 
+    Configuration
+      .initialize()
+      .include(client.store.store)
+      .includeCallbacks(client, headers)
+
+  const params = {jobId: jobId, status: "not_started"}
+  console.log(params)
+  const response = await client.graphQLClient.request(createJobInstance, params, headers)
 }
 
 async function getLocalConfiguration(client: Client) {
