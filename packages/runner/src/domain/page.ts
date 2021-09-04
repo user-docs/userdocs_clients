@@ -1,9 +1,9 @@
-import { Version } from './version'
+import { Project } from './project'
 
 export interface Page {
   id: string,
   order: number,
   name: string,
   url: string,
-  version: Version
+  project: Project
 }
