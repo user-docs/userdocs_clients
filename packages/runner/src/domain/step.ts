@@ -33,11 +33,14 @@ export async function execute(step: Step, runner: Runner, configuration: Configu
 
 async function runWithRetries(step: Step, runner: Runner, configuration, retry: number, error: Error | null) {
   const stepConfiguration = overrideConfiguration(configuration, step)
-  const maxRetries = stepConfiguration.maxRetries
+  var maxRetries
+  if(stepConfiguration.maxRetries == null) maxRetries = 10
+  else if(stepConfiguration.maxRetries == 0) maxRetries = 10
+  else maxRetries = stepConfiguration.maxRetries 
   const browser = runner.automationFramework.browser
   const handler = runner.automationFramework.stepHandler(step)
-
   if(!handler) throw new Error(`Handler for ${step.stepType.name} not implemented`)
+  
   if (retry < maxRetries) {
     try {
       step = await handler(browser, step, configuration)
