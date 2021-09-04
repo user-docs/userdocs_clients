@@ -73,14 +73,10 @@ export const createProcessInstance = gql `
             order
             name
             url
-            version {
+            project {
               id
               name
-              project {
-                id
-                name
-                baseUrl
-              }
+              baseUrl
             }
           }
           process {
@@ -165,14 +161,10 @@ export const createStepInstance = gql `
           order
           name
           url
-          version {
+          project {
             id
             name
-            project {
-              id
-              name
-              baseUrl
-            }
+            baseUrl
           }
         }
         process {
