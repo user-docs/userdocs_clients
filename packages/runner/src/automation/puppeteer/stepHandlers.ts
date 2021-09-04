@@ -17,9 +17,10 @@ export const stepHandlers: StepHandler = {
   "Navigate": async(browser: Browser, step: Step, configuration: Configuration) => {
     const page: Page | undefined = await currentPage(browser)
     const overrides = configuration.overrides ? configuration.overrides : []
+    const project_id = step.page.project.id
     const url = step.page.url
 
-    var baseUrl = step.page.version.project.baseUrl
+    var baseUrl = step.page.project.baseUrl
     var finalUrl = ""
 
     const filteredOverrides = overrides.filter(o => o.project_id == project_id)
