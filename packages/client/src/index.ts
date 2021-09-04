@@ -3,8 +3,7 @@ import {Socket, Channel} from "phoenix-channels"
 import {GraphQLClient} from 'graphql-request'
 import {Configuration} from './configuration'
 import {
-  executeQuery, createStepInstance, createProcessInstance, updater,
-  getConfiguration as getConfigurationQuery
+  executeQuery, createStepInstance, createProcessInstance, createJobInstance,
 } from './query'
 import * as keytar from 'keytar';
 const findChrome = require('chrome-finder');
