@@ -1,10 +1,10 @@
-import * as Puppet from '../automation/puppet'
+import * as Job from '../domain/job'
+import * as JobInstance from '../domain/jobInstance'
 import * as Step from '../domain/step'
 import * as StepInstance from '../domain/stepInstance'
-import * as ProcessInstance from '../domain/processInstance'
 import * as Process from '../domain/process'
-import * as Helpers from '../domain/helpers'
-import * as Job from '../domain/job'
+import * as ProcessInstance from '../domain/processInstance'
+import * as Puppet from '../automation/puppet'
 
 export interface Override {
   url: string,
@@ -63,6 +63,7 @@ export function initialize(configuration: Configuration) {
     appPath: configuration.appPath,
     continue: false
   }
+  runner.automationFramework.fetchBrowser(runner, configuration)
   return runner
 }
 
@@ -101,6 +102,11 @@ export async function executeProcessInstance(processInstance: ProcessInstance.Pr
 
 export async function executeJob(job: Job.Job, runner: Runner) {
   const completedJob = await Job.execute(job, runner)
+  return completedJob
+}
+
+export async function executeJobInstance(jobInstance: JobInstance.JobInstance, runner: Runner, configuration: Configuration) {
+  const completedJob = await JobInstance.execute(jobInstance, runner, configuration)
   return completedJob
 }
 

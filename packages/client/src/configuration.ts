@@ -3,6 +3,7 @@ import {
   getConfiguration as getConfigurationQuery,
   updateStepInstance as updateStepInstanceQuery,
   updateProcessInstance as updateProcessInstanceQuery,
+  updateJobInstance as updateJobInstanceQuery,
   updateScreenshot as updateScreenshotQuery,
   createScreenshot as createScreenshotQuery
 } from './query'
@@ -36,6 +37,7 @@ export const Configuration = {
     if(!headers) throw new Error("Headers not included in includeCallbacks call, cannot build callbacks")
     this.state.callbacks.updateStepInstance = updater(client, updateStepInstanceQuery, headers)
     this.state.callbacks.updateProcessInstance = updater(client, updateProcessInstanceQuery, headers)
+    this.state.callbacks.updateJobInstance = updater(client, updateJobInstanceQuery, headers)
     this.state.callbacks.updateScreenshot = updater(client, updateScreenshotQuery, headers)
     this.state.callbacks.createScreenshot = updater(client, createScreenshotQuery, headers)
     return this

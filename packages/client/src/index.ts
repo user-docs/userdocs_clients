@@ -2,9 +2,7 @@ import * as Runner from '@userdocs/runner'
 import {Socket, Channel} from "phoenix-channels"
 import {GraphQLClient} from 'graphql-request'
 import {Configuration} from './configuration'
-import {
-  executeQuery, createStepInstance, createProcessInstance, createJobInstance,
-} from './query'
+import {executeQuery, createStepInstance, createProcessInstance, createJobInstance} from './query'
 import * as keytar from 'keytar';
 const findChrome = require('chrome-finder');
 
@@ -154,8 +152,9 @@ export async function executeJob(client: Client, jobId: number) {
       .includeCallbacks(client, headers)
 
   const params = {jobId: jobId, status: "not_started"}
-  console.log(params)
   const response = await client.graphQLClient.request(createJobInstance, params, headers)
+  const jobInstance = response.createJobInstance
+  return await Runner.executeJobInstance(jobInstance, client.runner, configuration.state)
 }
 
 async function getLocalConfiguration(client: Client) {
