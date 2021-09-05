@@ -3,23 +3,29 @@ const client = require('../src/index')
 const {Channel, Socket} = require('phoenix-channels')
 const WebSocket = require('websocket').w3cwebsocket
 const Store = require('electron-store');
+const keytar = require('keytar')
 const schema = {
   userId: {type: 'number', default: 1}, 
   imagePath: {type: 'string', default: ''},
   userDataDirPath: {type: 'string', default: ''}
 }
+
+const APP_URL = "https://dev.user-docs.com:4002"
+
 const store = new Store(schema)
 store.set('imagePath', '/home/johns10/Applications/UserDocs/images')
 store.set('userDataDirPath', '/home/johns10/Applications/UserDocs/user_data_dir')
+store.set('wsUrl', 'ws://localhost:4000/socket')
+store.set('environment', 'development')
+store.set('browserTimeout', 5000)
+store.set('maxRetries', 3)
+store.set('chromePath', '')
 
 jest.setTimeout(20000)
 
 var STATE
-var TOKENS = {access_token: "", renewal_token: ""}
 var DATA = {user: {id: 1, email: 'johns10davenport@gmail.com', password: 'userdocs'}}
 
-const WS_URL = "ws://localhost:4000/socket"
-const APP_URL = "https://dev.user-docs.com:4002"
 
 async function login(email) {
   const sessionUrl = APP_URL + "/api/session"
@@ -46,15 +52,18 @@ async function factory() {
 beforeAll( async () => { 
   await checkout()
   DATA = (await factory()).data
-  TOKENS = (await login(DATA.user.email)).data.data
-  store.set('userId', TOKENS.user_id)
+  const tokens = (await login(DATA.user.email)).data.data
+  await keytar.setPassword('UserDocs', 'accessToken', tokens.access_token)
+  await keytar.setPassword('UserDocs', 'renewalToken', tokens.renewal_token)
+  await keytar.setPassword('UserDocs', 'userId', tokens.user_id.toString())
 })
 afterAll( async () => { 
   await checkin()
   delete STATE
 })
+
 test('creates a client', async () => {
-  STATE = await client.create(TOKENS.access_token, DATA.user.id, WS_URL, APP_URL, "test", store)
+  STATE = await client.create(store, "test")
   expect(STATE.socket).toBeInstanceOf(Socket)
   expect(STATE.userChannel).toBeInstanceOf(Channel)
   expect(STATE.userChannel.state).toStrictEqual('closed')
@@ -84,8 +93,9 @@ test('fails a step', async() => {
     })
   )
 })
-/*
+
 test('creates a screenshot', async() => {
+  console.log(DATA.full_screen_screenshot_step.id)
   result = await client.executeStepInstance(STATE, DATA.full_screen_screenshot_step.id)
   expect(result).toStrictEqual(
     expect.objectContaining({
@@ -102,6 +112,7 @@ test('updates a screenshot', async() => {
     })
   )
 })
+
 test('executes a step', async() => {
   result = await client.executeStepInstance(STATE, DATA.step.id)
   expect(result).toStrictEqual(
@@ -110,7 +121,6 @@ test('executes a step', async() => {
     })
   )
 })
-
 
 test('executes a process', async() => {
   result = await client.executeProcess(STATE, DATA.process.id)
@@ -121,6 +131,7 @@ test('executes a process', async() => {
   )
 })
 
+
 test('fails a process', async() => {
   result = await client.executeProcess(STATE, DATA.failing_process.id)
   expect(result).toStrictEqual(
@@ -129,7 +140,13 @@ test('fails a process', async() => {
     })
   )
 })
-*/
+
+test('runs a job', async() => {
+  await client.executeJob(STATE, DATA.job.id)
+})
+
+
+
 test('closes the browser', async() => {
   await new Promise(resolve => setTimeout(resolve, 2000))
   await client.closeBrowser(STATE)
