@@ -23,6 +23,7 @@
     "find-yarn-workspace-root": "^2.0.0",
     "fs": "^0.0.1-security",
     "puppeteer-core": "^10.2.0",
+    "sharp": "^0.29.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
@@ -39,5 +40,5 @@
     "webpack": "4.41.5",
     "webpack-cli": "^3.3.12"
   },
-  "gitHead": "0b6b900b6e542c183c5878e32d184280d18c466e"
+  "gitHead": "e0128fca86e2469eb2afc20f1676c5d2138e9217"
 }

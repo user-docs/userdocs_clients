@@ -14,6 +14,7 @@
     "appId": "johns10@gmail.com",
     "productName": "UserDocs",
     "afterSign": "build/notarize.js",
+    "npmRebuild": true,
     "mac": {
       "category": "public.app-category.developer-tools",
       "artifactName": "${productName} Setup.${ext}",
@@ -35,7 +36,8 @@
       "artifactName": "${productName} Setup.${ext}"
     },
     "asarUnpack": [
-      "node_modules/@userdocs/extension/extension"
+      "node_modules/@userdocs/extension/extension",
+      "**/node_modules/sharp/**/*"
     ]
   },
   "scripts": {
@@ -72,6 +74,7 @@
     "electron": "13.2.2",
     "electron-builder": "^22.10.5",
     "electron-notarize": "^1.1.0",
+    "electron-rebuild": "^3.2.3",
     "electron-reload": "^1.5.0",
     "postcss": "^8.3.6",
     "postcss-cli": "^8.3.1",
@@ -82,5 +85,5 @@
   "optionalDependencies": {
     "win-node-env": "^0.4.0"
   },
-  "gitHead": "0b6b900b6e542c183c5878e32d184280d18c466e"
+  "gitHead": "e0128fca86e2469eb2afc20f1676c5d2138e9217"
 }
