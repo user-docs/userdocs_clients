@@ -104,6 +104,9 @@ export const Puppet = {
 
       }, tokens)
     }
+  },
+  fetchBrowser: async(runner: Runner, configuration: Configuration) => {
+    const browserFetcher = puppeteer.createBrowserFetcher();
   }
 }
 
@@ -130,7 +133,6 @@ export function extensionPathHelper(configuration) {
       extensionPath = path.join(extensionPath, "resources", "app.asar.unpacked", "node_modules", "@userdocs", "extension", "extension")
       break
   }
-  console.log(`Calculated extension path as ${extensionPath}`)
   return extensionPath
 }
 
