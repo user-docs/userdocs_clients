@@ -7,6 +7,7 @@ import { Configuration } from '../../runner/runner'
 import { timeoutPage } from '../../runner/static'
 import * as fs from 'fs/promises';
 
+const sharp = require('sharp')
 const path = require('path')
 
 interface StepHandler {
@@ -99,11 +100,16 @@ export const stepHandlers: StepHandler = {
     var filePath = ""
     await new Promise(resolve => setTimeout(resolve, 250));
     let handle = await getElementHandle(browser, selector, strategy)
+    const box = await handle.boundingBox()
+    const page: Page | undefined = await currentPage(browser) 
+    let base64 = await page.screenshot({fullPage: true})
+    const resizedBuffer = await sharp(base64)
+      .extract({left: Math.floor(box.x), top: Math.floor(box.y), width: Math.ceil(box.width) + 1,  height: Math.ceil(box.height) + 1})
+      .toBuffer()
+    
+    const resizedBase64 = await resizedBuffer.toString('base64')
     if (!handle) { throw new ElementNotFound(strategy, selector) }
-    let base64 = await handle.screenshot({ encoding: "base64"});
-
-    handleScreenshot(step, base64, configuration)
-
+    handleScreenshot(step, resizedBase64, configuration)
     await new Promise(resolve => setTimeout(resolve, 250));
     return step
   },
