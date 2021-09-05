@@ -33,6 +33,7 @@ export async function validateTokens(url, tokens) {
     else throw e
   }
   if (response.status === 200) return {status: "ok"}
+  else if (response.status === 404) return {status: "error"} 
   else if (response.status === 401) {
     var response
     try {
@@ -45,6 +46,7 @@ export async function validateTokens(url, tokens) {
     if (response.status === 200) return {status: "update", tokens: response.data.data}
     else if (response.status === 401) return {status: "error"}
   } 
+  else {return {status: "error"}}
 }
 
 export async function loginUI(token, url) {
