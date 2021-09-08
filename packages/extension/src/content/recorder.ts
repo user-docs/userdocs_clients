@@ -1,6 +1,7 @@
 import * as Recordable from './recordable'
 import finder from '@medv/finder'
 import { actions } from '../actions'
+import { getName } from '../helpers'
 
 declare global {
   interface Window { 
@@ -33,6 +34,7 @@ export function recordEvent (e) {
   const message = {
     selector: getSelector(e),
     value: e.target.value,
+    elementName: getName(e.target),
     tagName: e.target.tagName,
     action: actions[e.type],
     keyCode: e.keyCode ? e.keyCode : null,
@@ -50,7 +52,6 @@ export function getWindowLocation (e) {
   return eventsWithWindowLocation[e.type] ? e.target.location.href : null
 }
 
-
 export function getSelector (e) {
   if (e.target.id) return `#${e.target.id}`
 
@@ -59,10 +60,13 @@ export function getSelector (e) {
     keydown: true
   }
 
-  return eventsWithElements[e.type] ? finder(e.target, {
-    seedMinLength: 5,
-    optimizedMinLength: (e.target.id) ? 2 : 10
-  }) : null
+  if (eventsWithElements[e.type]) {
+    const selector = finder(e.target, {
+      seedMinLength: 5,
+      optimizedMinLength: (e.target.id) ? 2 : 10})
+    return selector
+  }
+  else return null
 }
 
 

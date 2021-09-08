@@ -1,5 +1,6 @@
 import { sendCurrentSelector } from "./index";
 import { actions } from "../actions"
+import { getName, getText } from '../helpers'
 
 var STATE = {
   currentElement: null
@@ -56,6 +57,18 @@ function sendAnnotationMessage(event) {
   const element: any = document.getElementById("selector")
   const selector = element.value
   const annotationType = event.target.innerText
-  const message = { action: actions.CREATE_ANNOTATION, annotationType: annotationType, selector: selector }
-  devtools_connection.postMessage(message)
+  chrome.devtools.inspectedWindow.eval(retreiveElementName(selector), (result, isException) => {
+    if (isException) console.log(isException)
+    const message = { 
+      elementName: result, 
+      action: actions.CREATE_ANNOTATION, 
+      annotationType: annotationType, 
+      selector: selector 
+    }
+    devtools_connection.postMessage(message)
+  })
+}
+
+function retreiveElementName(selector) {
+  return getText.toString() + " " + getName.toString() + ` {name: getName(document.querySelector('${selector}'))}`
 }
