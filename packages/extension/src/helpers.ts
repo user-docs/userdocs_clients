@@ -1,10 +1,6 @@
 import finder from '@medv/finder'
 import { actions } from './actions'
 
-export function retreiveElementName(selector) {
-  return getText.toString() + " " + getName.toString() + ` {name: getName(document.querySelector('${selector}'))}`
-}
-
 export function parseMessage(e) {
   const keycode = e.keyCode ? e.keyCode : null
   return {
