@@ -15,8 +15,6 @@ declare global {
 
 console.log("Starting Content Script")
 
-var port = chrome.runtime.connect();
-
 window.eventRecorder = Recorder
 window.eventRecorder.initialize()
 window.generateSelector = Recorder.generateSelector
@@ -28,7 +26,12 @@ window.addEventListener('message', function (message: MessageEvent) {
   }
 })
 
-chrome.runtime.onMessage.addListener(message => { 
+document.addEventListener("contextmenu", (event) => {
+  window.clickedElement = event.target
+  window.message = parseMessage(event)
+}, true)
+
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) { 
   if (message.action && message.action == actions.TEST_SELECTOR) {
     const element: HTMLElement = document.querySelector(message.selector)
     if (window.highlightedElement){
@@ -39,6 +42,9 @@ chrome.runtime.onMessage.addListener(message => {
     element.setAttribute('style', 'outline: 2px orange dashed !important')
     element.style.outlineOffset = '-1px !important'
     window.highlightedElement = element
+  } else if (message.action && message.action == actions.GET_CLICKED_ELEMENT) {
+    const message = window.message
+    sendResponse(message)
   }
 })
 
