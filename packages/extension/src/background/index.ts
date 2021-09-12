@@ -1,5 +1,6 @@
 import { actions } from '../actions'
 import {Socket, Channel} from 'phoenix'
+import { menuHandler, createAll } from './context_menu'
   
 export interface State {
   badgeState: string,
@@ -31,6 +32,7 @@ chrome.runtime.onConnect.addListener(function(port) {
       chrome.storage.local.get([ 'authoring' ], (result) => {
         if (message.action === actions.ITEM_SELECTED) {
           if (PANEL_PORT) PANEL_PORT.postMessage({ selector: message.selector }) 
+          console.log(`sending ${message.action} message`)
           CHANNEL.push("event:browser_event", message)
         }
       })
@@ -72,11 +74,21 @@ function boot() {
           if (PANEL_PORT) PANEL_PORT.postMessage({ selector: message.selector }) 
           if (authoring) CHANNEL.push("event:browser_event", message)
         }
+        if(message.action === actions.keypress) {
+          if (authoring) CHANNEL.push("event:browser_event", message)
+        }
         if (message.action === actions.load) {
+          console.log(`Pushing ${message.action} event ${authoring}`)
           if (authoring) CHANNEL.push("event:browser_event", message)
         }
       }
     })
+  })
+
+  chrome.commands.onCommand.addListener((command) => {
+    if (command == "save-step") {
+      CHANNEL.push("event:browser_event", {action: actions.SAVE_STEP})
+    }
   })
 }
 
