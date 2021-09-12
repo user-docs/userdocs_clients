@@ -6,15 +6,9 @@ export interface State {
   authoring: boolean
 }
 
-const MENU_ID = 'USERDOCS_ASSISTANT_CONTEXT_MENU'
-const SCREENSHOT_ID = 'SCREENSHOT'
-const ELEMENT_SCREENSHOT_ID = 'ELEMENT_SCREENSHOT'
-const ANNOTATE_ID = 'ANNOTATE'
 var SOCKET
 var CHANNEL
-
 const SENDABLE_ACTIONS = [ actions.CREATE_ANNOTATION, actions.ELEMENT_SCREENSHOT ]
-
 var PANEL_PORT: chrome.runtime.Port
 var DEVTOOLS_PORT: chrome.runtime.Port
 
@@ -53,7 +47,10 @@ function boot() {
     CHANNEL = SOCKET.channel("user:" + result.userId, {app: "extension"})
     SOCKET.connect()
     CHANNEL.join()
+    createAll()
+    chrome.contextMenus.onClicked.addListener(menuHandler(CHANNEL))
   })
+
   chrome.runtime.onMessage.addListener(message => {
     console.log(message)
     if(message.action == actions.GET_AUTH) {
@@ -94,21 +91,6 @@ function start() {
   const state: State = { badgeState: 'yes', authoring: true }
   chrome.storage.local.set(state)
   chrome.browserAction.setBadgeText({ text: state.badgeState })
-
-  chrome.contextMenus.removeAll()
-  chrome.contextMenus.create({
-    id: MENU_ID,
-    title: 'UserDocs Assistant',
-    contexts: ['all']
-  })
-  chrome.contextMenus.create({
-    id: MENU_ID + SCREENSHOT_ID,
-    title: 'Take Screenshot (Ctrl+Shift+S)',
-    parentId: MENU_ID,
-    contexts: ['all']
-  })
-  chrome.contextMenus.onClicked.addListener(menuInteractionhandler)
-
   injectScript()
 }
 
@@ -120,10 +102,6 @@ function stop () {
 
 function injectScript() {
   chrome.tabs.executeScript({ file: './dist/page.js', allFrames: true })
-}
-
-function menuInteractionhandler(info, tab) {
-  console.log(`Menu Interaction with ${info.menuItemId}`)
 }
 
 function handleMessage (msg, sender) {
