@@ -2,7 +2,7 @@ export const events =  {
   CLICK: 'click',
   DBLCLICK: 'dblclick',
   CHANGE: 'change',
-  KEYDOWN: 'keydown',
+  KEYPRESS: 'keypress',
   SELECT: 'select',
   SUBMIT: 'submit',
   LOAD: 'load',
