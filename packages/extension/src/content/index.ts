@@ -1,11 +1,15 @@
 import * as Recorder from './recorder'
 import { actions } from '../actions'
+import { parseElementMessage, parseMessage } from '../helpers'
 
 declare global {
   interface Window { 
     eventRecorder: any;
     generateSelector: Function;
+    parseElementMessage: Function;
     highlightedElement: HTMLElement;
+    clickedElement: any,
+    message: object
   }
 }
 
@@ -15,7 +19,8 @@ var port = chrome.runtime.connect();
 
 window.eventRecorder = Recorder
 window.eventRecorder.initialize()
-window.generateSelector = Recorder.generateSelector 
+window.generateSelector = Recorder.generateSelector
+window.parseElementMessage = parseElementMessage
 
 window.addEventListener('message', function (message: MessageEvent) {
   if(message.data.action == 'putToken') {

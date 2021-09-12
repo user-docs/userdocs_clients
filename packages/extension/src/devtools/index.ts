@@ -1,12 +1,12 @@
 import { actions } from "../actions";
 
 export function sendCurrentSelector() {
-  chrome.devtools.inspectedWindow.eval(`generateSelector($0)`, 
-    { useContentScriptContext: true }, (result, isException) => {
-      if(!isException) {
-        backgroundPageConnection.postMessage({ action: actions.ITEM_SELECTED, selector: result });
-      } else {
-        console.log(isException)
+  chrome.devtools.inspectedWindow.eval(`parseElementMessage($0)`, { useContentScriptContext: true }, 
+    (result, isException) => {
+      if(isException) console.log(isException) 
+      else { 
+        result["action"] = "ITEM_SELECTED"
+        backgroundPageConnection.postMessage(result) 
       }
     }
   )
