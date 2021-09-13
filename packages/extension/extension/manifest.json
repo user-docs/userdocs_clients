@@ -31,6 +31,12 @@
     "page": "dist/options.html",
     "open_in_tab": false
   },
+  "commands": {
+    "save-step": {
+      "suggested_key": "Ctrl+Shift+S",
+      "description": "Saves the current form in the UserDocs Application"
+    }
+  },
   "web_accessible_resources": [
     "dist/page.js",
     "dist/content.css",
