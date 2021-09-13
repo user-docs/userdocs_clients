@@ -30,5 +30,3 @@ chrome.devtools.panels.elements.createSidebarPane("UserDocs",
 });
 
 chrome.devtools.panels.elements.onSelectionChanged.addListener(sendCurrentSelector)
-
-sendCurrentSelector()
