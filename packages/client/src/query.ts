@@ -189,7 +189,7 @@ export const createStepInstance = gql `
 
 export const updateScreenshot = gql`
   mutation UpdateScreenshotBase64($base64: String!, $id: ID!, $stepId: ID!) {
-    UpdateScreenshot(id: $id, base64: $base64, stepId: $stepId) {
+    updateScreenshot(id: $id, base64: $base64, stepId: $stepId) {
       id
       base64
       stepId
@@ -201,8 +201,8 @@ export const updateScreenshot = gql`
 `
 
 export const createScreenshot = gql `
-  mutation CreateScreenshot($base64: String!, $stepId: Number!) {
-    CreateScreenshot(base64: $base64, stepId: $stepId) { 
+  mutation CreateScreenshot($base64: String!, $stepId: ID!) {
+    createScreenshot(base64: $base64, stepId: $stepId) { 
       id
       base64
       stepId
