@@ -11,8 +11,8 @@ export function sendCurrentSelector() {
     }
   )
 }
-
 var backgroundPageConnection = chrome.runtime.connect({ name: "devtools" }); 
+/*
 backgroundPageConnection.onMessage.addListener(function (message) {
   if (message.action) {
     if (message.action == actions.click) {
@@ -22,8 +22,8 @@ backgroundPageConnection.onMessage.addListener(function (message) {
       })
     }
   }
-});
-
+})
+*/
 chrome.devtools.panels.elements.createSidebarPane("UserDocs",
   function(sidebar) {
     sidebar.setPage('./dist/panel.html');

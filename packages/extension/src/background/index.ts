@@ -70,15 +70,13 @@ function boot() {
         if (message.action === actions.STOP) stop()
         if (message.action === actions.click) {
           console.log(`Pushing Click message if ${authoring} is true`)
-          if (DEVTOOLS_PORT) DEVTOOLS_PORT.postMessage(message)
-          if (PANEL_PORT) PANEL_PORT.postMessage({ selector: message.selector }) 
           if (authoring) CHANNEL.push("event:browser_event", message)
         }
         if(message.action === actions.keypress) {
           if (authoring) CHANNEL.push("event:browser_event", message)
         }
         if (message.action === actions.load) {
-          console.log(`Pushing ${message.action} event ${authoring}`)
+          console.log(`Pushing ${message.action} event if ${authoring} is true`)
           if (authoring) CHANNEL.push("event:browser_event", message)
         }
       }
