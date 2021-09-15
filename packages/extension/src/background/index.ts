@@ -18,11 +18,8 @@ chrome.runtime.onConnect.addListener(function(port) {
     PANEL_PORT = port
     port.onMessage.addListener(function(message) {
       console.log(`Background received devtools panel ${message.action} message`)
-      chrome.storage.local.get([ 'authoring' ], (result) => {
-        const authoring  = result.authoring
-        if (SENDABLE_ACTIONS.includes(message.action)) CHANNEL.push("event:browser_event", message)
-        if(message.action == actions.TEST_SELECTOR) sendToFirstTab(message)
-      })
+      if (SENDABLE_ACTIONS.includes(message.action)) CHANNEL.push("event:browser_event", message)
+      if(message.action == actions.TEST_SELECTOR) sendToFirstTab(message)
     })
   }
   if (port.name === 'devtools') {
