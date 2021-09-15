@@ -93,11 +93,13 @@ export async function leaveUserChannel(client: Client) {
 
 export async function openBrowser(client: Client) {
   const token = await keytar.getPassword('UserDocs', 'accessToken')
+  const userId = await keytar.getPassword('UserDocs', 'userId')
   const configuration = 
     Configuration
       .initialize()
       .include(client.store.store)
       .include({token: token})
+      .include({userId: userId})
 
   try {
     client.runner = await Runner.openBrowser(client.runner, configuration.state)
