@@ -41,9 +41,8 @@ export async function validate (state) {
   console.debug("validate")
 
   const status = await validateTokens(state.url, state.tokens)
-  if (status.status === "update") {
-    state.tokens = status.tokens
-  }
+  if (status.status === "update") state.tokens = status.tokens
+  else if (status.status === "ok") await keytar.setPassword('UserDocs', 'userId', status.user.id)
   return state
 }
 
