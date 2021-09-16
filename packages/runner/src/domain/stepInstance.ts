@@ -21,7 +21,7 @@ export interface StepInstance {
 
 export async function execute(stepInstance: StepInstance, runner: Runner, configuration: Configuration) {
   stepInstance.status = 'started'
-  console.log("Executing Step Instance")
+  console.log(`Executing Step Instance ${stepInstance.step.stepType.name}`)
   
   try {
     await Step.execute(stepInstance.step, runner, configuration)
