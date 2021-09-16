@@ -144,10 +144,6 @@ app.on("ready", () => {
 	autoUpdater.checkForUpdatesAndNotify()
 });
 
-app.on("before-quit", async () => {
-  //await Runner.closeBrowser(userdocs.runner)
-})
-
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', (reason as any).stack);
   // application specific logging, throwing an error, or other logic here
