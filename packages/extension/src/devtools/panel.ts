@@ -57,16 +57,17 @@ function sendAnnotationMessage(event) {
   const element: any = document.getElementById("selector")
   const selector = element.value
   const annotationType = event.target.innerText
-  chrome.devtools.inspectedWindow.eval(retreiveElementName(selector), (result, isException) => {
-    if (isException) console.log(isException)
-    const message = { 
-      elementName: result, 
-      action: actions.CREATE_ANNOTATION, 
-      annotationType: annotationType, 
-      selector: selector 
+  chrome.devtools.inspectedWindow.eval(`parseElementMessage($0)`, { useContentScriptContext: true }, 
+    (result, isException) => {
+      if(isException) console.log(isException) 
+      else { 
+        result["action"] = actions.CREATE_ANNOTATION
+        result["annotationType"] = annotationType
+        result["selector"] = selector
+        devtools_connection.postMessage(result) 
+      }
     }
-    devtools_connection.postMessage(message)
-  })
+  )
 }
 
 function retreiveElementName(selector) {
