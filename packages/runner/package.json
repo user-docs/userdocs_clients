@@ -19,6 +19,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@userdocs/annotations": "^1.0.0",
     "@userdocs/extension": "^1.0.50",
     "find-yarn-workspace-root": "^2.0.0",
     "fs": "^0.0.1-security",
@@ -40,5 +41,5 @@
     "webpack": "4.41.5",
     "webpack-cli": "^3.3.12"
   },
-  "gitHead": "34f22f07bde08d64dbc690fa4a9c78d550b3bc3f"
+  "gitHead": "7ad3d2a9675b78258115218710fc727a6f641d23"
 }
