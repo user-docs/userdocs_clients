@@ -4,6 +4,7 @@ import { Runner, Configuration } from '../runner/runner'
 import { Browser } from 'puppeteer-core'
 const puppeteer = require('puppeteer-core')
 const path = require('path')
+import * as fs from 'fs';
 
 export const Puppet = {
   stepHandler: (step: Step) => {
@@ -35,7 +36,6 @@ export const Puppet = {
       }
     } else if(configuration.environment == 'desktop') {
       executablePath = configuration.chromePath
-      console.log(executablePath)
       args = puppeteer.defaultArgs()
       args = standardArgs(args)
       args = args.concat(`--load-extension=${extensionPathNew}`)
@@ -68,16 +68,23 @@ export const Puppet = {
     });
 
     const pages = await browser.pages()
+    const path = require.resolve('@userdocs/annotations')
+    const annotationsText = await fs.readFileSync(path, 'utf-8')
     for (var page of pages) {
       if (configuration.css) {
-        await page.evaluateOnNewDocument((css)=>{
+        await page.evaluateOnNewDocument((css, annotations)=>{
           var style = document.createElement('style');
           style.type = 'text/css';
           style.innerHTML = css
+          var script = document.createElement('script');
+          script.type = 'text/javascript'
+          script.innerHTML = annotations
           document.addEventListener('DOMContentLoaded', () => { 
-            document.getElementsByTagName('head')[0].appendChild(style); 
+            var head = document.getElementsByTagName('head')[0]
+            head.appendChild(style);
+            head.appendChild(script); 
           }, false); 
-        }, `${configuration.css}`);
+        }, `${configuration.css}`, annotationsText);
       }
       await page.goto('https://user-docs.com');
       page.evaluate((configuration)  => {

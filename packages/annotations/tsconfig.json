@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "types": ["jest", "node"],
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "target": "es2015",
+    "module": "es2015"
+  }
+}

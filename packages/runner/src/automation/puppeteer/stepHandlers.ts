@@ -10,6 +10,7 @@ import * as fs from 'fs/promises';
 const sharp = require('sharp')
 const path = require('path')
 
+declare global { interface Window { applyAnnotation: Function } }
 interface StepHandler {
   [ key: string ]: Function
 }
@@ -163,7 +164,9 @@ export const stepHandlers: StepHandler = {
     const page: Page | undefined = await currentPage(browser)
     if (!page) { throw new Error("Page not retreived from browser")}
     try {
-      await page.evaluate(annotationHandler as any, step as any, handle, StyleFunctionsText)  //TODO: NO ANY'S
+      await page.evaluate((annotation, element) => { 
+        window.applyAnnotation(annotation, element) 
+      }, step.annotation as any, handle)
     } catch (error) {
       throw error
     }

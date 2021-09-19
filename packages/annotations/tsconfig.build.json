@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.build.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "lib": [ "DOM", "ES2015" ],
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "target": "es2015",
+    "module": "es2015"
+  },
+  "include": [
+    "lib/**/*"
+  ]
+}
