@@ -95,13 +95,14 @@ export async function openBrowser(client: Client) {
   const headers = await authHeaders()
   const token = await keytar.getPassword('UserDocs', 'accessToken')
   const userId = await keytar.getPassword('UserDocs', 'userId')
-  var configuration = await
+  const configuration =
     Configuration
       .initialize()
       .include(client.store.store)
       .include({token: token})
       .include({userId: userId})
-      .includeServer(client, headers)
+
+  await configuration.includeServer(client, headers)
 
   try {
     client.runner = await Runner.openBrowser(client.runner, configuration.state)
@@ -121,12 +122,13 @@ export async function closeBrowser(client: Client) {
 
 export async function executeStepInstance(client: Client, stepId: number) {
   const headers = await authHeaders()
-  const configuration = await
+  const configuration = 
     Configuration
       .initialize()
       .include(client.store.store)
       .includeCallbacks(client, headers)
-      .includeServer(client, headers)
+
+  await configuration.includeServer(client, headers)
       
   const variables = {stepId: stepId, status: "not_started"}
   const response = await executeQuery(client, createStepInstance, variables, headers)
@@ -136,12 +138,13 @@ export async function executeStepInstance(client: Client, stepId: number) {
 
 export async function executeProcess(client: Client, processId: number) {
   const headers = await authHeaders()
-  const configuration = await
+  const configuration = 
     Configuration
       .initialize()
       .include(client.store.store)
       .includeCallbacks(client, headers)
-      .includeServer(client, headers)
+
+  await configuration.includeServer(client, headers)
 
   const params = {processId: processId, status: "not_started"}
   const response = await client.graphQLClient.request(createProcessInstance, params, headers)
@@ -156,7 +159,8 @@ export async function executeJob(client: Client, jobId: number) {
       .initialize()
       .include(client.store.store)
       .includeCallbacks(client, headers)
-      .includeServer(client, headers)
+
+  await configuration.includeServer(client, headers)
 
   const params = {jobId: jobId, status: "not_started"}
   const response = await client.graphQLClient.request(createJobInstance, params, headers)
