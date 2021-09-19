@@ -104,8 +104,9 @@ export const stepHandlers: StepHandler = {
     const box = await handle.boundingBox()
     const page: Page | undefined = await currentPage(browser) 
     let base64 = await page.screenshot({fullPage: true})
+    // TODO: When margins are added, ensure these don't exceed the size of the image
     const resizedBuffer = await sharp(base64)
-      .extract({left: Math.floor(box.x), top: Math.floor(box.y), width: Math.ceil(box.width) + 1,  height: Math.ceil(box.height) + 1})
+      .extract({left: Math.floor(box.x), top: Math.floor(box.y), width: Math.ceil(box.width),  height: Math.ceil(box.height)})
       .toBuffer()
     
     const resizedBase64 = await resizedBuffer.toString('base64')
