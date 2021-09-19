@@ -46,7 +46,6 @@ export function badge(annotation, elementToAnnotate) {
   insertAbsolute(locatorElement)
   absolutePositionElement(locatorElement, elementToAnnotate)
   styleLocator(locatorElement)
-
   maskElement = createMask(annotationId)
   locatorElement.append(maskElement)
   styleMask(maskElement)
