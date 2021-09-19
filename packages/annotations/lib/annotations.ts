@@ -1,4 +1,4 @@
-import { locator as styleLocator, badge as styleBadge, outline as styleOutline } from "./style"
+import { badge as styleBadge, outline as styleOutline, locator as styleLocator, mask as styleMask } from "./style"
 import { absolutePositionElement, adjustElementAbsolutePosition } from "./position"
 declare global { interface Window { active_annotations: Array<any> } }
 
@@ -9,6 +9,7 @@ export function applyAnnotation(annotation, element) {
   if (!annotation.annotationType.name) throw new Error("annotation type has no name")
   const apply = index[annotation.annotationType.name]
   apply(annotation, element)
+  return 
 }
 
 export const index = {
@@ -27,6 +28,7 @@ export function badgeBlur(annotation, elementToAnnotate) {
 }
  
 export function badge(annotation, elementToAnnotate) {
+  console.log("Applying badge element")
   var locatorElement: Element
   var maskElement: Element
   var badgeElement: Element
@@ -42,14 +44,15 @@ export function badge(annotation, elementToAnnotate) {
 
   locatorElement = createLocator(annotationId)
   insertAbsolute(locatorElement)
-  locatorElement = styleLocator(locatorElement, elementToAnnotate)
   absolutePositionElement(locatorElement, elementToAnnotate)
+  styleLocator(locatorElement)
 
   maskElement = createMask(annotationId)
   locatorElement.append(maskElement)
+  styleMask(maskElement)
 
   badgeElement = createBadge(annotationId, labelText)
-  badgeElement = styleBadge(badgeElement, elementToAnnotate, size, fontSize, color, xOrientation, yOrientation)
+  badgeElement = styleBadge(badgeElement, size, fontSize, color, xOrientation, yOrientation)
   adjustElementAbsolutePosition(badgeElement, xOffset, yOffset)
 
   maskElement.append(badgeElement); 
@@ -65,10 +68,10 @@ export function outline(annotation, elementToAnnotate) {
 
   locatorElement = createLocator(annotationId)
   insertAbsolute(locatorElement)
-  locatorElement = styleLocator(locatorElement, elementToAnnotate)
   absolutePositionElement(locatorElement, elementToAnnotate)
+  styleLocator(locatorElement)
 
-  outlineElement = createMask(annotationId)
+  outlineElement = createOutline(annotationId)
   locatorElement.append(outlineElement)
 
   outlineElement = styleOutline(elementToAnnotate, outlineElement, color, thickness)
@@ -92,15 +95,15 @@ export function badgeOutline(annotation, elementToAnnotate) {
 
   locatorElement = createLocator(annotationId)
   insertAbsolute(locatorElement)
-  locatorElement = styleLocator(locatorElement, elementToAnnotate)
   absolutePositionElement(locatorElement, elementToAnnotate)
+  styleLocator(locatorElement)
 
   outlineElement = createMask(annotationId)
   locatorElement.append(outlineElement)
   outlineElement = styleOutline(elementToAnnotate, outlineElement, color, thickness)
 
   badgeElement = createBadge(annotationId, labelText)
-  badgeElement = styleBadge(badgeElement, elementToAnnotate, size, fontSize, color, xOrientation, yOrientation)
+  badgeElement = styleBadge(badgeElement, size, fontSize, color, xOrientation, yOrientation)
 
   outlineElement.append(badgeElement); 
   addToActiveAnnotations(locatorElement)
@@ -115,8 +118,15 @@ function createLocator(annotationId) {
 
 function createMask(annotationId) {
   var element = document.createElement('div');
-  element.id = `userdocs-mask-${annotationId}-mask`
+  element.id = `userdocs-annotation-${annotationId}-mask`
   element.classList.add("userdocs-mask")
+  return element
+}
+
+function createOutline(annotationId) {
+  var element = document.createElement('div');
+  element.id = `userdocs-annotation-${annotationId}-outline`
+  element.classList.add("userdocs-outline")
   return element
 }
 
@@ -134,5 +144,5 @@ function addToActiveAnnotations(element) {
 }
 
 function insertAbsolute(elementToInsert) {
-  document.body.appendChild(elementToInsert)
+  document.body.prepend(elementToInsert)
 }
