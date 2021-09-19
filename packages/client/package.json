@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/client",
-  "version": "0.0.52",
+  "version": "0.0.53",
   "description": "Automation client",
   "main": "dist/index",
   "types": "dist/index",
@@ -26,8 +26,8 @@
   "dependencies": {
     "@types/node": "^16.6.1",
     "@types/phoenix": "^1.5.2",
-    "@userdocs/extension": "^1.0.50",
-    "@userdocs/runner": "^1.0.82",
+    "@userdocs/extension": "^1.0.51",
+    "@userdocs/runner": "^1.0.83",
     "axios": "^0.21.1",
     "chrome-finder": "^1.0.7",
     "electron-store": "^8.0.0",
