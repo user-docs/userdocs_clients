@@ -84,9 +84,7 @@ export async function executeStep(step: Step.Step, runner: Runner, configuration
 }
 
 export async function executeStepInstance(stepInstance: StepInstance.StepInstance, runner: Runner, configuration: Configuration) {
-  runner.continue = true
   const completedStepInstance = await StepInstance.execute(stepInstance, runner, configuration)
-  runner.continue = false
   return completedStepInstance
 }
 
