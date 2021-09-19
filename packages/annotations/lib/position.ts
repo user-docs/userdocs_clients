@@ -1,7 +1,17 @@
 export function absolutePositionElement(element, targetElement) {
   const box = targetElement.getBoundingClientRect();
-  element.style.top = box.top
-  element.style.left = box.left
+  element.style.top = `${parseInt(box.top)}px`
+  element.style.left = `${parseInt(box.left)}px`
+  return element
+}
+
+export function relativePositionElement(element, parentElement) {
+  const parentStyle = window.getComputedStyle(parentElement)
+  const leftOffset = parseInt(parentStyle.marginLeft) + parseInt(parentStyle.paddingLeft) + parseInt(parentStyle.borderLeftWidth)
+  const topOffset = parseInt(parentStyle.marginTop) + parseInt(parentStyle.paddingTop) + parseInt(parentStyle.borderTopWidth)
+
+  element.style.left = `-${leftOffset}px`;
+  element.style.top = `-${topOffset}px`;
   return element
 }
   
