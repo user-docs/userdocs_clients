@@ -8,7 +8,7 @@ import * as Puppet from '../automation/puppet'
 
 export interface Override {
   url: string,
-  project_id: number
+  projectId: string
 }
 
 export interface Runner {
