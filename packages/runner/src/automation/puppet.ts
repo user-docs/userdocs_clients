@@ -2,8 +2,8 @@ import { Step } from '../domain/step'
 import { stepHandlers } from './puppeteer/stepHandlers'
 import { Runner, Configuration } from '../runner/runner'
 import { Browser, Puppeteer } from 'puppeteer-core'
-const puppeteer = require('puppeteer-core')
 import { PUPPETEER_REVISIONS } from 'puppeteer-core/lib/cjs/puppeteer/revisions'
+const puppeteer = require('puppeteer-core')
 const path = require('path')
 import * as fs from 'fs';
 
