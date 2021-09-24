@@ -60,9 +60,13 @@ function main() {
   const name = app.getName()
   const defaultImagePath = path.join(appPath, name, "images")
   const defaultDataDirPath = path.join(appPath, name, "chromeDataDir")
+  const chromiumPath = path.join(appPath, name, "chromium")
 
   if (!fs.existsSync(defaultImagePath)) fs.mkdirSync(defaultImagePath)
   if (!fs.existsSync(defaultDataDirPath)) fs.mkdirSync(defaultDataDirPath)
+  if (!fs.existsSync(chromiumPath)) fs.mkdirSync(chromiumPath)
+
+  store.set('chromiumPath', chromiumPath)
 
   var state = {
     tokens: {}, window: null, 

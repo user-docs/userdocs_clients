@@ -47,7 +47,7 @@ export async function create(store: any, app: string) {
     store: store
   }
 
-  store = await initializeChromePath(client.runner, store)
+  store = await initializeChromePath(store, client.runner, configuration.state)
 
   STATE = client
   return client
@@ -190,12 +190,9 @@ function sendChromePath(client: Client) {
   }
 }
 
-async function initializeChromePath(runner: Runner.Runner, store: any) {
-  const chromePath = store.get('chromePath')
-  if(chromePath == "" || chromePath == null) {
-    const freshPath = await runner.automationFramework.fetchBrowser()
-    store.set('chromePath', freshPath)
-  }
+async function initializeChromePath(store: any, runner: Runner.Runner, configuration: any) {  
+  console.log(configuration.chromiumPath)
+  await runner.automationFramework.fetchBrowser(runner, configuration)
   return store
 }
 

@@ -21,14 +21,14 @@ export const Puppet = {
   },
   openBrowser: async(runner: Runner, configuration: Configuration) => {
     console.log(`Starting Open Browser ${configuration.environment}`)
-    if(!configuration.chromePath) throw new Error("Chrome path not included, browser cannot start")
+    if(!configuration.chromiumPath) throw new Error("Chrome path not included, browser cannot start")
     if(!configuration.environment) throw new Error("Environment not included, browser cannot start")
     const extensionPathNew = extensionPathHelper(configuration)
     var executablePath
     var args
     
     if(configuration.environment == 'development') {
-      executablePath = configuration.chromePath
+      executablePath = puppeteer.executablePath()
       args = puppeteer.defaultArgs()
       args = standardArgs(args)
       args = args.concat(`--load-extension=${extensionPathNew}`)
@@ -36,7 +36,7 @@ export const Puppet = {
         args.push('--user-data-dir=' + configuration.userDataDirPath);
       }
     } else if(configuration.environment == 'desktop') {
-      executablePath = configuration.chromePath
+      executablePath = puppeteer.executablePath()
       args = puppeteer.defaultArgs()
       args = standardArgs(args)
       args = args.concat(`--load-extension=${extensionPathNew}`)
@@ -114,12 +114,15 @@ export const Puppet = {
     }
   },
   fetchBrowser: async(runner: Runner, configuration: Configuration) => {
-    const browserFetcher = puppeteer.createBrowserFetcher();
+    if(!configuration.chromiumPath) throw new Error("Chromium Path doesn't exist")
+
+    const targetPath = configuration.chromiumPath
+    const browserFetcher = puppeteer.createBrowserFetcher({path: targetPath});
     const localRevision = await browserFetcher.localRevisions('chrome')
     const targetRevision = PUPPETEER_REVISIONS.chromium
-    console.log(`Targetted revision is ${targetRevision}, local revisions are ${localRevision}`)
+    console.log(`Targetted revision is ${targetRevision}, local revisions are ${localRevision}. storing to ${targetPath}`)
     if(!localRevision.includes(targetRevision)) {
-      await browserFetcher.download(targetRevision)
+      await browserFetcher.download(targetRevision, )
     }
     return await browserFetcher.revisionInfo(targetRevision).executablePath
   }

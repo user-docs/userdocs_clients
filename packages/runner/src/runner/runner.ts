@@ -44,7 +44,8 @@ export interface Configuration {
   browserTimeout: number,
   token?: string,
   wsUrl?: string,
-  userId?: number
+  userId?: number,
+  chromiumPath?: string
 }
 
 const automationFrameworks = {
