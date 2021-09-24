@@ -14,11 +14,18 @@ export function relativePositionElement(element, parentElement) {
   element.style.top = `-${topOffset}px`;
   return element
 }
+
+export function copySize(element, targetElement) {
+  const box = targetElement.getBoundingClientRect();
+  element.style.width = `${parseInt(box.width)}px`
+  element.style.height = `${parseInt(box.height)}px`
+  return element
+}
   
 export function adjustElementAbsolutePosition(element, xOffset, yOffset) {
-  const computedStyle = window.getComputedStyle(element)
-  element.style.top = `${parseInt(computedStyle.top) + xOffset}px`
-  element.style.left = `${parseInt(computedStyle.left) + yOffset}px`
+  console.log(`Adjusting element position to ${xOffset}px ${yOffset}px`)
+  if (xOffset) element.style.top = `${xOffset}px`
+  if (yOffset) element.style.left = `${yOffset}px`
   return element
 }
 
