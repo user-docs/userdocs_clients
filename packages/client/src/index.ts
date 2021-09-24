@@ -190,12 +190,11 @@ function sendChromePath(client: Client) {
   }
 }
 
-function initializeChromePath(store: any) {
-  if(store.get('chromePath') == "") {
-    var path
-    try {path = findChrome()} 
-    catch(e) {path = ""}
-    store.set('chromePath', path)
+async function initializeChromePath(runner: Runner.Runner, store: any) {
+  const chromePath = store.get('chromePath')
+  if(chromePath == "" || chromePath == null) {
+    const freshPath = await runner.automationFramework.fetchBrowser()
+    store.set('chromePath', freshPath)
   }
   return store
 }
