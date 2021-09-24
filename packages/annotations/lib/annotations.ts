@@ -1,5 +1,5 @@
 import { badge as styleBadge, outline as styleOutline, locator as styleLocator, mask as styleMask } from "./style"
-import { absolutePositionElement, adjustElementAbsolutePosition } from "./position"
+import { absolutePositionElement, adjustElementAbsolutePosition, copySize } from "./position"
 declare global { interface Window { active_annotations: Array<any> } }
 
 'use strict';
@@ -46,15 +46,18 @@ export function badge(annotation, elementToAnnotate) {
   insertAbsolute(locatorElement)
   absolutePositionElement(locatorElement, elementToAnnotate)
   styleLocator(locatorElement)
+  
   maskElement = createMask(annotationId)
   locatorElement.append(maskElement)
   styleMask(maskElement)
+  maskElement = copySize(maskElement, elementToAnnotate)
 
   badgeElement = createBadge(annotationId, labelText)
   badgeElement = styleBadge(badgeElement, size, fontSize, color, xOrientation, yOrientation)
-  adjustElementAbsolutePosition(badgeElement, xOffset, yOffset)
 
   maskElement.append(badgeElement); 
+
+  adjustElementAbsolutePosition(badgeElement, xOffset, yOffset)
   addToActiveAnnotations(locatorElement)
 }
 
