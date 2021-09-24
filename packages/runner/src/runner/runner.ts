@@ -63,7 +63,6 @@ export function initialize(configuration: Configuration) {
     appPath: configuration.appPath,
     continue: false
   }
-  runner.automationFramework.fetchBrowser(runner, configuration)
   return runner
 }
 
