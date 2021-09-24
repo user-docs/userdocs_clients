@@ -33,7 +33,6 @@ export async function create(store: any, app: string) {
   const socket = new Socket(wsUrl, {params: {token: token}})
   const channel = socket.channel("user:" + userId, {app: app})
 
-  store = initializeChromePath(store)
   const configuration = 
     Configuration
       .initialize()
@@ -47,6 +46,9 @@ export async function create(store: any, app: string) {
     graphQLClient: new GraphQLClient(applicationUrl + "/api"),
     store: store
   }
+
+  store = await initializeChromePath(client.runner, store)
+
   STATE = client
   return client
 }
