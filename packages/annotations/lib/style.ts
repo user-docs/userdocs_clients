@@ -10,7 +10,6 @@ export function badge(element, size: number, fontSize: number, color: string, xO
   if(yOrientation == 'T') element.style.top = '0%'
   else if(yOrientation == 'M') element.style.top = '50%'
   else if(yOrientation == 'B') element.style.top = '100%'
-  element.style.zIndex = '9999'
   return element;
 }
 
@@ -24,7 +23,6 @@ export function outline(elementToOutline, element, color: string, thickness: num
   element.style.height = Math.round(rect.height).toString() + 'px'
   if (color) element.style.outlineColor = color
   if (thickness) element.style.outlineWidth = `${thickness}px`;
-  element.style.zIndex = '9999'
   //element.style.outlineStyle = 'solid'
   // element.style.left = `-${leftOffset}px`;
   // element.style.top = `-${topOffset}px`;
@@ -33,11 +31,9 @@ export function outline(elementToOutline, element, color: string, thickness: num
 }
 
 export function locator(element) {
-  element.style.zIndex = '-9999'
   return element
 }
 
 export function mask(element) {
-  element.style.zIndex = '-9999'
   return element
 }
