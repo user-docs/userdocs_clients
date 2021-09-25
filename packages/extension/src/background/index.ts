@@ -1,5 +1,5 @@
 import { actions } from '../actions'
-import {Socket, Channel} from 'phoenix'
+import { Socket } from 'phoenix'
 import { menuHandler, createAll } from './context_menu'
   
 export interface State {
