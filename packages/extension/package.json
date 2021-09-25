@@ -20,6 +20,7 @@
     "watch:tailwind": "NODE_ENV=development postcss src/tailwind.css -o extension/dist/tailwind.dist.css -w",
     "dev:tailwind": "NODE_ENV=development postcss src/tailwind.css -o extension/dist/tailwind.dist.css",
     "build:tailwind": "NODE_ENV=production postcss src/tailwind.css -o extension/dist/tailwind.dist.css",
+    "clean": "rimraf -rf ./dist",
     "watch": "concurrently \"npm run watch:tailwind\" \"NODE_ENV=development webpack --config webpack.config.js --mode=development --watch\"",
     "build": "npm run build:tailwind && webpack --mode production"
   },
@@ -43,5 +44,5 @@
     "webpack-cli": "^4.7.2",
     "webpack-extension-reloader": "^1.1.4"
   },
-  "gitHead": "7b08551a8c5cfdc08f78039177c2a41d47e480e4"
+  "gitHead": "ee864b76c2587438d75ed5a1ddcfe45033be8003"
 }

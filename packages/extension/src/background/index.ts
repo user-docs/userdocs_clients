@@ -1,6 +1,6 @@
-import { actions } from '../actions'
 import { Socket } from 'phoenix'
 import { menuHandler, createAll } from './context_menu'
+import { actions } from '../actions'
   
 export interface State {
   badgeState: string,
