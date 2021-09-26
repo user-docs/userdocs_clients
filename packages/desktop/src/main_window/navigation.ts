@@ -12,6 +12,7 @@ export async function createMainWindow (state) {
     state.window = await new BrowserWindow({
       width: 1600,
       height: 800,
+      show: false,
       webPreferences: {
         preload: require('path').join(__dirname, './preload.js')
       }
@@ -38,7 +39,6 @@ export async function getTokens (state) {
 
 export async function validate (state) {
   if (state.status != 'ok') { return state }
-  console.debug("validate")
 
   const status = await validateTokens(state.url, state.tokens)
   if (status.status === "update") state.tokens = status.tokens
