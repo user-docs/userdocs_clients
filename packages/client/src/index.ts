@@ -191,8 +191,9 @@ function sendChromePath(client: Client) {
 }
 
 async function initializeChromePath(store: any, runner: Runner.Runner, configuration: any) {  
-  console.log(configuration.chromiumPath)
-  await runner.automationFramework.fetchBrowser(runner, configuration)
+  const chromePath = await runner.automationFramework.fetchBrowser(runner, configuration)
+  const _logString = `Initialized chrome path to ${chromePath}`
+  store.set('chromePath', chromePath)
   return store
 }
 

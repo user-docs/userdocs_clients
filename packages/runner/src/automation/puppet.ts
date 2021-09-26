@@ -21,14 +21,14 @@ export const Puppet = {
   },
   openBrowser: async(runner: Runner, configuration: Configuration) => {
     console.log(`Starting Open Browser ${configuration.environment}`)
-    if(!configuration.chromiumPath) throw new Error("Chrome path not included, browser cannot start")
+    if(!configuration.chromePath) throw new Error("Chrome path not included, browser cannot start")
     if(!configuration.environment) throw new Error("Environment not included, browser cannot start")
     const extensionPathNew = extensionPathHelper(configuration)
     var executablePath
     var args
     
     if(configuration.environment == 'development') {
-      executablePath = puppeteer.executablePath()
+      executablePath = configuration.chromePath
       args = puppeteer.defaultArgs()
       args = standardArgs(args)
       args = args.concat(`--load-extension=${extensionPathNew}`)
@@ -36,7 +36,7 @@ export const Puppet = {
         args.push('--user-data-dir=' + configuration.userDataDirPath);
       }
     } else if(configuration.environment == 'desktop') {
-      executablePath = configuration.chromiumPath
+      executablePath = configuration.chromePath
       args = puppeteer.defaultArgs()
       args = standardArgs(args)
       args = args.concat(`--load-extension=${extensionPathNew}`)
@@ -117,7 +117,7 @@ export const Puppet = {
     if(!configuration.chromiumPath) throw new Error("Chromium Path doesn't exist")
 
     var fetcherOptions = {}
-    if(configuration.environment == 'desktop') fetcherOptions['chromiumPath'] = configuration.chromiumPath
+    if(configuration.environment == 'desktop') fetcherOptions['path'] = configuration.chromiumPath
     const browserFetcher = puppeteer.createBrowserFetcher(fetcherOptions);
     const localRevision = await browserFetcher.localRevisions('chrome')
     const targetRevision = PUPPETEER_REVISIONS.chromium
@@ -162,7 +162,6 @@ export function standardArgs(args) {
     .filter(arg => String(arg).toLowerCase() !== 'about:blank')
     .concat('--no-zygote')
     .concat('--no-sandbox')
-    .concat('--single-process')
     .concat("--proxy-server='direct://'")
     .concat('--proxy-bypass-list=*')
     .concat('--hide-scrollbars')
