@@ -36,7 +36,7 @@ export const Puppet = {
         args.push('--user-data-dir=' + configuration.userDataDirPath);
       }
     } else if(configuration.environment == 'desktop') {
-      executablePath = puppeteer.executablePath()
+      executablePath = configuration.chromiumPath
       args = puppeteer.defaultArgs()
       args = standardArgs(args)
       args = args.concat(`--load-extension=${extensionPathNew}`)
