@@ -115,7 +115,6 @@ export const Puppet = {
   },
   fetchBrowser: async(runner: Runner, configuration: Configuration) => {
     if(!configuration.chromiumPath) throw new Error("Chromium Path doesn't exist")
-
     var fetcherOptions = {}
     if(configuration.environment == 'desktop') fetcherOptions['path'] = configuration.chromiumPath
     const browserFetcher = puppeteer.createBrowserFetcher(fetcherOptions);
@@ -125,6 +124,7 @@ export const Puppet = {
     if(!localRevision.includes(targetRevision)) {
       await browserFetcher.download(targetRevision)
     }
+    console.log("Completed Browser Fetch Operation")
     return await browserFetcher.revisionInfo(targetRevision).executablePath
   }
 }
