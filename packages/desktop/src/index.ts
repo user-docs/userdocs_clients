@@ -82,6 +82,7 @@ async function initialize(state) {
     const result = await startServices()
     mainWindow().webContents.send('serviceStatus', result)
   }
+  state = await showMainWindow(state)
 }
 
 export async function startTokenRefresh(state) {
@@ -103,7 +104,6 @@ async function initializeWindow(state) {
   state = await putSession(state)
   state = await startTokenRefresh(state)
   state = await navigate(state)
-  state = await showMainWindow(state)
   return state
 }
 

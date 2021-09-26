@@ -116,13 +116,14 @@ export const Puppet = {
   fetchBrowser: async(runner: Runner, configuration: Configuration) => {
     if(!configuration.chromiumPath) throw new Error("Chromium Path doesn't exist")
 
-    const targetPath = configuration.chromiumPath
-    const browserFetcher = puppeteer.createBrowserFetcher({path: targetPath});
+    var fetcherOptions = {}
+    if(configuration.environment == 'desktop') fetcherOptions['chromiumPath'] = configuration.chromiumPath
+    const browserFetcher = puppeteer.createBrowserFetcher(fetcherOptions);
     const localRevision = await browserFetcher.localRevisions('chrome')
     const targetRevision = PUPPETEER_REVISIONS.chromium
-    console.log(`Targetted revision is ${targetRevision}, local revisions are ${localRevision}. storing to ${targetPath}`)
+    console.log(`Targetted revision is ${targetRevision}, local revisions are ${localRevision}`)
     if(!localRevision.includes(targetRevision)) {
-      await browserFetcher.download(targetRevision, )
+      await browserFetcher.download(targetRevision)
     }
     return await browserFetcher.revisionInfo(targetRevision).executablePath
   }
@@ -161,6 +162,7 @@ export function standardArgs(args) {
     .filter(arg => String(arg).toLowerCase() !== 'about:blank')
     .concat('--no-zygote')
     .concat('--no-sandbox')
+    .concat('--single-process')
     .concat("--proxy-server='direct://'")
     .concat('--proxy-bypass-list=*')
     .concat('--hide-scrollbars')
