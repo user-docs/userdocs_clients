@@ -35,14 +35,14 @@ if (isDev) {
     electron: path.join(__dirname, '../', 'node_modules', '.bin', 'electron'),
     hardResetMethod: 'exit'
   });
-  /*
   ENVIRONMENT = "development"
   APPLICATION_URL = "https://app.user-docs.com"
   WS_URL = "wss://app.user-docs.com/socket"
-  */
+  /*
   ENVIRONMENT = "development"
   APPLICATION_URL = "https://dev.user-docs.com:4002"
   WS_URL = "ws://localhost:4000/socket"
+  */
 } else {
   ENVIRONMENT = "desktop"
   APPLICATION_URL = "https://app.user-docs.com"
@@ -60,14 +60,18 @@ function main() {
   const name = app.getName()
   const defaultImagePath = path.join(appPath, name, "images")
   const defaultDataDirPath = path.join(appPath, name, "chromeDataDir")
-  const chromiumPath = path.join(appPath, name, "chromium")
+  const defaultChromiumPath = path.join(appPath, name, "chromium")
 
   if (!fs.existsSync(defaultImagePath)) fs.mkdirSync(defaultImagePath)
   if (!fs.existsSync(defaultDataDirPath)) fs.mkdirSync(defaultDataDirPath)
-  if (!fs.existsSync(chromiumPath)) fs.mkdirSync(chromiumPath)
+  if (!fs.existsSync(defaultChromiumPath)) fs.mkdirSync(defaultChromiumPath)
 
-  store.set('chromiumPath', chromiumPath)
-
+  if (!store.get('browserTimeout')) store.set('browserTimeout', 5000)
+  if (!store.get('maxRetries')) store.set('maxRetries', 10)
+  if (!store.get('chromiumPath')) store.set('chromiumPath', defaultChromiumPath)
+  if (!store.get('userDataDirPath')) store.set('userDataDirPath', defaultDataDirPath)
+  if (!store.get('imagePath')) store.set('imagePath', defaultImagePath)
+  
   var state = {
     tokens: {}, window: null, 
     url: APPLICATION_URL, cookie: null, error: null, status: 'ok'
@@ -82,6 +86,7 @@ async function initialize(state) {
     const result = await startServices()
     mainWindow().webContents.send('serviceStatus', result)
   }
+  console.log("Finished starting services")
   state = await showMainWindow(state)
 }
 
