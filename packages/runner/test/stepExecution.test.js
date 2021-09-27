@@ -5,18 +5,23 @@ const { Puppet } = require('../src/automation/puppet')
 const StepFixtures = require('./fixtures/step.js')
 
 var browser
-beforeAll( async () => { browser = await Puppet.openBrowser({ environment: 'test' }); });
+const CONFIGURATION = { imagePath: './', environment: 'test', overrides: [], callbacks: {createScreenshot: createScreenshot} }
+beforeAll( async () => { 
+  chromePath = await Puppet.fetchBrowser({}, CONFIGURATION)
+  CONFIGURATION["chromePath"] = chromePath
+  browser = await Puppet.openBrowser({}, CONFIGURATION); 
+}, 90000);
 afterAll( async () => { await Puppet.closeBrowser(browser, {}); });
-
 
 test('navigate navigates', async () => {
   url = 'https://the-internet.herokuapp.com/add_remove_elements/'
   step = StepFixtures.navigate.step(url)
   const handler = Puppet.stepHandler(step)
-  await handler(browser, step)
-  await StepFixtures.navigate.assertion(browser, url)
-})
-
+  await handler(browser, step, CONFIGURATION)
+  const page = (await browser.pages())[0]
+  expect(page.url()).toBe(url)
+}, 2000)
+/*
 test('click clicks', async () => {
   selector = "//button[contains(., 'Add Element')]"
   resultingSelector = "//button[contains(., 'Delete')]"
@@ -40,22 +45,21 @@ test('Set size sets size', async () => {
   await handler(browser, step)
   await StepFixtures.setSize.assertion(browser)
 })
-
-test ('Element Screenshot takes a screenshot', async () => {
+*/
+test('Element Screenshot takes a screenshot', async () => {
   const url = 'https://the-internet.herokuapp.com/add_remove_elements/'
-  const configuration = { imagePath: './' }
-  const step = { screenshot: {}, process: { name: 'test' }, stepType: { name: 'Element Screenshot' }, element: { selector: "//button[contains(., 'Add Element')]", strategy: { name: 'xpath' } } }
+  const step = { screenshot: { name: 'test' }, process: { name: 'test' }, stepType: { name: 'Element Screenshot' }, element: { selector: "//button[contains(., 'Add Element')]", strategy: { name: 'xpath' } }, marginLeft: 1, marginTop: 1, marginRight: 1, marginBottom: 5 }
 
   const handler = Puppet.stepHandler(step)
   const page = (await browser.pages())[0]
   await page.goto(url)
-  await handler(browser, step, configuration)
-  const file_name = step.process.name + " " + step.order + ".png"
-  const filePath = path.join(configuration.imagePath, file_name)
+  await handler(browser, step, CONFIGURATION)
+  const file_name = "test.png"
+  const filePath = path.join(CONFIGURATION.imagePath, file_name)
   expect(existsSync(filePath)).toBe(true)
-  unlink(filePath, () => { "" })
-})
-
+  //unlink(filePath, () => { "" })
+}, 2000)
+/*
 test('Full Screen Screenshot takes a screenshot', async () => {
   const url = 'https://the-internet.herokuapp.com/add_remove_elements/'
   const configuration = { imagePath: './' }
@@ -105,3 +109,6 @@ test ('Wait waits for an element', async() => {
   expect(handles).not.toBe([])
   await new Promise(resolve => setTimeout(resolve, 100))
 })
+*/
+
+function createScreenshot(screenshot) {return true}
