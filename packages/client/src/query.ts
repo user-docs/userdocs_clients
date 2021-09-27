@@ -66,6 +66,11 @@ const stepFieldsFragment = gql`
     width
     height
     page_reference
+    marginAll
+    marginTop
+    marginBottom
+    marginLeft
+    marginRight
     annotation {
       id
       name
