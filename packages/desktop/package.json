@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/desktop",
-  "version": "0.0.119",
+  "version": "0.0.120",
   "description": "Authors steps and processes for collection of screenshots.",
   "repository": "https://github.com/johns10/userdocs_clients",
   "main": "build/index.js",
@@ -31,8 +31,7 @@
       "category": "Office",
       "artifactName": "${productName} Setup.${ext}"
     },
-    "win": {
-    },
+    "win": {},
     "asarUnpack": [
       "node_modules/@userdocs/extension/extension"
     ]
@@ -54,8 +53,8 @@
     "watch": "tsc-watch --noClear -p ./tsconfig.build.json"
   },
   "dependencies": {
-    "@userdocs/client": "^0.0.63",
-    "@userdocs/runner": "^1.0.93",
+    "@userdocs/client": "^0.0.64",
+    "@userdocs/runner": "^1.0.94",
     "@userdocs/server": "^1.0.5",
     "axios": "^0.21.1",
     "electron-is-dev": "^2.0.0",
