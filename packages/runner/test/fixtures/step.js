@@ -1,13 +1,9 @@
 module.exports.navigate = {
   step: (url) => {
     return { 
-      page: { url: url }, 
+      page: { url: url, project: { id: 1 } }, 
       stepType: { name: 'Navigate' } 
     }
-  },
-  assertion: async (browser, url) => {
-    const page = (await browser.pages())[0]
-    expect(page.url()).toBe(url)
   }
 }
 
