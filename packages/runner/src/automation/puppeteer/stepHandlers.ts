@@ -5,9 +5,9 @@ import { StyleFunctionsText } from '../../annotation/style'
 import { annotationHandlers } from '../../annotation/annotation'
 import { Configuration } from '../../runner/runner'
 import { timeoutPage } from '../../runner/static'
+import Jimp from 'jimp';
 import * as fs from 'fs/promises';
 
-const sharp = require('sharp')
 const path = require('path')
 
 declare global { interface Window { applyAnnotation: Function } }
@@ -100,20 +100,21 @@ export const stepHandlers: StepHandler = {
     var fileName = step.process.name + " " + step.order + ".png"
     var filePath = ""
     await new Promise(resolve => setTimeout(resolve, 250));
-    let handle = await getElementHandle(browser, selector, strategy)
-    const box = await handle.boundingBox()
     const page: Page | undefined = await currentPage(browser) 
-    let base64 = await page.screenshot({fullPage: true})
+    let handle = await getElementHandle(browser, selector, strategy)
+    var box = await handle.boundingBox()
+    box = boundingBox(box, step, page.viewport())
+    let base64: any = await page.screenshot({fullPage: true, encoding: 'binary'})
     // TODO: When margins are added, ensure these don't exceed the size of the image
-    const resizedBuffer = await sharp(base64)
-      .extract({left: Math.floor(box.x), top: Math.floor(box.y), width: Math.ceil(box.width),  height: Math.ceil(box.height)})
-      .toBuffer()
-    
-    const resizedBase64 = await resizedBuffer.toString('base64')
-    if (!handle) { throw new ElementNotFound(strategy, selector) }
-    handleScreenshot(step, resizedBase64, configuration)
-    await new Promise(resolve => setTimeout(resolve, 250));
-    return step
+    var image = await Jimp.read(base64)
+    image = await image.crop(box.x, box.y, box.width, box.height)
+    image.getBuffer(Jimp.MIME_PNG, async (err, buffer) => {
+      const resizedBase64 = await buffer.toString('base64')
+      if (!handle) { throw new ElementNotFound(strategy, selector) }
+      handleScreenshot(step, resizedBase64, configuration)
+      await new Promise(resolve => setTimeout(resolve, 250));
+      return step
+    })
   },
   "Full Screen Screenshot": async(browser: Browser, step: Step, configuration: Configuration) => {
     await new Promise(resolve => setTimeout(resolve, 250));  
@@ -240,8 +241,8 @@ async function handleScreenshot(step: Step, base64: string, configuration: Confi
 
   const fileName = buildFileName(step)
   const filePath = buildFilePath(fileName, configuration)
+  console.log(filePath, fileName)
 
-  
   await writeFile(filePath, base64);
 
   if (step.screenshot === null || step.screenshot.id == null) { 
@@ -288,6 +289,40 @@ async function writeFile(path: string, base64: string) {
   }
 }
 
+export function boundingBox(box, step, viewport) {
+  var lowerXAdjustment = 0
+  if (box.x - step.marginLeft < 0) lowerXAdjustment = Math.abs(box.x - step.marginLeft)
+
+  var upperXAdjustment = 0
+  if (box.x + box.width + step.marginRight > viewport.width) {
+    upperXAdjustment = box.x + box.width + step.marginRight - viewport.width
+  }
+
+  var lowerYAdjustment = 0
+  if (box.y - step.marginTop < 0) lowerYAdjustment = Math.abs(box.y - step.marginTop)
+
+  var upperYAdjustment = 0
+  if (box.y + box.height + step.marginBottom > viewport.height) {
+    upperYAdjustment = box.y + box.height + step.marginBottom - viewport.height
+  }
+
+  const adjustmentLogString = `lowerXAdjustment: ${lowerXAdjustment} upperXAdjustment: ${upperXAdjustment} lowerYAdjustment: ${lowerYAdjustment} upperYAdjustment: ${upperYAdjustment}`
+  
+  const left = box.x - step.marginLeft + lowerXAdjustment
+  const width = (step.marginLeft - lowerXAdjustment) + box.width + (step.marginRight - upperXAdjustment)
+  const top = box.y - step.marginTop + lowerYAdjustment
+  const height = (step.marginBottom - lowerYAdjustment) + box.height + (step.marginTop - upperYAdjustment)
+  
+  return {
+    x: Math.floor(left), 
+    width: Math.floor(width), 
+    y: Math.floor(top), 
+    height: Math.floor(height)
+  }
+}
+
+//.extract({left: Math.floor(box.x), top: Math.floor(box.y), width: Math.ceil(box.width),  height: Math.ceil(box.height)})
+      
 class ElementNotFound extends Error {
   constructor(strategy, selector, ...params) {
     super(...params)
