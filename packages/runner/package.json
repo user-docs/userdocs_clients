@@ -19,12 +19,13 @@
     "test": "jest"
   },
   "dependencies": {
+    "@jimp/plugin-crop": "^0.16.1",
     "@userdocs/annotations": "^1.0.11",
     "@userdocs/extension": "^1.0.61",
     "find-yarn-workspace-root": "^2.0.0",
     "fs": "^0.0.1-security",
+    "jimp": "^0.16.1",
     "puppeteer-core": "^10.2.0",
-    "sharp": "^0.29.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
@@ -41,5 +42,5 @@
     "webpack": "4.41.5",
     "webpack-cli": "^3.3.12"
   },
-  "gitHead": "296ee17cfba178a3605195df78aeb4aaa4ee5ad0"
+  "gitHead": "a0bbcc757ee6ed11eaaddbfdb8058aba8f3ae419"
 }

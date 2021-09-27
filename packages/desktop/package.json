@@ -32,11 +32,9 @@
       "artifactName": "${productName} Setup.${ext}"
     },
     "win": {
-      "artifactName": "${productName} Setup.${ext}"
     },
     "asarUnpack": [
-      "node_modules/@userdocs/extension/extension",
-      "**/node_modules/sharp/**/*"
+      "node_modules/@userdocs/extension/extension"
     ]
   },
   "scripts": {
@@ -83,5 +81,5 @@
   "optionalDependencies": {
     "win-node-env": "^0.4.0"
   },
-  "gitHead": "296ee17cfba178a3605195df78aeb4aaa4ee5ad0"
+  "gitHead": "a0bbcc757ee6ed11eaaddbfdb8058aba8f3ae419"
 }
