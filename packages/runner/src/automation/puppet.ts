@@ -55,7 +55,8 @@ export const Puppet = {
         .concat('--no-sandbox')
         .concat('--hide-scrollbars')
     } else if (configuration.environment == 'test') {
-      args = puppeteer.defaultArgs()
+      executablePath = puppeteer.executablePath()
+      args = puppeteer.defaultArgs()           
         .concat('--single-process')
         .concat('--no-zygote')
         .concat('--no-sandbox')
@@ -114,7 +115,7 @@ export const Puppet = {
     }
   },
   fetchBrowser: async(runner: Runner, configuration: Configuration) => {
-    if(!configuration.chromiumPath) throw new Error("Chromium Path doesn't exist")
+    if(!configuration.chromiumPath && configuration.environment != 'test') throw new Error("Chromium Path doesn't exist")
     var fetcherOptions = {}
     if(configuration.environment == 'desktop') fetcherOptions['path'] = configuration.chromiumPath
     const browserFetcher = puppeteer.createBrowserFetcher(fetcherOptions);
