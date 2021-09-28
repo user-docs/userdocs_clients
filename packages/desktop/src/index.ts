@@ -141,6 +141,7 @@ async function putAuthInfo(event, tokens) {
     await keytar.setPassword('UserDocs', 'accessToken', tokens.access_token)
     await keytar.setPassword('UserDocs', 'renewalToken', tokens.renewal_token)
     await keytar.setPassword('UserDocs', 'userId', tokens.user_id.toString())
+    await startServices()
     return {status: "ok"}
   } catch(e) {
     return {status: "nok", error: e}
