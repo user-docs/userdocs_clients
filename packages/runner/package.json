@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/runner",
-  "version": "1.0.94",
+  "version": "1.0.95",
   "description": "Runs steps authored in the userdocs screenshot collection tool",
   "main": "dist/index",
   "types": "dist/index",
@@ -20,8 +20,8 @@
   },
   "dependencies": {
     "@jimp/plugin-crop": "^0.16.1",
-    "@userdocs/annotations": "^1.0.12",
-    "@userdocs/extension": "^1.0.62",
+    "@userdocs/annotations": "^1.0.13",
+    "@userdocs/extension": "^1.0.63",
     "find-yarn-workspace-root": "^2.0.0",
     "fs": "^0.0.1-security",
     "jimp": "^0.16.1",
