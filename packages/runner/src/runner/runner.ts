@@ -110,7 +110,11 @@ export async function executeJobInstance(jobInstance: JobInstance.JobInstance, r
 }
 
 export async function refreshSession(runner: Runner, tokens) {
-  console.log("Runner Refresh Session")
   const browser = runner.automationFramework.browser
   if(browser) runner.automationFramework.updateSession(browser, tokens)
+}
+
+export async function sendMessage(runner: Runner, message) {
+  const browser = runner.automationFramework.browser
+  if(browser) runner.automationFramework.sendMessage(browser, message)
 }
