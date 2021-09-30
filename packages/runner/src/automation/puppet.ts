@@ -110,8 +110,14 @@ export const Puppet = {
       page.evaluate((tokens) => {
         localStorage.setItem('token', tokens.token)
         window.postMessage({token: tokens.token, action: "putToken"}, '*')
-
       }, tokens)
+    }
+  },
+  sendMessage: async(browser: Browser, message) => {
+    const pages = await browser.pages()
+    message.source = "UserDocs"
+    for (var page of pages) {
+      page.evaluate((message) => { window.postMessage(message, '*') }, message)
     }
   },
   fetchBrowser: async(runner: Runner, configuration: Configuration) => {
