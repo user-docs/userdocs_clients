@@ -45,7 +45,8 @@ export interface Configuration {
   token?: string,
   wsUrl?: string,
   userId?: number,
-  chromiumPath?: string
+  chromiumPath?: string,
+  indexPath?: string
 }
 
 const automationFrameworks = {
