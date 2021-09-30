@@ -11,5 +11,7 @@ export const actions = {
   GET_AUTH: 'getAuth',
   SAVE_STEP: "save_step",
   GET_CLICKED_ELEMENT: "get_clicked_element",
-  FULL_SCREEN_SCREENSHOT: "Full Screen Screenshot"
+  FULL_SCREEN_SCREENSHOT: "Full Screen Screenshot",
+  START_RUNNING: "START_RUNNING",
+  STOP_RUNNING: "STOP_RUNNING"
 }

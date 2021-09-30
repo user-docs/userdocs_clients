@@ -24,6 +24,12 @@ window.addEventListener('message', function (message: MessageEvent) {
   if(message.data.action == 'putToken') {
     chrome.storage.local.set({token: message.data.action.token})
   }
+  if(message.data.action == 'START_RUNNING') {
+    this.chrome.runtime.sendMessage({ action: actions.START_RUNNING })
+  }
+  if(message.data.action == 'STOP_RUNNING') {
+    this.chrome.runtime.sendMessage({ action: actions.STOP_RUNNING })
+  }
 })
 
 document.addEventListener("contextmenu", (event) => {

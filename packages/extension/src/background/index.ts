@@ -1,15 +1,16 @@
 
 import { menuHandler, createAll } from './context_menu'
 import { actions } from '../actions'
-import { Socket } from 'phoenix'
+import { Socket, Channel } from 'phoenix'
   
 export interface State {
   badgeState: string,
-  authoring: boolean
+  authoring: boolean,
+  running: boolean
 }
 
-var SOCKET
-var CHANNEL
+var SOCKET: Socket
+var CHANNEL: Channel
 const SENDABLE_ACTIONS = [ actions.CREATE_ANNOTATION, actions.ELEMENT_SCREENSHOT ]
 var PANEL_PORT: chrome.runtime.Port
 var DEVTOOLS_PORT: chrome.runtime.Port
@@ -40,7 +41,7 @@ chrome.runtime.onConnect.addListener(function(port) {
 
 function boot() {
   console.debug("Booting Background Script")
-  let state: State = { badgeState: 'none', authoring: false }
+  let state: State = { badgeState: 'none', authoring: false, running: false }
   chrome.storage.local.set(state)
   chrome.storage.local.get(['token', 'wsUrl', 'userId'], (result) => {
     SOCKET = new Socket(result.wsUrl, {params: {token: result.token}})
@@ -52,7 +53,6 @@ function boot() {
   })
 
   chrome.runtime.onMessage.addListener(message => {
-    console.log(message)
     if(message.action == actions.GET_AUTH) {
       sendToFirstTab({action: actions.GET_AUTH})
     }
@@ -61,21 +61,25 @@ function boot() {
       const userId = message.data.auth.userId
       const url = message.data.wsUrl
     }
-    chrome.storage.local.get([ 'authoring' ], (result) => {
-      const authoring  = result.authoring
+    if(message.action == actions.START_RUNNING) { startRunning() }
+    if(message.action == actions.STOP_RUNNING) { stopRunning() }
+    chrome.storage.local.get([ 'authoring', 'running' ], (result) => {
+      const authoring = result.authoring
+      const running = result.running
+      console.log(`Pushing ${message.action} if ${authoring} and ${!running}`)
       if (message.action) {
         if (message.action === actions.START) start()
         if (message.action === actions.STOP) stop()
         if (message.action === actions.click) {
-          console.log(`Pushing Click message if ${authoring} is true`)
-          if (authoring) CHANNEL.push("event:browser_event", message)
+          console.log(`Pushing Click message if ${authoring} and ${!running}`)
+          if (authoring && !running) CHANNEL.push("event:browser_event", message)
         }
         if(message.action === actions.keypress) {
-          if (authoring) CHANNEL.push("event:browser_event", message)
+          if (authoring && !running) CHANNEL.push("event:browser_event", message)
         }
         if (message.action === actions.load) {
-          console.log(`Pushing ${message.action} event if ${authoring} is true`)
-          if (authoring) CHANNEL.push("event:browser_event", message)
+          console.log(`Pushing ${message.action} event if ${authoring} and ${!running}`)
+          if (authoring && !running) CHANNEL.push("event:browser_event", message)
         }
       }
     })
@@ -88,6 +92,9 @@ function boot() {
   })
 }
 
+function startRunning() { console.log("Start Running"); chrome.storage.local.set({ running: true }) }
+function stopRunning() { console.log("Stopped Running"); chrome.storage.local.set({ running: false }) }
+
 function sendToFirstTab(message) {
   chrome.tabs.query({ active: true }, function(tabs){
     chrome.tabs.sendMessage(tabs[0].id, message);  
@@ -96,14 +103,14 @@ function sendToFirstTab(message) {
 
 function start() {
   console.log('start authoring')
-  const state: State = { badgeState: 'yes', authoring: true }
+  const state: State = { badgeState: 'yes', authoring: true, running: false }
   chrome.storage.local.set(state)
   chrome.browserAction.setBadgeText({ text: state.badgeState })
   injectScript()
 }
 
 function stop () {
-  const state: State = { badgeState: '', authoring: false }
+  const state: State = { badgeState: '', authoring: false, running: false }
   chrome.storage.local.set(state)
   chrome.browserAction.setBadgeText({text: state.badgeState})
 }

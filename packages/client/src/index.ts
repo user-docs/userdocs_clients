@@ -123,6 +123,7 @@ export async function closeBrowser(client: Client) {
 }
 
 export async function executeStepInstance(client: Client, stepId: number) {
+  Runner.sendMessage(client.runner, {action: "START_RUNNING"})
   const headers = await authHeaders()
   const configuration = 
     Configuration
@@ -135,10 +136,13 @@ export async function executeStepInstance(client: Client, stepId: number) {
   const variables = {stepId: stepId, status: "not_started"}
   const response = await executeQuery(client, createStepInstance, variables, headers)
   const stepInstance = response.createStepInstance
-  return await Runner.executeStepInstance(stepInstance, client.runner, configuration.state)
+  const result = await Runner.executeStepInstance(stepInstance, client.runner, configuration.state)
+  Runner.sendMessage(client.runner, {action: "STOP_RUNNING"})
+  return result
 }
 
 export async function executeProcess(client: Client, processId: number) {
+  Runner.sendMessage(client.runner, {action: "START_RUNNING"})
   const headers = await authHeaders()
   const configuration = 
     Configuration
@@ -151,10 +155,13 @@ export async function executeProcess(client: Client, processId: number) {
   const params = {processId: processId, status: "not_started"}
   const response = await client.graphQLClient.request(createProcessInstance, params, headers)
   const processInstance = response.createProcessInstance
-  return await Runner.executeProcessInstance(processInstance, client.runner, configuration.state)
+  const result = await Runner.executeProcessInstance(processInstance, client.runner, configuration.state)
+  Runner.sendMessage(client.runner, {action: "STOP_RUNNING"})
+  return result
 }
 
 export async function executeJob(client: Client, jobId: number) {
+  Runner.sendMessage(client.runner, {action: "START_RUNNING"})
   const headers = await authHeaders()
   const configuration = await
     Configuration
@@ -167,7 +174,9 @@ export async function executeJob(client: Client, jobId: number) {
   const params = {jobId: jobId, status: "not_started"}
   const response = await client.graphQLClient.request(createJobInstance, params, headers)
   const jobInstance = response.createJobInstance
-  return await Runner.executeJobInstance(jobInstance, client.runner, configuration.state)
+  const result = await Runner.executeJobInstance(jobInstance, client.runner, configuration.state)
+  Runner.sendMessage(client.runner, {action: "STOP_RUNNING"})
+  return result
 }
 
 async function getLocalConfiguration(client: Client) {
