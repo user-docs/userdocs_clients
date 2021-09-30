@@ -23,27 +23,27 @@ export const Puppet = {
     console.log(`Starting Open Browser ${configuration.environment}`)
     if(!configuration.chromePath) throw new Error("Chrome path not included, browser cannot start")
     if(!configuration.environment) throw new Error("Environment not included, browser cannot start")
+    const indexPath = configuration.indexPath ? configuration.indexPath : "https://www.user-docs.com"
     const extensionPathNew = extensionPathHelper(configuration)
     var executablePath
     var args
+    console.log("Index Path will be ", indexPath)
     
     if(configuration.environment == 'development') {
       executablePath = configuration.chromePath
       args = puppeteer.defaultArgs()
-      args = standardArgs(args)
-      args = args.concat(`--load-extension=${extensionPathNew}`)
       if (configuration.userDataDirPath) {
         args.push('--user-data-dir=' + configuration.userDataDirPath);
       }
+      args = standardArgs(args, indexPath, extensionPathNew)
+      console.log(args)
     } else if(configuration.environment == 'desktop') {
       executablePath = configuration.chromePath
       args = puppeteer.defaultArgs()
-      args = standardArgs(args)
-      args = args.concat(`--load-extension=${extensionPathNew}`)
-        //.concat("--disable-extensions-except=/home/johns10/Documents/userdocs_clients/packages/extension/extension")
       if (configuration.userDataDirPath) {
         args.push('--user-data-dir=' + configuration.userDataDirPath);
       }
+      args = standardArgs(args, indexPath, extensionPathNew)
     } else if(configuration.environment == 'cicd') {
       const isPkg = typeof (process as any).pkg !== 'undefined';
 
@@ -156,7 +156,8 @@ export function extensionPathHelper(configuration) {
   return extensionPath
 }
 
-export function standardArgs(args) {
+export function standardArgs(args, indexPath, extensionPathNew) {
+  indexPath = indexPath.replaceAll('\\', '/')
   return args
     .filter(arg => String(arg).toLowerCase() !== '--disable-extensions')
     .filter(arg => String(arg).toLowerCase() !== '--headless')
@@ -199,5 +200,6 @@ export function standardArgs(args) {
     .concat('--use-gl=swiftshader')
     .concat('--use-mock-keychain')
     .concat('--disable-software-rasterizer')
-    .concat('https://www.user-docs.com')
+    .concat(`--load-extension=${extensionPathNew}`)
+    .concat("file://" + indexPath)
 }
