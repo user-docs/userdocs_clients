@@ -1,6 +1,6 @@
 {
   "name": "@userdocs/annotations",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "A library for applying javascript annotations to pages",
   "author": "John Davenport <johns10davenport@gmail.com>",
   "homepage": "https://github.com/user-docs/userdocs_clients#readme",
