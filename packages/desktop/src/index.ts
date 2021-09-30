@@ -71,6 +71,8 @@ function main() {
   if (!store.get('chromiumPath')) store.set('chromiumPath', defaultChromiumPath)
   if (!store.get('userDataDirPath')) store.set('userDataDirPath', defaultDataDirPath)
   if (!store.get('imagePath')) store.set('imagePath', defaultImagePath)
+
+  store.set('indexPath', path.join(app.getAppPath(), 'main_window', 'ui', 'index.html'))
   
   var state = {
     tokens: {}, window: null, 
