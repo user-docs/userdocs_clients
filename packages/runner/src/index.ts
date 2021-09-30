@@ -9,6 +9,7 @@ import {
   executeJob,
   executeJobInstance,
   refreshSession,
+  sendMessage,
   Runner,
   Configuration
 } from './runner/runner'
@@ -27,6 +28,7 @@ export {
   executeJobInstance,
   allowedJobFields,
   refreshSession,
+  sendMessage,
   Runner,
   Configuration
 } 
