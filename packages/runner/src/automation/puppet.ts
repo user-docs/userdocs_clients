@@ -36,7 +36,6 @@ export const Puppet = {
         args.push('--user-data-dir=' + configuration.userDataDirPath);
       }
       args = standardArgs(args, indexPath, extensionPathNew)
-      console.log(args)
     } else if(configuration.environment == 'desktop') {
       executablePath = configuration.chromePath
       args = puppeteer.defaultArgs()
@@ -66,6 +65,7 @@ export const Puppet = {
     const browser = await puppeteer.launch({ 
       executablePath: executablePath,
       ignoreDefaultArgs: true,
+      defaultViewport: { width: 800, height: 800 },
       args: args 
     });
 
@@ -88,7 +88,6 @@ export const Puppet = {
           }, false); 
         }, `${configuration.css}`, annotationsText);
       }
-      await page.goto('https://user-docs.com');
       page.evaluate((configuration)  => {
         localStorage.setItem('token', configuration.token)
         localStorage.setItem('wsUrl', configuration.wsUrl)
