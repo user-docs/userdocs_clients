@@ -75,20 +75,20 @@ See Martin's article for more explanation
 
 ```
 .userdocs-badge {
-  float: left; 
+  position: relative;
+  color: #fff;
+  background-color: blue;
+  border-radius: 50%;
+  line-height: 0;
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  transform:translate(-50%, -50%);
-  color: #fff;
-  background-color: #7FBE7F;
-  font-size: 24px;
-  border-radius: 50%;
   padding: 10px;
   min-width: 1em; 
   padding: .3em; 
-  line-height: 0;
+  font-size: 24px;
+  z-index: 999999 !important;
+  transform: translate(-50%, -50%)
 }
 .userdocs-badge::after {
   content: "";

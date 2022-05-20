@@ -33,12 +33,13 @@
     },
     "win": {},
     "asarUnpack": [
-      "node_modules/@userdocs/extension/extension"
+      "node_modules/@userdocs/extension/extension",
+      "build/ui"
     ]
   },
   "scripts": {
-    "copyHtml": "cpx ./src/gui ./build",
-    "build": "yarn run clean && yarn run compile",
+    "copy": "cpx -C ./src/ui/*.html ./build/ui && cpx ./src/ui/images/*.png ./build/ui/images",
+    "build": "yarn run clean && yarn run compile && yarn run copy",
     "clean": "rimraf -rf ./dist",
     "compile": "tsc -p tsconfig.build.json",
     "dist": "yarn run build && electron-builder",

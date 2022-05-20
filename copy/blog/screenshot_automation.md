@@ -1,4 +1,4 @@
-# Screenshot Automation
+# Screenshot Automation Technology
 
 ## Introduction
 

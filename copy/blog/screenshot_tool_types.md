@@ -65,6 +65,7 @@ There are many more manual screenshot tools on the market. This list is incomple
 * [DroplR](https://droplr.com/) - Screenshot collection app that runs in a chrome extension. Supports multiple regions, annotations, and automatically publishes for easy sharing and publication.
 * [Monosnap](https://monosnap.com/) - Similar to droplr. Runs in an extension, supports multiple regions, annotations, and publishes to multiple locations.
 * [Cleanshot](https://cleanshot.com/) - Desktop screen capture application for OSX. Supports multiple regions, annotations, click-tol-capture, video capture, video editor, cloud storage, overlays, OCR, and more.
+* [ScreenToLayers](https://neededapps.com/screentolayers/) - This innovative program captures layered desktop screenshots that can be manipulated after the fact.
 
 Manual screenshot collection is great for IT departments, business analysts, technical writers with a large mix of architectures they must support (mobile, web, desktop, physical, api). However, manual screenshot collection is not a good solution for technical writers who support web-based software applications, because:
 
