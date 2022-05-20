@@ -1,5 +1,6 @@
 import { Step } from '../domain/step'
 import { stepHandlers } from './puppeteer/stepHandlers'
+import { currentPage } from './puppeteer/helpers'
 import { Runner, Configuration } from '../runner/runner'
 import { Browser, Puppeteer } from 'puppeteer-core'
 import { PUPPETEER_REVISIONS } from 'puppeteer-core/lib/cjs/puppeteer/revisions'
@@ -132,6 +133,10 @@ export const Puppet = {
     }
     console.log("Completed Browser Fetch Operation")
     return await browserFetcher.revisionInfo(targetRevision).executablePath
+  },
+  navigate: async(runner: Runner, configuration: Configuration, url: string) => {
+    const page = await currentPage(runner.automationFramework.browser)
+    await page.goto(url, {timeout: configuration.browserTimeout}) 
   }
 }
 

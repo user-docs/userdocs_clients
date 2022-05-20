@@ -62,7 +62,6 @@ export function menuHandler(channel) {
     chrome.tabs.query({ active: true }, function(tabs){
       chrome.tabs.sendMessage(tabs[0].id, {action: actions.GET_CLICKED_ELEMENT}, result => {
         const message = Object.assign(result, ACTION_MAP[info.menuItemId])
-        console.log(message)
         channel.push("event:browser_event", message)
       });  
     });

@@ -160,6 +160,7 @@ export const stepHandlers: StepHandler = {
     const strategy = step.element.strategy.name
     const annotationType = step.annotation.annotationType.name
     const annotationHandler = annotationHandlers[annotationType]
+    console.log(`Running annotation type ${annotationType}`)
     if (!annotationHandler) { throw new Error(`Annotation handler ${annotationType} not implemented`) }
     const handle: ElementHandle = await getElementHandle(browser, selector, strategy)
     if (!handle) { throw new ElementNotFound(strategy, selector) }
@@ -233,6 +234,16 @@ export const stepHandlers: StepHandler = {
     } catch (error) {
       throw error
     }
+    return step
+  },
+  "Hover": async(browser: Browser, step: Step, configuration: Configuration) => {
+    const selector = step.element.selector
+    const strategy = step.element.strategy.name
+    const page: Page | undefined = await currentPage(browser)
+    if (!page) { throw new Error("Page not retreived from browser")}
+    const handle: ElementHandle = await getElementHandle(browser, selector, strategy)
+    try { await handle.hover() } 
+    catch (error) { throw error }
     return step
   }
 }

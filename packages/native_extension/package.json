@@ -1,0 +1,12 @@
+{
+    "scripts": {
+        "build": "node esbuild.js"
+    },
+    "dependencies": {
+      "@medv/finder": "^1.1.2",
+      "phoenix": "^1.5.10"
+    },
+    "devDependencies": {
+    }
+  }
+  

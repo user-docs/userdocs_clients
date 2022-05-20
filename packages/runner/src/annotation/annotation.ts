@@ -262,21 +262,21 @@ export const annotationHandlers: AnnotationHandler = {
     locatorElement.style.left = `${parseInt(locatorStyle.left) + leftAdjustment}px`
     // End Position Locator
 
-    var maskElement = document.createElement('div');
-    maskElement.id = `userdocs-mask-${annotationId}-mask`
-    maskElement.classList.add("userdocs-mask")
+    var outlineElement = document.createElement('div');
+    outlineElement.id = `userdocs-mask-${annotationId}-mask`
+    outlineElement.classList.add("userdocs-mask")
     const styleMask = new Function(`return ${style.styleMask}`)()
-    maskElement = styleMask(maskElement, elementToAnnotate)
+    outlineElement = styleMask(outlineElement, elementToAnnotate)
 
     // Append mask to locator
-    locatorElement.append(maskElement);
+    locatorElement.append(outlineElement);
   
     var badgeElement = document.createElement('span');
     badgeElement.id = `userdocs-annotation-${annotationId}-badge`
     badgeElement.textContent = labelText;
     badgeElement.classList.add("userdocs-badge")
     const styleBadge = new Function(`return ${style.styleBadge}`)()
-    badgeElement = styleBadge(badgeElement, maskElement, size, fontSize, color, xOrientation, yOrientation, xOffset, yOffset);
+    badgeElement = styleBadge(badgeElement, outlineElement, size, fontSize, color, xOrientation, yOrientation, xOffset, yOffset);
 
     var locatorElement = document.createElement('div');
 
@@ -294,7 +294,7 @@ export const annotationHandlers: AnnotationHandler = {
 
   
     try {
-      maskElement.append(badgeElement); 
+      outlineElement.append(badgeElement); 
       badgeElement.style.zIndex = '999'
       if (window.active_annotations) {
         window.active_annotations.push(locatorElement);

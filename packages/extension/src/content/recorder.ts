@@ -1,6 +1,5 @@
 import * as Recordable from './recordable'
 import finder from '@medv/finder'
-import { actions } from '../actions'
 import { parseMessage } from '../helpers'
 
 declare global {
@@ -29,7 +28,6 @@ export function addAllListeners (events) {
 }
 
 export function recordEvent (e) {
-  if(!actions[e.type]) throw new Error(`action ${e.type} not added to actions.ts`)
   const message = parseMessage(e)
   try {
     chrome.runtime.sendMessage(message)

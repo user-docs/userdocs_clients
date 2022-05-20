@@ -5,7 +5,7 @@ import logging
 
 meta_file = open("docs_meta.yml")
 meta_data = yaml.safe_load(meta_file)
-base_image_url = "https://userdocs-test.s3.us-east-2.amazonaws.com/screenshots/"
+base_image_url = "https://userdocs-screenshots.s3.us-east-2.amazonaws.com/screenshots/"
 
 docs = meta_data['docs']
 
@@ -61,7 +61,7 @@ def build_path(parents):
 """
 
 for doc in docs:
-  logging.info(f'publishing {doc["file_name"]}')
+  logging.warning(f'publishing {doc["file_name"]}')
   id = str(doc["id"])
   post_title = doc["post_title"]
   post_status = doc["post_status"]

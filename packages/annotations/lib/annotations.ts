@@ -16,7 +16,7 @@ export const index = {
   "Badge Blur": badgeBlur,
   "Badge": badge,
   "Outline": outline,
-  "Badge Outline": badgeOutline,
+  "Badge Outline": badgeOutline, 
   "Blur": blur,
   "Throw": () => { throw new Error("Expected Failure") }
 }
@@ -25,6 +25,16 @@ export function badgeBlur(annotation, elementToAnnotate) {
   badge(annotation, elementToAnnotate)
   elementToAnnotate.style.textShadow = "rgba(0, 0, 0, 0.5) 0px 0px 5px";
   elementToAnnotate.style.color = "transparent";
+}
+
+export function createBadgeAnnotation(annotationId, labelText) {
+  var locatorElement = createLocator(annotationId)
+  var maskElement = createMask(annotationId)
+  var badgeElement = createBadge(annotationId, labelText)
+  insertAbsolute(locatorElement)
+  locatorElement.append(maskElement)
+  maskElement.append(badgeElement); 
+  return locatorElement
 }
  
 export function badge(annotation, elementToAnnotate) {
@@ -100,12 +110,13 @@ export function badgeOutline(annotation, elementToAnnotate) {
   absolutePositionElement(locatorElement, elementToAnnotate)
   styleLocator(locatorElement)
 
-  outlineElement = createMask(annotationId)
+  outlineElement = createOutline(annotationId)
   locatorElement.append(outlineElement)
   outlineElement = styleOutline(elementToAnnotate, outlineElement, color, thickness)
 
   badgeElement = createBadge(annotationId, labelText)
   badgeElement = styleBadge(badgeElement, size, fontSize, color, xOrientation, yOrientation)
+  adjustElementAbsolutePosition(badgeElement, xOffset, yOffset)
 
   outlineElement.append(badgeElement); 
   addToActiveAnnotations(locatorElement)

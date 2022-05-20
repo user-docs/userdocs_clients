@@ -26,6 +26,7 @@
   "dependencies": {
     "@types/node": "^16.6.1",
     "@types/phoenix": "^1.5.2",
+    "@userdocs/annotations": "^1.0.14",
     "@userdocs/extension": "^1.0.64",
     "@userdocs/runner": "^1.0.96",
     "axios": "^0.21.1",

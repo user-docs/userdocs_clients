@@ -50,6 +50,10 @@ function boot() {
     CHANNEL.join()
     createAll()
     chrome.contextMenus.onClicked.addListener(menuHandler(CHANNEL))
+    CHANNEL.on("command:highlight_element", (payload) => {highlightElement(payload)})
+    CHANNEL.on("command:unhighlight_element", (payload) => {unhighlightElement(payload)})
+    CHANNEL.on("command:apply_annotation", (payload) => {applyAnnotation(payload)})
+    CHANNEL.on("command:remove_annotation", (payload) => {removeAnnotation(payload)})
   })
 
   chrome.runtime.onMessage.addListener(message => {
@@ -84,7 +88,6 @@ function boot() {
       }
     })
   })
-
   chrome.commands.onCommand.addListener((command) => {
     if (command == "save-step") {
       CHANNEL.push("event:browser_event", {action: actions.SAVE_STEP})
@@ -134,5 +137,22 @@ function handleMessage (msg, sender) {
     })
   }
 }
+
+function highlightElement(payload) {
+  sendToFirstTab({action: actions.HIGHLIGHT_ELEMENT, data: payload})
+}
+
+function unhighlightElement(payload) {
+  sendToFirstTab({action: actions.UNHIGHLIGHT_ELEMENT, data: payload})
+}
+
+function applyAnnotation(payload) {
+  sendToFirstTab({action: actions.APPLY_ANNOTATION, data: payload})
+}
+
+function removeAnnotation(payload) {
+  sendToFirstTab({action: actions.REMOVE_ANNOTATION, data: payload})
+}
+
 
 boot()

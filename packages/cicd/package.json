@@ -19,6 +19,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@userdocs/annotations": "^1.0.14",
     "@userdocs/client": "^0.0.66",
     "@userdocs/runner": "^1.0.96",
     "axios": "^0.21.1",

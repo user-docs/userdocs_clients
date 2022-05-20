@@ -7,7 +7,6 @@ var STATE = {
 }
 
 var devtools_connection = chrome.runtime.connect({name: 'devtoolsPanel'});
-sendCurrentSelector()
 
 devtools_connection.onMessage.addListener((message) => {
   let element: any = document.getElementById("selector")
@@ -29,8 +28,16 @@ document
     console.log("Element Screenshot button clicked")
     let element: any = document.getElementById("selector")
     let selector = element.value
-    const message = { action: actions.ELEMENT_SCREENSHOT, selector: selector }
-    devtools_connection.postMessage(message)
+    chrome.devtools.inspectedWindow.eval(`parseElementMessage($0)`, { useContentScriptContext: true }, 
+      (result, isException) => {
+        if(isException) console.log(isException) 
+        else { 
+          result["action"] = actions.ELEMENT_SCREENSHOT
+          result["selector"] = selector
+          devtools_connection.postMessage(result) 
+        }
+      }
+    )
   })
 
 document

@@ -17,7 +17,8 @@
     "type": "git"
   },
   "scripts": {
-    "build": "yarn run clean && yarn run compile && npx ./esbuild.js",
+    "build": "yarn run clean && yarn run compile && esbuild ./lib/browser.ts --bundle --outfile=dist/bundle.js",
+    "build_two": "esbuild ./lib/browser.ts --bundle --outfile=dist/bundle.js",
     "clean": "rimraf -rf ./dist",
     "compile": "tsc -p tsconfig.build.json",
     "watch": "npx ./eswatch.js",
@@ -30,8 +31,8 @@
     "@types/node": "^16.9.2"
   },
   "dependencies": {
-    "esbuild": "^0.12.28",
-    "esbuild-node-externals": "^1.3.0",
+    "esbuild": "^0.13.15",
+    "esbuild-node-externals": "^1.4.0",
     "jest-environment-jsdom": "^27.2.0",
     "jest-environment-jsdom-global": "^3.0.0"
   },

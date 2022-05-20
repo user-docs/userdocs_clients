@@ -10,7 +10,7 @@ export function parseMessage(e) {
     tagName: e.target.tagName,
     action: actions[e.type],
     keyCode: keycode,
-    href: getWindowLocation(e.target),
+    href: getElementLocation(e.target),
     pageTitle: getPageTitle(),
     coordinates: getCoordinates(e)
   }
@@ -21,12 +21,14 @@ export function parseElementMessage(element) {
     selector: getSelector(element),
     elementName: getName(element),
     tagName: element.tagName,
-    href: getWindowLocation(element),
+    href: getElementLocation(element),
     pageTitle: getPageTitle()
   }
 }
 
-function getWindowLocation (element) {
+export function getWindowLocation() { return window.location.href }
+
+function getElementLocation (element) {
   return element.location ? element.location.href : window.location.href
 }
 
@@ -60,7 +62,7 @@ export function getName (element) {
   var texts = []
   getText(element, texts)
   if (texts[0]) return texts[0]
-  else if (element.name) return element.name
+  else if (element.name) return element.name.trim()
   else return ""
 }
 

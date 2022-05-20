@@ -77,6 +77,7 @@ export async function joinUserChannel(client: Client) {
   client.userChannel.on("command:get_configuration", (payload) => {getLocalConfiguration(client)})
   client.userChannel.on("command:put_configuration", (payload) => {putLocalConfiguration(client, payload)})
   client.userChannel.on("command:find_chrome", (payload) => {sendChromePath(client)})
+  client.userChannel.on("command:navigate", (payload) => {navigate(client, payload)})
   client.userChannel.on("serviceStatus", (payload) => {console.log(payload)})
 
   while(client.userChannel.state != "joined") { await new Promise(resolve => setTimeout(resolve, 100)) }
@@ -197,6 +198,15 @@ function sendChromePath(client: Client) {
   } catch(e) {
     client.userChannel.push("event:chrome_not_found", {})
   }
+}
+
+function navigate(client: Client, payload) {
+  Runner.sendMessage(client.runner, {action: "START_RUNNING"})
+  console.log("Navigate Command")
+  const configuration = Configuration.initialize().include(client.store.store)
+  client.runner.automationFramework.navigate(client.runner, configuration, payload.url)
+  Runner.sendMessage(client.runner, {action: "STOP_RUNNING"})
+  return
 }
 
 async function initializeChromePath(store: any, runner: Runner.Runner, configuration: any) {  

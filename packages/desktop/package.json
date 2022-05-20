@@ -46,7 +46,7 @@
     "pack": "electron-builder --dir",
     "prepublishOnly": "yarn run build",
     "publish": "yarn run build",
-    "dev": "tsc-watch --noClear -p ./tsconfig.build.json --onSuccess \"electron build/index.js\"",
+    "dev": "yarn run copy && tsc-watch --noClear -p ./tsconfig.build.json --onSuccess \"electron build/index.js\"",
     "start_linux": "./dist/linux-unpacked/user_docs",
     "start_windows": "./dist/win-unpacked/UserDocs.exe",
     "test-watch": "NODE_ENV=test jest --watchAll",
@@ -54,6 +54,7 @@
     "watch": "tsc-watch --noClear -p ./tsconfig.build.json"
   },
   "dependencies": {
+    "@userdocs/annotations": "^1.0.14",
     "@userdocs/client": "^0.0.66",
     "@userdocs/runner": "^1.0.96",
     "@userdocs/server": "^1.0.5",
